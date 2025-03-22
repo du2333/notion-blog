@@ -1,16 +1,16 @@
-import { type ExtendedRecordMap } from "notion-types";
 import { unstable_cache as cache } from "next/cache";
 
+import { type ExtendedRecordMap } from "@/types/notion";
 import { wait } from "@/utils";
 import { notionAPI } from "@/lib/notion/notionAPI";
-import { BLOG_CONFIG } from "@/blog.config";
+import blogConfig from "@/blog.config";
 
 /**
  * 获取文章内容
  * get the content of line Block which type is 'Post'
  * @param id
- * @param from
- * @param slice
+ * @param from  debug用
+ * @param slice 获取的block数量
  * @returns
  */
 export async function getPostBlocks(id: string, from: string, slice?: number) {
@@ -22,13 +22,14 @@ export async function getPostBlocks(id: string, from: string, slice?: number) {
         const start = Date.now();
         const pageData = await getPageWithRetry(id, from);
         const end = Date.now();
-        console.log(`[API响应]`, `耗时: ${end - start}ms`);
+        console.log(`[API响应]-getPostBlocks`, `耗时: ${end - start}ms`);
         return filterPostBlockMap(id, pageData, slice);
       },
       [id],
       {
         tags: [cacheKey],
-        revalidate: BLOG_CONFIG.REVALIDATE_CACHE_SECONDS,
+        // TODO：应该会被Notion Config的配置覆盖
+        revalidate: blogConfig.NEXT_REVALIDATE_SECONDS,
       }
     );
 
@@ -89,7 +90,6 @@ function filterPostBlockMap(
   slice?: number
 ) {
   const clonedBlockMap = structuredClone(blockMap);
-
   let count = 0;
 
   for (const [key, block] of Object.entries(clonedBlockMap.block)) {
@@ -108,31 +108,33 @@ function filterPostBlockMap(
     count++;
 
     // 处理 c++、c#、汇编等语言名字映射
-    if (block?.value?.type === "code") {
-      if (block?.value?.properties?.language?.[0][0] === "c++") {
+    if (block.value?.type === "code") {
+      if (block.value?.properties?.language?.[0][0] === "C++") {
         block.value.properties.language[0][0] = "cpp";
-      } else if (block?.value?.properties?.language?.[0][0] === "c#") {
+      }
+      if (block.value?.properties?.language?.[0][0] === "C#") {
         block.value.properties.language[0][0] = "csharp";
-      } else if (block?.value?.properties?.language?.[0][0] === "assembly") {
+      }
+      if (block.value?.properties?.language?.[0][0] === "Assembly") {
         block.value.properties.language[0][0] = "asm6502";
       }
     }
 
     // 处理文件，嵌入式PDF
-    if (
-      (block?.value?.type === "file" ||
-        block?.value?.type === "pdf" ||
-        block?.value?.type === "video" ||
-        block?.value?.type === "audio") &&
-      block?.value?.properties?.source?.[0][0] &&
-      block?.value?.properties?.source?.[0][0].indexOf("amazonaws.com") > 0
-    ) {
-      const oldURL = block?.value?.properties?.source?.[0][0];
-      const newURL = `https://notion.so/signed/${encodeURIComponent(
-        oldURL
-      )}?table=block&id=${block?.value?.id}`;
-      block.value.properties.source[0][0] = newURL;
-    }
+    // if (
+    //   (block?.value?.type === "file" ||
+    //     block?.value?.type === "pdf" ||
+    //     block?.value?.type === "video" ||
+    //     block?.value?.type === "audio") &&
+    //   block?.value?.properties?.source?.[0][0] &&
+    //   block?.value?.properties?.source?.[0][0].indexOf("amazonaws.com") > 0
+    // ) {
+    //   const oldURL = block?.value?.properties?.source?.[0][0];
+    //   const newURL = `https://notion.so/signed/${encodeURIComponent(
+    //     oldURL
+    //   )}?table=block&id=${block?.value?.id}`;
+    //   block.value.properties.source[0][0] = newURL;
+    // }
   }
 
   return clonedBlockMap;
