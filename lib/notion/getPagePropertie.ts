@@ -46,9 +46,10 @@ export async function getPageProperties(
 
   Object.entries<Decoration[]>(block.properties).forEach(
     async ([key, value]) => {
+      // Notion数据库API更新不及时，导致有些属性明明已经删除了，但是还是存在
       if (!schemaMap[key]) {
-        console.warn(`Schema not found for key: ${key} : ${value}`); // 可选：记录这个情况
-        return; // 跳过这个属性
+        console.warn(`Schema not found for key: ${key} : ${value}`);
+        return;
       }
       const { name, type } = schemaMap[key];
       // 处理自定义菜单
