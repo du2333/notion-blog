@@ -1,5 +1,4 @@
 import { idToUuid } from "notion-utils";
-import { unstable_cache as cache } from "next/cache";
 
 import blogConfig from "@/blog.config";
 import { BlogConfig } from "@/types/config";
@@ -23,30 +22,25 @@ import { getPageProperties } from "@/lib/notion/getPagePropertie";
 import { getTags } from "@/lib/notion/getTags";
 import { isEmoji } from "@/utils";
 
-export async function getSiteData(from: string): Promise<Site> {
+export async function getSiteData(from: string): Promise<Site | null> {
   const sitePageId = idToUuid(blogConfig.NOTION_PAGE_ID);
 
-  const cacheKey = `site_data_${sitePageId}`;
-  const siteData = cache(async (id, from) => {
-    const start = Date.now();
-    const data = await getWholeSiteData(id, from);
-    const end = Date.now();
-    console.log(`[API响应]-getSiteData`, `耗时: ${end - start}ms`);
-    return data;
-  }, [sitePageId], {
-    tags: [cacheKey],
-    revalidate: blogConfig.NEXT_REVALIDATE_SECONDS,
-  });
-
-  return siteData(sitePageId, from);
+  const start = Date.now();
+  const data = await getWholeSiteData(sitePageId, from);
+  const end = Date.now();
+  console.log(`[API响应]-getSiteData`, `耗时: ${end - start}ms`);
+  return data;
 }
 
-export async function getWholeSiteData(pageId: string, from: string): Promise<Site> {
+export async function getWholeSiteData(
+  pageId: string,
+  from: string
+): Promise<Site | null> {
   const pageRecordMap = await getPostBlocks(pageId, from);
 
   if (!pageRecordMap) {
     console.error("获取页面数据失败", `page_id: ${pageId}`);
-    throw new Error("获取页面数据失败");
+    return null;
   }
 
   /**
@@ -64,7 +58,7 @@ export async function getWholeSiteData(pageId: string, from: string): Promise<Si
     block.type !== "collection_view"
   ) {
     console.error(`page_id: ${pageId} 不是一个数据库`);
-    throw new Error(`page_id: ${pageId} 不是一个数据库`);
+    return null;
   }
 
   const collection = Object.values(pageRecordMap.collection)[0].value;
@@ -97,7 +91,8 @@ export async function getWholeSiteData(pageId: string, from: string): Promise<Si
     console.error(`获取配置页面失败 ${configId}:`, error);
   }
   if (!config) {
-    throw new Error("需要配置Config页面");
+    console.error(`需要配置Config页面 ${configId}`);
+    return null;
   }
 
   await Promise.all(

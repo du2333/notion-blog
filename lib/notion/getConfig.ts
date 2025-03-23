@@ -11,6 +11,7 @@ export async function getConfig(configPageId: string | null) {
 
   // 获取配置页面内容，里面应该有一个Table View的Database
   const configRecordMap = await getPostBlocks(configPageId, "get-config");
+  if (! configRecordMap) return defaultConfig;
   const configBlockMap = configRecordMap.block;
   const { content } = configBlockMap[configPageId].value;
 
@@ -31,7 +32,7 @@ export async function getConfig(configPageId: string | null) {
     configBlock.type !== "collection_view_page"
   ) {
     console.error(`页面ID: ${configPageId}不是一个数据库`);
-    throw new Error(`页面ID: ${configPageId}不是一个数据库`);
+    return defaultConfig
   }
 
   // 获取配置表格的Collection ID和表格的Schema

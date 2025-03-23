@@ -1,9 +1,6 @@
-import { unstable_cache as cache } from "next/cache";
-
 import { type ExtendedRecordMap } from "@/types/notion";
 import { wait } from "@/utils";
 import { notionAPI } from "@/lib/notion/notionAPI";
-import blogConfig from "@/blog.config";
 
 /**
  * 获取文章内容
@@ -14,30 +11,15 @@ import blogConfig from "@/blog.config";
  * @returns
  */
 export async function getPostBlocks(id: string, from: string, slice?: number) {
-  const cacheKey = `post_block_${id}`;
-
-  try {
-    const pageBlockFromCache = cache(
-      async (id, from) => {
-        const start = Date.now();
-        const pageData = await getPageWithRetry(id, from);
-        const end = Date.now();
-        console.log(`[API响应]-getPostBlocks`, `耗时: ${end - start}ms`);
-        return filterPostBlockMap(id, pageData, slice);
-      },
-      [id],
-      {
-        tags: [cacheKey],
-        // TODO：应该会被Notion Config的配置覆盖
-        revalidate: blogConfig.NEXT_REVALIDATE_SECONDS,
-      }
-    );
-
-    return pageBlockFromCache(id, from);
-  } catch (err) {
-    console.error("获取文章内容失败", `page_id: ${id}`, err);
-    throw new Error("获取文章内容失败");
+  const start = Date.now();
+  const pageData = await getPageWithRetry(id, from);
+  const end = Date.now();
+  console.log(`[API响应]-getPostBlocks`, `耗时: ${end - start}ms`);
+  if (!pageData) {
+    console.error("获取文章内容失败", `page_id: ${id}`);
+    return null;
   }
+  return filterPostBlockMap(id, pageData, slice);
 }
 
 /**
@@ -74,7 +56,7 @@ export async function getPageWithRetry(
   }
 
   console.error("[API请求失败]", `page_id: ${id}`);
-  throw new Error(`API请求失败: ${id}`);
+  return null;
 }
 
 /**
@@ -121,20 +103,20 @@ function filterPostBlockMap(
     }
 
     // 处理文件，嵌入式PDF
-    // if (
-    //   (block?.value?.type === "file" ||
-    //     block?.value?.type === "pdf" ||
-    //     block?.value?.type === "video" ||
-    //     block?.value?.type === "audio") &&
-    //   block?.value?.properties?.source?.[0][0] &&
-    //   block?.value?.properties?.source?.[0][0].indexOf("amazonaws.com") > 0
-    // ) {
-    //   const oldURL = block?.value?.properties?.source?.[0][0];
-    //   const newURL = `https://notion.so/signed/${encodeURIComponent(
-    //     oldURL
-    //   )}?table=block&id=${block?.value?.id}`;
-    //   block.value.properties.source[0][0] = newURL;
-    // }
+    if (
+      (block?.value?.type === "file" ||
+        block?.value?.type === "pdf" ||
+        block?.value?.type === "video" ||
+        block?.value?.type === "audio") &&
+      block?.value?.properties?.source?.[0][0] &&
+      block?.value?.properties?.source?.[0][0].indexOf("amazonaws.com") > 0
+    ) {
+      const oldURL = block?.value?.properties?.source?.[0][0];
+      const newURL = `https://notion.so/signed/${encodeURIComponent(
+        oldURL
+      )}?table=block&id=${block?.value?.id}`;
+      block.value.properties.source[0][0] = newURL;
+    }
   }
 
   return clonedBlockMap;
