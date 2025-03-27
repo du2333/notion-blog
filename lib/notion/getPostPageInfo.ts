@@ -4,11 +4,10 @@ import { getPostBlocks } from "@/lib/notion/getPostBlocks";
 import { Block, PageStatus, PageType, Page } from "@/types/notion";
 import { NOTION_HOST } from "@/utils/imgProcessing";
 
-// TODO: 为什么没有content?
 export async function getPostPageInfo(pageId: string, from: string) {
   const blockMap = await getPostBlocks(pageId, from);
 
-  if (!blockMap) return null;
+  if (!blockMap) return;
 
   const postPage = blockMap?.block?.[pageId].value;
 

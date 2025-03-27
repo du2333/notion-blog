@@ -1,6 +1,6 @@
 "use client";
 
-import { revalidate } from "@/actions/action";
+import { revalidate } from "@/actions";
 
 interface RevalidateButtonProps {
   path: string;

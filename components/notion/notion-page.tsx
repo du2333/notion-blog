@@ -7,16 +7,46 @@ import Image from "next/image";
 
 import { Page } from "@/types/notion";
 import { mapImgUrl } from "@/utils/imgProcessing";
+import dynamic from "next/dynamic";
+
+const Code = dynamic(() => import("./Code").then((m) => m.Code), {
+  ssr: false,
+});
+const Collection = dynamic(
+  () =>
+    import("react-notion-x/build/third-party/collection").then(
+      (m) => m.Collection
+    ),
+  {
+    ssr: true,
+  }
+);
+const Equation = dynamic(() => import("./Equation").then((m) => m.Equation), {
+  ssr: false,
+});
+const Pdf = dynamic(() => import("./Pdf").then((m) => m.Pdf), {
+  ssr: false,
+});
+const Modal = dynamic(
+  () => import("react-notion-x/build/third-party/modal").then((m) => m.Modal),
+  {
+    ssr: false,
+  }
+);
 
 export function NotionPage({ post }: { post: Page }) {
   // TODO: useTheme()
-  const isDarkMode = true;
+  const isDarkMode = false;
 
   const components = useMemo<Partial<NotionComponents>>(
     () => ({
       nextLegacyImage: Image,
       nextLink: Link,
-      // TODO: 添加代码块高亮
+      Code,
+      Collection,
+      Equation,
+      Pdf,
+      Modal,
     }),
     []
   );

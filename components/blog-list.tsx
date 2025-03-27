@@ -3,14 +3,12 @@ import BlogPostCard from "@/components/blog-post-card";
 
 interface BlogListProps {
   posts: Page[];
-  page: number;
-  postCount: number;
 }
 
-export default function BlogList({ posts, page, postCount }: BlogListProps) {
+export default function BlogList({ posts }: BlogListProps) {
   return (
     <div className="w-full my-6">
-      <div id="posts-wrapper">
+      <div className="space-y-4">
         {posts.map((post) => (
           <BlogPostCard key={post.id} post={post} />
         ))}

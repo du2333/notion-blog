@@ -1,4 +1,3 @@
-import { BlogConfig } from "@/types/config";
 import {
   BlockMap,
   CollectionPropertySchemaMap,
