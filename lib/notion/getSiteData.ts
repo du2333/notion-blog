@@ -21,13 +21,18 @@ import { compressImage, mapImgUrl } from "@/utils/imgProcessing";
 import { getPageProperties } from "@/lib/notion/getPagePropertie";
 import { getTags } from "@/lib/notion/getTags";
 import { isEmoji } from "@/utils";
+import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { getGlobalTag } from "@/lib/cacheManagement";
 
 export async function getSiteData(from: string): Promise<Site | null> {
+  "use cache";
+  cacheTag(getGlobalTag("posts"));
+  
   const sitePageId = idToUuid(blogConfig.NOTION_PAGE_ID);
 
-  const start = Date.now();
+  const start = performance.now();
   const data = await getWholeSiteData(sitePageId, from);
-  const end = Date.now();
+  const end = performance.now();
   console.log(`[API响应]-getSiteData`, `耗时: ${end - start}ms`);
   return data;
 }

@@ -1,6 +1,8 @@
 import { type ExtendedRecordMap } from "@/types/notion";
 import { wait } from "@/utils";
 import { notionAPI } from "@/lib/notion/notionAPI";
+import { cacheTag } from "next/dist/server/use-cache/cache-tag";
+import { getIdTag } from "@/lib/cacheManagement";
 
 /**
  * 获取文章内容
@@ -11,9 +13,12 @@ import { notionAPI } from "@/lib/notion/notionAPI";
  * @returns
  */
 export async function getPostBlocks(id: string, from: string, slice?: number) {
-  const start = Date.now();
+  "use cache";
+  cacheTag(getIdTag("posts", id));
+  
+  const start = performance.now();
   const pageData = await getPageWithRetry(id, from);
-  const end = Date.now();
+  const end = performance.now();
   console.log(`[API响应]-getPostBlocks`, `耗时: ${end - start}ms`);
   if (!pageData) {
     console.error("获取文章内容失败", `page_id: ${id}`);
@@ -43,10 +48,7 @@ export async function getPageWithRetry(
     );
 
     try {
-      const start = Date.now();
       const pageData = await notionAPI.getPage(id);
-      const end = Date.now();
-      console.log(`[API响应]`, `耗时: ${end - start}ms`);
       return pageData;
     } catch (err) {
       console.warn("[API响应异常]", err);
