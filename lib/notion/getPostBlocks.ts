@@ -3,6 +3,7 @@ import { wait } from "@/utils";
 import { notionAPI } from "@/lib/notion/notionAPI";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getIdTag } from "@/lib/cacheManagement";
+import { cacheLife } from "next/dist/server/use-cache/cache-life";
 
 /**
  * 获取文章内容
@@ -15,6 +16,7 @@ import { getIdTag } from "@/lib/cacheManagement";
 export async function getPostBlocks(id: string, from: string, slice?: number) {
   "use cache";
   cacheTag(getIdTag("posts", id));
+  cacheLife("custom");
   
   const start = performance.now();
   const pageData = await getPageWithRetry(id, from);
