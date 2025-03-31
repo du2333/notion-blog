@@ -6,9 +6,6 @@ type Params = Promise<{ slug: string }>;
 
 export async function generateStaticParams() {
   const siteData = await getSiteData("post");
-  if (!siteData?.publishedPosts) {
-    return [];
-  }
   return siteData.publishedPosts.map((post) => ({
     slug: post.slug,
   }));

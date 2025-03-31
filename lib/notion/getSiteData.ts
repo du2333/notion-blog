@@ -24,7 +24,7 @@ import { isEmoji } from "@/utils";
 import { cacheTag } from "next/dist/server/use-cache/cache-tag";
 import { getGlobalTag } from "@/lib/cacheManagement";
 
-export async function getSiteData(from: string): Promise<Site | null> {
+export async function getSiteData(from: string): Promise<Site> {
   "use cache";
   cacheTag(getGlobalTag("posts"));
   
@@ -40,12 +40,12 @@ export async function getSiteData(from: string): Promise<Site | null> {
 export async function getWholeSiteData(
   pageId: string,
   from: string
-): Promise<Site | null> {
+): Promise<Site> {
   const pageRecordMap = await getPostBlocks(pageId, from);
 
   if (!pageRecordMap) {
     console.error("获取页面数据失败", `page_id: ${pageId}`);
-    return null;
+    throw new Error("获取页面数据失败, page_id: " + pageId);
   }
 
   /**
@@ -63,7 +63,7 @@ export async function getWholeSiteData(
     block.type !== "collection_view"
   ) {
     console.error(`page_id: ${pageId} 不是一个数据库`);
-    return null;
+    throw new Error("获取页面数据失败, page_id: " + pageId);
   }
 
   const collection = Object.values(pageRecordMap.collection)[0].value;
@@ -97,7 +97,7 @@ export async function getWholeSiteData(
   }
   if (!config) {
     console.error(`需要配置Config页面 ${configId}`);
-    return null;
+    throw new Error("获取配置页面失败, config_id: " + configId);
   }
 
   await Promise.all(

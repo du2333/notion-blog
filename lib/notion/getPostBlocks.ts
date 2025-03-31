@@ -24,7 +24,7 @@ export async function getPostBlocks(id: string, from: string, slice?: number) {
   console.log(`[API响应]-getPostBlocks`, `耗时: ${end - start}ms`);
   if (!pageData) {
     console.error("获取文章内容失败", `page_id: ${id}`);
-    return;
+    throw new Error("获取文章内容失败");
   }
   return filterPostBlockMap(id, pageData, slice);
 }
@@ -60,6 +60,7 @@ export async function getPageWithRetry(
   }
 
   console.error("[API请求失败]", `page_id: ${id}`);
+  throw new Error("API请求失败");
 }
 
 /**
