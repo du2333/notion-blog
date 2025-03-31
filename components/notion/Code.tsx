@@ -57,6 +57,7 @@ export function Code({ block }: { block: CodeBlock }) {
   }, [codeRef]);
 
   const handleMermaidOnReady = () => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     (window as any).mermaid?.contentLoaded();
   };
 
@@ -69,6 +70,7 @@ export function Code({ block }: { block: CodeBlock }) {
             whiteSpace: "pre-wrap",
           }}
         >
+          {/* eslint-disable-next-line @typescript-eslint/no-explicit-any */}
           <code ref={codeRef as any}>{content}</code>
           {language === "mermaid" && <div className="mermaid">{content}</div>}
         </pre>

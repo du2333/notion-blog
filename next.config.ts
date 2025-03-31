@@ -2,10 +2,6 @@ import type { NextConfig } from "next";
 import blogConfig from "@/blog.config";
 
 const nextConfig: NextConfig = {
-  /* config options here */
-  eslint: {
-    ignoreDuringBuilds: true,
-  },
   images: {
     remotePatterns: [
       {
