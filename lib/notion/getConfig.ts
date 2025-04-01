@@ -10,7 +10,7 @@ export async function getConfig(configPageId: string | null) {
   if (!configPageId) return defaultConfig;
 
   // 获取配置页面内容，里面应该有一个Table View的Database
-  const configRecordMap = await getPostBlocks(configPageId, "get-config");
+  const configRecordMap = await getPostBlocks(configPageId);
   if (!configRecordMap) return defaultConfig;
   const configBlockMap = configRecordMap.block;
   const { content } = configBlockMap[configPageId].value;

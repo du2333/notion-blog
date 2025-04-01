@@ -21,27 +21,22 @@ import { compressImage, mapImgUrl } from "@/utils/imgProcessing";
 import { getPageProperties } from "@/lib/notion/getPagePropertie";
 import { getTags } from "@/lib/notion/getTags";
 import { isEmoji } from "@/utils";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { getGlobalTag } from "@/lib/cacheManagement";
+import { dbCache, getGlobalTag } from "@/lib/cacheManagement";
 
-export async function getSiteData(from: string): Promise<Site> {
-  "use cache";
-  cacheTag(getGlobalTag("posts"));
-  
+export async function getSiteData(): Promise<Site> {
   const sitePageId = idToUuid(blogConfig.NOTION_PAGE_ID);
 
   const start = performance.now();
-  const data = await getWholeSiteData(sitePageId, from);
+  const data = await dbCache(getWholeSiteData, {
+    tags: [getGlobalTag("posts")],
+  })(sitePageId);
   const end = performance.now();
-  console.log(`[API响应]-getSiteData`, `耗时: ${end - start}ms`);
+  console.log(`[API响应]-getSiteData`, `耗时: ${(end - start).toFixed(4)}ms`);
   return data;
 }
 
-export async function getWholeSiteData(
-  pageId: string,
-  from: string
-): Promise<Site> {
-  const pageRecordMap = await getPostBlocks(pageId, from);
+export async function getWholeSiteData(pageId: string): Promise<Site> {
+  const pageRecordMap = await getPostBlocks(pageId);
 
   if (!pageRecordMap) {
     console.error("获取页面数据失败", `page_id: ${pageId}`);
@@ -134,10 +129,6 @@ export async function getWholeSiteData(
       }
     })
   );
-
-  // 因为promise.all的缘故，所以要sort by date
-  allPages.sort((a, b) => a.date - b.date);
-  publishedPosts.sort((a, b) => a.date - b.date);
 
   return {
     id: pageId,

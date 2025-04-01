@@ -14,7 +14,7 @@
     "clsx": "^2.1.1",
     "katex": "^0.16.21",
     "lucide-react": "^0.483.0",
-    "next": "15.3.0-canary.25",
+    "next": "15.2.4",
     "notion-client": "^7.3.0",
     "notion-utils": "^7.3.0",
     "prismjs": "^1.30.0",

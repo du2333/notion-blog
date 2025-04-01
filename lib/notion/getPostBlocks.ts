@@ -1,10 +1,7 @@
 import { type ExtendedRecordMap } from "@/types/notion";
 import { wait } from "@/utils";
 import { notionAPI } from "@/lib/notion/notionAPI";
-import { cacheTag } from "next/dist/server/use-cache/cache-tag";
-import { getIdTag } from "@/lib/cacheManagement";
-import { cacheLife } from "next/dist/server/use-cache/cache-life";
-
+import { dbCache, getIdTag } from "@/lib/cacheManagement";
 /**
  * 获取文章内容
  * get the content of line Block which type is 'Post'
@@ -13,15 +10,10 @@ import { cacheLife } from "next/dist/server/use-cache/cache-life";
  * @param slice 获取的block数量
  * @returns
  */
-export async function getPostBlocks(id: string, from: string, slice?: number) {
-  "use cache";
-  cacheTag(getIdTag("posts", id));
-  cacheLife("custom");
-  
-  const start = performance.now();
-  const pageData = await getPageWithRetry(id, from);
-  const end = performance.now();
-  console.log(`[API响应]-getPostBlocks`, `耗时: ${end - start}ms`);
+export async function getPostBlocks(id: string, slice?: number) {
+  const pageData = await dbCache(getPageWithRetry, {
+    tags: [getIdTag("posts", id)],
+  })(id);
   if (!pageData) {
     console.error("获取文章内容失败", `page_id: ${id}`);
     throw new Error("获取文章内容失败");
@@ -36,15 +28,10 @@ export async function getPostBlocks(id: string, from: string, slice?: number) {
  * @param retryAttempts
  * @returns
  */
-export async function getPageWithRetry(
-  id: string,
-  from: string,
-  retryAttempts: number = 3
-) {
+export async function getPageWithRetry(id: string, retryAttempts: number = 3) {
   if (retryAttempts && retryAttempts > 0) {
     console.log(
       "[API请求]",
-      `from: ${from}`,
       `page_id: ${id}`,
       retryAttempts < 3 ? `剩余重试次数: ${retryAttempts}` : ""
     );
@@ -55,7 +42,7 @@ export async function getPageWithRetry(
     } catch (err) {
       console.warn("[API响应异常]", err);
       await wait(1000);
-      return getPageWithRetry(id, from, retryAttempts - 1);
+      return getPageWithRetry(id, retryAttempts - 1);
     }
   }
 

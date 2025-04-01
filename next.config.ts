@@ -1,5 +1,4 @@
 import type { NextConfig } from "next";
-import blogConfig from "@/blog.config";
 
 const nextConfig: NextConfig = {
   images: {
@@ -9,14 +8,6 @@ const nextConfig: NextConfig = {
         hostname: "**",
       },
     ],
-  },
-  experimental: {
-    dynamicIO: true,
-    cacheLife: {
-      custom: {
-        revalidate: blogConfig.NEXT_REVALIDATE_SECONDS,
-      },
-    },
   },
 };
 

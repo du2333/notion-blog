@@ -2,19 +2,23 @@ import Article from "@/components/article";
 import { getSiteData } from "@/lib/notion/getSiteData";
 import { Suspense } from "react";
 
-type Params = Promise<{ slug: string }>;
-
 export async function generateStaticParams() {
-  const siteData = await getSiteData("post");
+  const siteData = await getSiteData();
   return siteData.publishedPosts.map((post) => ({
     slug: post.slug,
   }));
 }
 
-export default function PostPage({ params }: { params: Params }) {
+export default async function PostPage({
+  params,
+}: {
+  params: Promise<{ slug: string }>;
+}) {
+  const { slug } = await params;
+
   return (
     <Suspense fallback={<div>加载中...</div>}>
-      <Article params={params} />
+      <Article slug={slug} />
     </Suspense>
   );
 }

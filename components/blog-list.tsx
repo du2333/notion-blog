@@ -1,14 +1,18 @@
 import BlogPostCard from "@/components/blog-post-card";
 import { getSiteData } from "@/lib/notion/getSiteData";
 
-export default async function BlogList() {
-  const siteData = await getSiteData("home");
+export default async function BlogList({ pageNumber }: { pageNumber: number }) {
+  const siteData = await getSiteData();
 
-  if (!siteData) {
-    return <div>获取站点数据失败</div>;
-  }
+  const { publishedPosts, config } = siteData;
 
-  const { publishedPosts: posts } = siteData;
+  // sort by date
+  publishedPosts.sort((a, b) => b.date - a.date);
+
+  const posts = publishedPosts.slice(
+    (pageNumber - 1) * config.POSTS_PER_PAGE,
+    pageNumber * config.POSTS_PER_PAGE
+  );
 
   return (
     <div className="w-full my-6">

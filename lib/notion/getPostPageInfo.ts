@@ -4,8 +4,8 @@ import { getPostBlocks } from "@/lib/notion/getPostBlocks";
 import { Block, PageStatus, PageType, Page } from "@/types/notion";
 import { NOTION_HOST } from "@/utils/imgProcessing";
 
-export async function getPostPageInfo(pageId: string, from: string) {
-  const blockMap = await getPostBlocks(pageId, from);
+export async function getPostPageInfo(pageId: string) {
+  const blockMap = await getPostBlocks(pageId);
 
   if (!blockMap) return;
 
