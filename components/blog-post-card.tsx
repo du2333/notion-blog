@@ -2,6 +2,7 @@ import Link from "next/link";
 import Image from "next/image";
 
 import { Page } from "@/types/notion";
+import Tag from "@/components/tag";
 
 interface BlogPostCardProps {
   post: Page;
@@ -23,18 +24,20 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
           </Link>
         </div>
         <div className="p-8">
-          <div className="text-sm font-semibold tracking-wide text-accent-foreground uppercase">
-            {post.tags.map((tag) => tag).join(", ")}
-          </div>
           <Link
             href={`/post/${post.slug}`}
-            className="mt-1 block text-lg leading-tight font-medium text-black hover:underline"
+            className="mt-1 font-extrabold line-clamp-2 text-xl leading-tight text-black hover:underline"
           >
             {post.title}
           </Link>
           <p className="mt-2 text-foreground/50">
             {new Date(post.date).toLocaleDateString()}
           </p>
+          <div className="mt-2 flex flex-wrap gap-2">
+            {post.tags.map((tag) => (
+              <Tag key={tag} tag={tag} />
+            ))}
+          </div>
         </div>
       </div>
     </div>
