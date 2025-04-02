@@ -60,7 +60,6 @@ export function NotionPage({ post }: { post: Page }) {
           darkMode={isDarkMode}
           mapImageUrl={mapImgUrl}
           previewImages={!!post.blockMap.preview_images}
-          showTableOfContents={true}
           components={components}
         />
       </div>

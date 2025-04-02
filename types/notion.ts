@@ -16,7 +16,6 @@ export interface Page {
   type: PageType | null;
   status: PageStatus | null;
   slug: string;
-  content: string[]; // 用于搜索
   icon: string; // 作为导航栏的icon
   pageCover: string;
   pageCoverThumbnail: string;
