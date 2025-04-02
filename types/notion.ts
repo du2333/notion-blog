@@ -1,4 +1,4 @@
-import { Block, Collection, ExtendedRecordMap } from "notion-types";
+import { Block, Collection, ExtendedRecordMap, BlockType } from "notion-types";
 export type * from "notion-types";
 
 import { BlogConfig } from "@/types/config";
@@ -16,12 +16,13 @@ export interface Page {
   type: PageType | null;
   status: PageStatus | null;
   slug: string;
-  content: string[];// 用于搜索
+  content: string[]; // 用于搜索
   icon: string; // 作为导航栏的icon
   pageCover: string;
   pageCoverThumbnail: string;
   tags: string[];
   blockMap?: ExtendedRecordMap; // 实际的页面内容
+  toc?: TableOfContentsEntry[];
 
   parentId?: string | null;
   childrenIds?: string[] | null;
@@ -94,4 +95,11 @@ export interface SiteInfo {
   description: string;
   pageCover: string;
   icon: string;
+}
+
+export interface TableOfContentsEntry {
+  id: string;
+  type: BlockType;
+  text: string;
+  indentLevel: number;
 }

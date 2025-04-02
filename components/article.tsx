@@ -3,6 +3,8 @@ import { getPostBlocks } from "@/lib/notion/getPostBlocks";
 import { getPostPageInfo } from "@/lib/notion/getPostPageInfo";
 import { getSiteData } from "@/lib/notion/getSiteData";
 import { isUUID } from "@/utils";
+import { getPageTableOfContents } from "@/lib/notion/getTableOfContents";
+import TableOfContent from "@/components/table-of-content";
 
 export default async function Article({ slug }: { slug: string }) {
   const siteData = await getSiteData();
@@ -23,5 +25,12 @@ export default async function Article({ slug }: { slug: string }) {
   if (!post.blockMap) {
     post.blockMap = await getPostBlocks(post.id);
   }
-  return <NotionPage post={post} />;
+  post.toc = getPageTableOfContents(post, post.blockMap);
+
+  return (
+    <div className="flex">
+      <NotionPage post={post} />
+      <TableOfContent toc={post.toc} />
+    </div>
+  );
 }
