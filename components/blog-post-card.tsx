@@ -30,7 +30,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
           >
             {post.title}
           </Link>
-          <p className="mt-2 text-foreground/50">
+          <p className="mt-2 text-muted-foreground">
             {new Date(post.date).toLocaleDateString()}
           </p>
           <div className="mt-2 flex flex-wrap gap-2">

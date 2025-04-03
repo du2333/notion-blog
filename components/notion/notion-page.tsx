@@ -36,8 +36,8 @@ const Modal = dynamic(
 );
 
 export function NotionPage({ post }: { post: Page }) {
-  const { theme } = useTheme();
-  const isDarkMode = theme === "dark";
+  const { resolvedTheme } = useTheme();
+  const isDarkMode = resolvedTheme === "dark";
 
   const components = useMemo<Partial<NotionComponents>>(
     () => ({

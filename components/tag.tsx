@@ -4,7 +4,7 @@ export default function Tag({ tag }: { tag: string }) {
   return (
     <Link
       href={`/tag/${encodeURIComponent(tag)}`}
-      className="text-sm font-semibold tracking-wide text-foreground/70 hover:text-foreground"
+      className="text-sm font-semibold tracking-wide text-muted-foreground hover:text-foreground"
     >
       {`#${tag}`}
     </Link>
