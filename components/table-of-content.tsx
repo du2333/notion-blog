@@ -23,7 +23,7 @@ export default function TableOfContent({
   };
 
   return (
-    <div className="hidden lg:block ml-4">
+    <div className="hidden lg:block lg:w-64 ml-4">
       <div className="sticky top-20 max-h-[calc(100vh-5rem)] overflow-y-auto">
         <div className="space-y-1">
           {toc.map((item) => (
@@ -36,7 +36,7 @@ export default function TableOfContent({
               }}
               key={item.id}
             >
-              {item.text}
+              <span className="line-clamp-2">{item.text}</span>
             </Link>
           ))}
         </div>
