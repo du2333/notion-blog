@@ -1,12 +1,21 @@
-import BlogListSection from "@/components/blog-list-section";
-import { Suspense } from "react";
+import PostPagination from "@/components/post-pagination";
+import { getSiteData } from "@/lib/notion/getSiteData";
+import BlogList from "@/components/blog-list";
 
 export default async function Home() {
+  const siteData = await getSiteData();
+  const { publishedPosts, config } = siteData;
+  const totalPages = Math.ceil(publishedPosts.length / config.POSTS_PER_PAGE);
+
+  // sort by date
+  publishedPosts.sort((a, b) => b.date - a.date);
+
+  const posts = publishedPosts.slice(0, config.POSTS_PER_PAGE);
+
   return (
     <>
-      <Suspense fallback={<div>加载中...</div>}>
-        <BlogListSection pageNumber={1} />
-      </Suspense>
+      <BlogList posts={posts} />
+      <PostPagination totalPages={totalPages} currentPage={1} />
     </>
   );
 }

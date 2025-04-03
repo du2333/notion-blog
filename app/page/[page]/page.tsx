@@ -1,7 +1,7 @@
 import { getSiteData } from "@/lib/notion/getSiteData";
-import BlogList from "@/components/blog-list-section";
-import { Suspense } from "react";
+import BlogList from "@/components/blog-list";
 import { notFound } from "next/navigation";
+import PostPagination from "@/components/post-pagination";
 
 export async function generateStaticParams() {
   const siteData = await getSiteData();
@@ -26,9 +26,22 @@ export default async function Page({
     return notFound();
   }
 
+  const siteData = await getSiteData();
+  const { publishedPosts, config } = siteData;
+  const totalPages = Math.ceil(publishedPosts.length / config.POSTS_PER_PAGE);
+
+  // sort by date
+  publishedPosts.sort((a, b) => b.date - a.date);
+
+  const posts = publishedPosts.slice(
+    (pageNumber - 1) * config.POSTS_PER_PAGE,
+    pageNumber * config.POSTS_PER_PAGE
+  );
+
   return (
-    <Suspense fallback={<div>加载中...</div>}>
-      <BlogList pageNumber={pageNumber} />
-    </Suspense>
+    <>
+      <BlogList posts={posts} />
+      <PostPagination totalPages={totalPages} currentPage={pageNumber} />
+    </>
   );
 }
