@@ -5,7 +5,7 @@ import { Suspense } from "react";
 export async function generateStaticParams() {
   const siteData = await getSiteData();
   return siteData.publishedPosts.map((post) => ({
-    slug: post.slug,
+    slug: encodeURIComponent(post.slug),
   }));
 }
 
@@ -16,9 +16,11 @@ export default async function PostPage({
 }) {
   const { slug } = await params;
 
+  const decodedSlug = decodeURIComponent(slug);
+
   return (
     <Suspense fallback={<div>加载中...</div>}>
-      <Article slug={slug} />
+      <Article slug={decodedSlug} />
     </Suspense>
   );
 }

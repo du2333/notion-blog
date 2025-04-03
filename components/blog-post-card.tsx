@@ -13,7 +13,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
     <div className="mx-auto max-w-md overflow-hidden rounded-xl bg-background shadow-md md:max-w-2xl">
       <div className="md:flex">
         <div className="md:shrink-0">
-          <Link href={`/post/${post.slug}`}>
+          <Link href={`/post/${encodeURIComponent(post.slug)}`}>
             <Image
               className="h-48 w-full object-cover md:h-full md:w-48"
               src={post.pageCover}
