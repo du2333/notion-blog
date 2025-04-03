@@ -8,6 +8,7 @@ import Image from "next/image";
 import { Page } from "@/types/notion";
 import { mapImgUrl } from "@/utils/imgProcessing";
 import dynamic from "next/dynamic";
+import { useTheme } from "next-themes";
 
 const Code = dynamic(() => import("./Code").then((m) => m.Code), {
   ssr: false,
@@ -35,8 +36,8 @@ const Modal = dynamic(
 );
 
 export function NotionPage({ post }: { post: Page }) {
-  // TODO: useTheme()
-  const isDarkMode = false;
+  const { theme } = useTheme();
+  const isDarkMode = theme === "dark";
 
   const components = useMemo<Partial<NotionComponents>>(
     () => ({

@@ -26,7 +26,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
         <div className="p-8">
           <Link
             href={`/post/${post.slug}`}
-            className="mt-1 font-extrabold line-clamp-2 text-xl leading-tight text-black hover:underline"
+            className="mt-1 font-extrabold line-clamp-2 text-xl leading-tight hover:underline"
           >
             {post.title}
           </Link>
