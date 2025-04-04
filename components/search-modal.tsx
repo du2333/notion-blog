@@ -8,6 +8,7 @@ import {
   DialogTitle,
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Page } from "@/types/notion";
 import { Search } from "lucide-react";
 import { useState, useRef, useEffect } from "react";
@@ -159,11 +160,7 @@ export default function SearchModal({
               </h3>
 
               {isLoading ? (
-                <div className="flex justify-center py-8">
-                  <div className="animate-pulse text-muted-foreground">
-                    Searching...
-                  </div>
-                </div>
+                <LoadingSkeleton />
               ) : results.length > 0 ? (
                 <div className="space-y-3">
                   {results.map((post) => (
@@ -220,5 +217,26 @@ export default function SearchModal({
         </div>
       </DialogContent>
     </Dialog>
+  );
+}
+
+function LoadingSkeleton() {
+  return (
+    <div className="space-y-3 p-3">
+      <div className="flex space-x-3">
+        <Skeleton className="w-[80px] h-[60px] rounded-lg" />
+        <div className="flex-1 space-y-2">
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
+      </div>
+      <div className="flex space-x-3">
+        <Skeleton className="w-[80px] h-[60px] rounded-lg" />
+        <div className="flex-1 space-y-2">
+          <Skeleton className="h-4 w-3/4" />
+          <Skeleton className="h-4 w-1/2" />
+        </div>
+      </div>
+    </div>
   );
 }
