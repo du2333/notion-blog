@@ -4,10 +4,10 @@ export type BlogConfig = {
   NEXT_REVALIDATE_SECONDS: number;
 
   AUTHOR: string;
+  SITE_URL: string;
   BLOG_TITLE: string;
   BLOG_DESCRIPTION: string;
-  BLOG_HOME_BANNER: string;
-  BLOG_ICON: string;
+  BLOG_KEYWORDS: string[];
   EMAIL: string;
   GITHUB: string;
 
