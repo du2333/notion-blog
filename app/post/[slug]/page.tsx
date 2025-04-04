@@ -5,6 +5,7 @@ import { isUUID } from "@/utils";
 import { getPageTableOfContents } from "@/lib/notion/getTableOfContents";
 import { NotionPage } from "@/components/notion/notion-page";
 import TableOfContent from "@/components/table-of-content";
+import { notFound } from "next/navigation";
 
 export async function generateStaticParams() {
   const siteData = await getSiteData();
@@ -19,12 +20,9 @@ export default async function PostPage({
   params: Promise<{ slug: string }>;
 }) {
   const { slug } = await params;
-
   const decodedSlug = decodeURIComponent(slug);
 
   const siteData = await getSiteData();
-  if (!siteData) return <div>获取站点数据失败</div>;
-
   const { allPages } = siteData;
 
   let post = allPages.find((page) => page.slug === decodedSlug);
@@ -34,7 +32,7 @@ export default async function PostPage({
     post = await getPostPageInfo(decodedSlug);
   }
 
-  if (!post) return <div>页面不存在</div>;
+  if (!post) return notFound();
 
   // 获取文章内容
   if (!post.blockMap) {

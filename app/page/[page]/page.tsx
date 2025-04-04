@@ -20,15 +20,20 @@ export default async function Page({
   params: Promise<{ page: string }>;
 }) {
   const { page } = await params;
-  const pageNumber = parseInt(page);
 
-  if (isNaN(pageNumber)) {
+  if (isNaN(Number(page))) {
     return notFound();
   }
+
+  const pageNumber = parseInt(page, 10);
 
   const siteData = await getSiteData();
   const { publishedPosts, config } = siteData;
   const totalPages = Math.ceil(publishedPosts.length / config.POSTS_PER_PAGE);
+
+  if (pageNumber > totalPages || pageNumber < 1) {
+    return notFound();
+  }
 
   // sort by date
   publishedPosts.sort((a, b) => b.date - a.date);
