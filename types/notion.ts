@@ -22,6 +22,7 @@ export interface Page {
   tags: string[];
   blockMap?: ExtendedRecordMap; // 实际的页面内容
   toc?: TableOfContentsEntry[];
+  searchResults?: string[]; // 用于搜索页面匹配keyword
 
   parentId?: string | null;
   childrenIds?: string[] | null;
