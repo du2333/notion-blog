@@ -1,6 +1,5 @@
 export type BlogConfig = {
   NOTION_PAGE_ID: string;
-  NOTION_HOST: string;
   NEXT_REVALIDATE_SECONDS: number;
 
   AUTHOR: string;
@@ -12,8 +11,6 @@ export type BlogConfig = {
   GITHUB: string;
 
   POSTS_PER_PAGE: number;
-  POST_LIST_STYLE: "page" | "scroll";
-  POST_PREVIEW_LINES: number;
 
   IMAGE_COMPRESS_WIDTH: number;
 };

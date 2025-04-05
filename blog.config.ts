@@ -2,7 +2,6 @@ import { blogConfig } from "@/types/config";
 
 export default blogConfig({
   NOTION_PAGE_ID: process.env.NOTION_PAGE_ID || "1be1f833110780d98383fc637676cee8",
-  NOTION_HOST: "https://www.notion.so",
   NEXT_REVALIDATE_SECONDS: 10,
 
   AUTHOR: "Example",
@@ -14,8 +13,6 @@ export default blogConfig({
   GITHUB: "https://github.com/example",
 
   POSTS_PER_PAGE: 10,
-  POST_LIST_STYLE: "page",
-  POST_PREVIEW_LINES: 10,
 
   IMAGE_COMPRESS_WIDTH: 800,
 });
