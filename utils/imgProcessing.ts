@@ -1,6 +1,5 @@
 import blogConfig from "@/blog.config";
-import { Block } from "@/types/notion";
-import { ExtendedCollection } from "@/types/notion";
+import { Block, ExtendedCollection } from "@/types/notion";
 
 export const NOTION_HOST = "https://www.notion.so";
 

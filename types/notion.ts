@@ -11,6 +11,7 @@ export interface ExtendedCollection extends Collection {
 export interface Page {
   id: string;
   title: string;
+  summary?: string;
   date: number;
   lastEditedTime: number;
   type: PageType | null;
