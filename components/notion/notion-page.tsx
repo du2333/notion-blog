@@ -55,7 +55,11 @@ export function NotionPage({ post }: { post: Page }) {
   return (
     post &&
     post.blockMap && (
-      <div id="notion-article" className="mx-auto overflow-x-hidden">
+      <div className="mx-auto overflow-x-hidden">
+        <Title
+          title={post.title}
+          lastUpdatedAt={post.lastEditedTime}
+        />
         <NotionRenderer
           recordMap={post.blockMap}
           darkMode={isDarkMode}
@@ -65,5 +69,24 @@ export function NotionPage({ post }: { post: Page }) {
         />
       </div>
     )
+  );
+}
+
+function Title({
+  title,
+  lastUpdatedAt,
+}: {
+  title: string;
+  lastUpdatedAt: number;
+}) {
+  const lastUpdatedDate = new Date(lastUpdatedAt);
+
+  return (
+    <div className="flex flex-col gap-2 p-4">
+      <h1 className="text-4xl font-bold">{title}</h1>
+      <div className="text-sm text-muted-foreground">
+        <span>Last Updated on {lastUpdatedDate.toLocaleDateString()}</span>
+      </div>
+    </div>
   );
 }
