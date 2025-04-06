@@ -16,7 +16,6 @@ export type ValidTags =
   | ReturnType<typeof getGlobalTag>
   | ReturnType<typeof getIdTag>;
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function dbCache<T extends (...args: any[]) => Promise<any>>(
   callback: Parameters<typeof unstable_cache<T>>[0],
   { tags }: { tags: ValidTags[] }

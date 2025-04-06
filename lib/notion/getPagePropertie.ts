@@ -14,7 +14,6 @@ export async function getPageProperties(
   blockMap: BlockMap,
   schemaMap: CollectionPropertySchemaMap
 ) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const pageInfo: Partial<Page> & { [key: string]: any } = {};
   const block = blockMap[id].value;
 

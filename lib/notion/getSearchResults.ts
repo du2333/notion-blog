@@ -69,7 +69,6 @@ function getPageContent(blockMap: ExtendedRecordMap) {
   return contentList;
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractText(source: any) {
   if (!source) return;
 
@@ -82,7 +81,6 @@ function extractText(source: any) {
  * @param {*} textArray
  * @returns
  */
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 function extractNestedText(input: any): string {
   if (Array.isArray(input)) {
     return input.reduce((acc, item) => acc + extractNestedText(item), "");

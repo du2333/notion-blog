@@ -8,7 +8,6 @@ export function isEmoji(str: string) {
   return emojiRegex.test(str);
 }
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export function isIterable(obj: any) {
   return (
     obj !== null &&
