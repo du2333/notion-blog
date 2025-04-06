@@ -11,7 +11,8 @@ export default blogConfig({
   BLOG_KEYWORDS: ["Example", "Blog", "Example Blog"],
   EMAIL: "example@gmail.com",
   GITHUB: "https://github.com/example",
-
+  LINKEDIN: "https://linkedin.com/in/example",
+  
   POSTS_PER_PAGE: 10,
 
   IMAGE_COMPRESS_WIDTH: 800,

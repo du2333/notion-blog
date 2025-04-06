@@ -9,7 +9,7 @@ export type BlogConfig = {
   BLOG_KEYWORDS: string[];
   EMAIL: string;
   GITHUB: string;
-
+  LINKEDIN: string;
   POSTS_PER_PAGE: number;
 
   IMAGE_COMPRESS_WIDTH: number;
