@@ -8,7 +8,7 @@ import BlogConfig from "@/blog.config";
 export function HeroSection() {
   return (
     <div className="px-4 py-2 md:px-12 md:py-4">
-      <HeroHighlight containerClassName="min-h-screen flex items-center justify-center">
+      <HeroHighlight>
         <motion.div
           initial={{
             opacity: 0,
