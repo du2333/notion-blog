@@ -1,47 +1,70 @@
 "use client";
 
+import { cn } from "@/lib/utils";
 import { TableOfContentsEntry } from "@/types/notion";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function TableOfContent({
   toc,
 }: {
   toc: TableOfContentsEntry[];
 }) {
-  if (!toc) return null;
+  const [activeId, setActiveId] = useState("");
 
-  const handleClick = (e: React.MouseEvent<HTMLAnchorElement>, id: string) => {
-    e.preventDefault();
-    const element = document.getElementById(removeHyphens(id));
-    if (element) {
-      element.scrollIntoView({
-        behavior: "smooth",
-        block: "start",
-      });
-      window.history.pushState({}, "", `#${removeHyphens(id)}`);
-    }
-  };
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            setActiveId(removeHyphens(entry.target.id));
+          }
+        });
+      },
+      // 标题元素只需进入视口顶部 ​​20% 的区域​​ 即被视为可见
+      { rootMargin: "0px 0px -80% 0px" }
+    );
+
+    toc.forEach((item) => {
+      const element = document.getElementById(removeHyphens(item.id));
+      if (element) {
+        observer.observe(element);
+      }
+    });
+
+    return () => observer.disconnect();
+  }, [toc]);
 
   return (
-    <div className="hidden lg:block lg:w-64 ml-4">
-      <div className="sticky top-20 max-h-[calc(100vh-5rem)] overflow-y-auto">
-        <div className="space-y-1">
-          {toc.map((item) => (
-            <Link
-              href={`#${removeHyphens(item.id)}`}
-              onClick={(e) => handleClick(e, item.id)}
-              className="block text-sm text-muted-foreground hover:text-foreground transition-colors hover:bg-muted rounded-md px-2 py-1"
-              style={{
-                paddingLeft: `${2 * item.indentLevel}rem`,
+    <nav className="text-sm">
+      <ul className="space-y-2">
+        {toc.map((heading) => (
+          <li
+            key={heading.id}
+            style={{ paddingLeft: `${heading.indentLevel * 2}rem` }}
+          >
+            <a
+              href={`#${removeHyphens(heading.id)}`}
+              className={cn(
+                "inline-block transition-colors hover:text-foreground",
+                activeId === removeHyphens(heading.id)
+                  ? "font-medium text-foreground"
+                  : "text-muted-foreground"
+              )}
+              onClick={(e) => {
+                e.preventDefault();
+                document
+                  .getElementById(`${removeHyphens(heading.id)}`)
+                  ?.scrollIntoView({
+                    behavior: "smooth",
+                  });
               }}
-              key={item.id}
             >
-              <span className="line-clamp-2">{item.text}</span>
-            </Link>
-          ))}
-        </div>
-      </div>
-    </div>
+              {heading.text}
+            </a>
+          </li>
+        ))}
+      </ul>
+    </nav>
   );
 }
 
