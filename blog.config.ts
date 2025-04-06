@@ -1,18 +1,29 @@
 import { blogConfig } from "@/types/config";
 
 export default blogConfig({
-  NOTION_PAGE_ID: process.env.NOTION_PAGE_ID || "1be1f833110780d98383fc637676cee8",
+  NOTION_PAGE_ID:
+    process.env.NOTION_PAGE_ID || "1be1f833110780d98383fc637676cee8",
   NEXT_REVALIDATE_SECONDS: 10,
 
-  AUTHOR: "Example",
-  SITE_URL: "https://example.com",
-  BLOG_TITLE: "Example Blog",
-  BLOG_DESCRIPTION: "Example Blog Description",
-  BLOG_KEYWORDS: ["Example", "Blog", "Example Blog"],
-  EMAIL: "example@gmail.com",
-  GITHUB: "https://github.com/example",
-  LINKEDIN: "https://linkedin.com/in/example",
-  
+  AUTHOR: "Kuangda",
+  SITE_URL: "https://blog.dukda.com",
+  BLOG_TITLE: "DKD Blog",
+  BLOG_DESCRIPTION: "DKD的博客, 记录一些技术分享. Kuangda's blog, record some technical sharing.",
+  BLOG_KEYWORDS: [
+    "DKD",
+    "Blog",
+    "Kuangda",
+    "DKD Blog",
+    "Kuangda Blog",
+    "Tech Blog",
+    "博客",
+    "旷达",
+    "编程",
+    "技术分享",
+  ],
+  EMAIL: "kuangdadu@gmail.com",
+  GITHUB: "https://github.com/du2333",
+
   POSTS_PER_PAGE: 10,
 
   IMAGE_COMPRESS_WIDTH: 800,

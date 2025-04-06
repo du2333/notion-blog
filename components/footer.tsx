@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { Github, Linkedin, Mail } from "lucide-react";
+import { Github, Mail } from "lucide-react";
 import BlogConfig from "@/blog.config";
 
 export default function Footer() {
@@ -17,11 +17,11 @@ export default function Footer() {
             <Github className="h-5 w-5" />
             <span className="sr-only">GitHub</span>
           </Link>
-          <Link href={BlogConfig.LINKEDIN} target="_blank" rel="noreferrer">
-            <Linkedin className="h-5 w-5" />
-            <span className="sr-only">LinkedIn</span>
-          </Link>
-          <Link href={`mailto:${BlogConfig.EMAIL}`} target="_blank" rel="noreferrer">
+          <Link
+            href={`mailto:${BlogConfig.EMAIL}`}
+            target="_blank"
+            rel="noreferrer"
+          >
             <Mail className="h-5 w-5" />
             <span className="sr-only">Email</span>
           </Link>
