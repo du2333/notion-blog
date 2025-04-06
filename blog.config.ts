@@ -8,7 +8,7 @@ export default blogConfig({
   AUTHOR: "Kuangda",
   SITE_URL: "https://blog.dukda.com",
   BLOG_TITLE: "DKD Blog",
-  BLOG_DESCRIPTION: "DKD的博客, 记录一些技术分享. Kuangda's blog, record some technical sharing.",
+  BLOG_DESCRIPTION: "Record some technical sharing.",
   BLOG_KEYWORDS: [
     "DKD",
     "Blog",
