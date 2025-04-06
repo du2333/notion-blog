@@ -3,12 +3,10 @@ import { Page } from "@/types/notion";
 
 export default function BlogList({ posts }: { posts: Page[] }) {
   return (
-    <div className="w-full my-6">
-      <div className="space-y-4">
-        {posts.map((post) => (
-          <BlogPostCard key={post.id} post={post} />
-        ))}
-      </div>
+    <div className="w-full my-6 grid grid-cols-1 md:grid-cols-2 gap-6">
+      {posts.map((post) => (
+        <BlogPostCard key={post.id} post={post} />
+      ))}
     </div>
   );
 }
