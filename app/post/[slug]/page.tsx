@@ -9,6 +9,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import BlogConfig from "@/blog.config";
 import ArticleHero from "@/components/article-hero";
+import * as motion from "motion/react-client";
 
 export async function generateMetadata({
   params,
@@ -82,25 +83,37 @@ export default async function PostPage({
 
   return (
     <article className="min-h-[calc(100vh-10rem)] pb-12 md:pb-16 lg:pb-24">
-      <ArticleHero
-        title={post.title}
-        tags={post.tags}
-        coverImage={post.pageCover}
-        publishedAt={formatDate(new Date(post.date))}
-        lastEditedTime={formatDate(new Date(post.lastEditedTime))}
-      />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.1 }}
+      >
+        <ArticleHero
+          title={post.title}
+          tags={post.tags}
+          coverImage={post.pageCover}
+          publishedAt={formatDate(new Date(post.date))}
+          lastEditedTime={formatDate(new Date(post.lastEditedTime))}
+        />
+      </motion.div>
 
-      <div className="container mx-auto mt-8 grid grid-cols-1 gap-8 md:grid-cols-[3fr_1fr]">
-        <div className="max-w-none">
-          <NotionPage post={post} />
-        </div>
-        <div className="hidden md:block">
-          <div className="sticky top-20">
-            <h3 className="text-lg font-medium mb-4">Table of Contents</h3>
-            <TableOfContent toc={post.toc} />
+      <motion.div
+        initial={{ opacity: 0 }}
+        animate={{ opacity: 1 }}
+        transition={{ duration: 0.3, delay: 0.3 }}
+      >
+        <div className="container mx-auto mt-8 grid grid-cols-1 gap-8 md:grid-cols-[3fr_1fr]">
+          <div className="max-w-none">
+            <NotionPage post={post} />
+          </div>
+          <div className="hidden md:block">
+            <div className="sticky top-20">
+              <h3 className="text-lg font-medium mb-4">Table of Contents</h3>
+              <TableOfContent toc={post.toc} />
+            </div>
           </div>
         </div>
-      </div>
+      </motion.div>
     </article>
   );
 }
