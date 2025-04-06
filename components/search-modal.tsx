@@ -27,16 +27,17 @@ export default function SearchModal({
   const [keyword, setKeyword] = useState("");
   const inputRef = useRef<HTMLInputElement>(null);
 
-  // 防抖
   const fetcher = (keyword: string) =>
-    Promise.all([
-      searchByKeywordAction(keyword),
-      new Promise((res) => setTimeout(res, 600)),
-    ]).then(([result]) => result);
+    searchByKeywordAction(keyword).then((result) => result);
 
   const { data: results, isLoading } = useSWR(keyword, fetcher, {
     fallbackData: [],
   });
+
+  // 防抖
+  const handleOnChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
+    setKeyword(e.target.value);
+  }, 500);
 
   useEffect(() => {
     if (isOpen && inputRef.current) {
@@ -45,6 +46,19 @@ export default function SearchModal({
       }, 100);
     }
   }, [isOpen]);
+
+  // 快捷键
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
+        e.preventDefault();
+        setIsOpen(true);
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, []);
 
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
@@ -95,10 +109,7 @@ export default function SearchModal({
           <Search className="size-5 mr-2 flex-shrink-0 text-muted-foreground" />
           <Input
             ref={inputRef}
-            value={keyword}
-            onChange={(e) => {
-              setKeyword(e.target.value);
-            }}
+            onChange={handleOnChange}
             placeholder="Search blog posts..."
             className="border-0 focus-visible:ring-0 text-base font-medium"
           />
@@ -239,4 +250,14 @@ function LoadingSkeleton() {
       </div>
     </div>
   );
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+function debounce(fn: (...args: any[]) => void, delay: number) {
+  let timer: NodeJS.Timeout;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  return function (...args: any[]) {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
 }
