@@ -18,10 +18,10 @@ import useSWR from "swr";
 
 export default function SearchModal({
   suggestedPosts,
-  searchByKeyword,
+  searchByKeywordAction,
 }: {
   suggestedPosts: Page[];
-  searchByKeyword: (keyword: string) => Promise<Page[]>;
+  searchByKeywordAction: (keyword: string) => Promise<Page[]>;
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
@@ -30,7 +30,7 @@ export default function SearchModal({
   // 防抖
   const fetcher = (keyword: string) =>
     Promise.all([
-      searchByKeyword(keyword),
+      searchByKeywordAction(keyword),
       new Promise((res) => setTimeout(res, 600)),
     ]).then(([result]) => result);
 
@@ -81,7 +81,7 @@ export default function SearchModal({
     <Dialog open={isOpen} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
-          variant="outline"
+          variant="ghost"
           size="icon"
           className="cursor-pointer"
           aria-label="Search"
