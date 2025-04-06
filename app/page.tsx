@@ -1,6 +1,7 @@
 import PostPagination from "@/components/post-pagination";
 import { getSiteData } from "@/lib/notion/getSiteData";
 import BlogList from "@/components/blog-list";
+import { HeroSection } from "@/components/hero-section";
 
 export default async function Home() {
   const siteData = await getSiteData();
@@ -13,9 +14,12 @@ export default async function Home() {
   const posts = publishedPosts.slice(0, config.POSTS_PER_PAGE);
 
   return (
-    <>
-      <BlogList posts={posts} />
-      <PostPagination totalPages={totalPages} currentPage={1} />
-    </>
+    <main>
+      <HeroSection />
+      <div className="container mx-auto px-4 py-12 md:px-6 md:py-16">
+        <BlogList posts={posts} />
+        <PostPagination totalPages={totalPages} currentPage={1} />
+      </div>
+    </main>
   );
 }
