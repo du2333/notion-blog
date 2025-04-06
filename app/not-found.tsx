@@ -1,30 +1,29 @@
+"use client";
+
 import Link from "next/link";
+import { ArrowLeft } from "lucide-react";
+
 import { Button } from "@/components/ui/button";
-import { FileQuestion } from "lucide-react";
 
 export default function NotFound() {
   return (
-    <div className="flex min-h-[70vh] flex-col items-center justify-center px-4 text-center">
-      <div className="mx-auto flex max-w-md flex-col items-center space-y-6">
-        <div className="rounded-full bg-muted p-6">
-          <FileQuestion
-            className="h-16 w-16 text-muted-foreground"
-            aria-hidden="true"
-          />
-        </div>
-
-        <h1 className="text-4xl font-bold tracking-tight sm:text-5xl">
+    <div className="container mx-auto flex flex-col items-center justify-center px-4 py-16 md:py-24 lg:py-32">
+      <div className="mx-auto flex max-w-[600px] flex-col items-center justify-center text-center">
+        <div className="mb-4 text-7xl font-bold">404</div>
+        <h1 className="mb-2 text-2xl font-semibold tracking-tight">
           Page not found
         </h1>
-
-        <p className="text-muted-foreground">
-          Sorry, we couldn&apos;t find the page you&apos;re looking for. The page
-          might have been moved, deleted, or perhaps the URL was mistyped.
+        <p className="mb-8 text-muted-foreground">
+          Sorry, we couldn&apos;t find the page you&apos;re looking for.
         </p>
 
-        <div className="flex flex-col space-y-3 sm:flex-row sm:space-x-3 sm:space-y-0">
-          <Button asChild size="lg">
-            <Link href="/">Return to home</Link>
+        {/* Navigation options */}
+        <div className="mb-8 flex flex-col gap-2 sm:flex-row sm:gap-4">
+          <Button asChild>
+            <Link href="/">
+              <ArrowLeft className="mr-2 h-4 w-4" />
+              Back to Home
+            </Link>
           </Button>
         </div>
       </div>
