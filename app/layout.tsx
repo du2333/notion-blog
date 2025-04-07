@@ -5,6 +5,7 @@ import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
 import BlogConfig from "@/blog.config";
+import MetaHead from "@/components/metahead";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -26,6 +27,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" suppressHydrationWarning>
+      <MetaHead />
       <body className={`${inter.className} antialiased`}>
         <ThemeProvider
           attribute="class"

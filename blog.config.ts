@@ -6,7 +6,7 @@ export default blogConfig({
   NEXT_REVALIDATE_SECONDS: 10, // 缓存时间
 
   AUTHOR: "Kuangda",
-  SITE_URL: "https://www.dukda.com",
+  SITE_URL: process.env.SITE_URL || "https://www.example.com",
   BLOG_TITLE: "DKD Blog",
   BLOG_DESCRIPTION: "Record some technical sharing.",
   BLOG_KEYWORDS: [
