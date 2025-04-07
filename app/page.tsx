@@ -2,6 +2,7 @@ import PostPagination from "@/components/post-pagination";
 import { getSiteData } from "@/lib/notion/getSiteData";
 import BlogList from "@/components/blog-list";
 import { HeroSection } from "@/components/hero-section";
+import { notFound } from "next/navigation";
 
 export default async function Home({
   searchParams,
@@ -11,12 +12,20 @@ export default async function Home({
   const { page } = await searchParams;
   const pageNumber = parseInt(page || "1", 10);
 
+  if (isNaN(pageNumber)) {
+    return notFound();
+  }
+
   const siteData = await getSiteData();
   const { publishedPosts, config } = siteData;
   const totalPages = Math.ceil(publishedPosts.length / config.POSTS_PER_PAGE);
 
   // sort by date
   publishedPosts.sort((a, b) => b.date - a.date);
+
+  if (pageNumber < 1 || pageNumber > totalPages) {
+    return notFound();
+  }
 
   const posts = publishedPosts.slice(
     (pageNumber - 1) * config.POSTS_PER_PAGE,

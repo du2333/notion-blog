@@ -1,6 +1,8 @@
-import TagPageContent from "@/components/tag-page-content";
 import { notFound } from "next/navigation";
-import Link from "next/link";
+import * as motion from "motion/react-client";
+import { getSiteData } from "@/lib/notion/getSiteData";
+import PostPagination from "@/components/post-pagination";
+import BlogList from "@/components/blog-list";
 
 export async function generateMetadata({
   params,
@@ -30,18 +32,32 @@ export default async function TagPage({
     return notFound();
   }
 
+  const siteData = await getSiteData();
+  const { publishedPosts, config } = siteData;
+
+  const sortedPosts = publishedPosts.sort((a, b) => b.date - a.date);
+  const filteredPosts = sortedPosts.filter((post) => post.tags.includes(tag));
+  const totalPages = Math.ceil(filteredPosts.length / config.POSTS_PER_PAGE);
+
+  if (pageNumber < 1 || pageNumber > totalPages) {
+    return notFound();
+  }
+
+  const posts = filteredPosts.slice(
+    (pageNumber - 1) * config.POSTS_PER_PAGE,
+    pageNumber * config.POSTS_PER_PAGE
+  );
+
   return (
-    <div className="flex flex-col gap-4 px-4 py-8">
-      <div className="mb-8">
-        <Link
-          href="/tag"
-          className="text-sm text-muted-foreground hover:text-primary"
-        >
-          ← Back to all tags
-        </Link>
-      </div>
-      <h1 className="text-4xl font-bold mb-6">{`#${tag}`}</h1>
-      <TagPageContent tag={tag} pageNumber={pageNumber} />
+    <div className="container mx-auto flex flex-col gap-4 px-4 py-8">
+      <motion.h1
+        className="text-4xl font-bold mb-6"
+        initial={{ opacity: 0, y: 20 }}
+        animate={{ opacity: 1, y: 0 }}
+        transition={{ duration: 0.5, ease: "easeOut" }}
+      >{`#${tag}`}</motion.h1>
+      <BlogList posts={posts} />
+      <PostPagination totalPages={totalPages} currentPage={pageNumber} />
     </div>
   );
 }

@@ -23,44 +23,46 @@ export default function PostPagination({
   const pathname = usePathname();
 
   return (
-    <Pagination>
-      <PaginationContent>
-        <PaginationItem
-          className={cn({
-            hidden: currentPage === 1,
-          })}
-        >
-          <PaginationPrevious href={`${pathname}/?page=${currentPage - 1}`} />
-        </PaginationItem>
+    totalPages > 1 && (
+      <Pagination>
+        <PaginationContent>
+          <PaginationItem
+            className={cn({
+              hidden: currentPage === 1,
+            })}
+          >
+            <PaginationPrevious href={`${pathname}/?page=${currentPage - 1}`} />
+          </PaginationItem>
 
-        {generatePagination(totalPages, currentPage).map((item, index) => {
-          if (typeof item === "string") {
+          {generatePagination(totalPages, currentPage).map((item, index) => {
+            if (typeof item === "string") {
+              return (
+                <PaginationItem key={index}>
+                  <PaginationEllipsis />
+                </PaginationItem>
+              );
+            }
             return (
               <PaginationItem key={index}>
-                <PaginationEllipsis />
+                <PaginationLink
+                  href={`${pathname}/?page=${item}`}
+                  isActive={item === currentPage}
+                >
+                  {item}
+                </PaginationLink>
               </PaginationItem>
             );
-          }
-          return (
-            <PaginationItem key={index}>
-              <PaginationLink
-                href={`${pathname}/?page=${item}`}
-                isActive={item === currentPage}
-              >
-                {item}
-              </PaginationLink>
-            </PaginationItem>
-          );
-        })}
-
-        <PaginationItem
-          className={cn({
-            hidden: currentPage === totalPages,
           })}
-        >
-          <PaginationNext href={`${pathname}/?page=${currentPage + 1}`} />
-        </PaginationItem>
-      </PaginationContent>
-    </Pagination>
+
+          <PaginationItem
+            className={cn({
+              hidden: currentPage === totalPages,
+            })}
+          >
+            <PaginationNext href={`${pathname}/?page=${currentPage + 1}`} />
+          </PaginationItem>
+        </PaginationContent>
+      </Pagination>
+    )
   );
 }

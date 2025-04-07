@@ -29,7 +29,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
 
   return (
     <motion.div
-      className="group mx-auto overflow-hidden rounded-xl bg-background shadow-md w-full"
+      className="group mx-auto overflow-hidden rounded-xl bg-background w-full"
       initial={{ opacity: 0, y: 40 }}
       whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true }}
