@@ -26,5 +26,5 @@ export default blogConfig({
 
   POSTS_PER_PAGE: 12,
 
-  IMAGE_COMPRESS_WIDTH: 800,
+  IMAGE_COMPRESS_WIDTH: 1000,
 });
