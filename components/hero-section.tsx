@@ -31,7 +31,7 @@ export function HeroSection() {
           >
             <div className="inline-block">
               <ColourfulText text={BlogConfig.AUTHOR} />
-              &apos;s blog
+              &apos;s Blog
             </div>
           </motion.h1>
         </motion.div>

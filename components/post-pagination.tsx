@@ -1,5 +1,3 @@
-"use client";
-
 import {
   Pagination,
   PaginationContent,
@@ -11,7 +9,6 @@ import {
 } from "@/components/ui/pagination";
 import { cn } from "@/lib/utils";
 import { generatePagination } from "@/utils";
-import { usePathname } from "next/navigation";
 
 export default function PostPagination({
   totalPages,
@@ -20,8 +17,6 @@ export default function PostPagination({
   totalPages: number;
   currentPage: number;
 }) {
-  const pathname = usePathname();
-
   return (
     totalPages > 1 && (
       <Pagination>
@@ -31,7 +26,7 @@ export default function PostPagination({
               hidden: currentPage === 1,
             })}
           >
-            <PaginationPrevious href={`${pathname}/?page=${currentPage - 1}`} />
+            <PaginationPrevious href={`/page/${currentPage - 1}`} />
           </PaginationItem>
 
           {generatePagination(totalPages, currentPage).map((item, index) => {
@@ -45,7 +40,7 @@ export default function PostPagination({
             return (
               <PaginationItem key={index}>
                 <PaginationLink
-                  href={`${pathname}/?page=${item}`}
+                  href={`/page/${item}`}
                   isActive={item === currentPage}
                 >
                   {item}
@@ -59,7 +54,7 @@ export default function PostPagination({
               hidden: currentPage === totalPages,
             })}
           >
-            <PaginationNext href={`${pathname}/?page=${currentPage + 1}`} />
+            <PaginationNext href={`/page/${currentPage + 1}`} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>
