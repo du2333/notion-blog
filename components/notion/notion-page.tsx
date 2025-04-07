@@ -1,7 +1,7 @@
 "use client";
 
 import { NotionComponents, NotionRenderer } from "react-notion-x";
-import { useMemo } from "react";
+import { useMemo, useEffect, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -38,6 +38,11 @@ const Modal = dynamic(
 export function NotionPage({ post }: { post: Page }) {
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const components = useMemo<Partial<NotionComponents>>(
     () => ({
@@ -51,6 +56,8 @@ export function NotionPage({ post }: { post: Page }) {
     }),
     []
   );
+
+  if (!mounted) return null;
 
   return (
     post &&
