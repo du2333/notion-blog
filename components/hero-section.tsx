@@ -7,7 +7,7 @@ import BlogConfig from "@/blog.config";
 
 export function HeroSection() {
   return (
-    <div className="container mx-auto px-4 py-2">
+    <div className="px-4 py-2">
       <HeroHighlight>
         <motion.div
           initial={{

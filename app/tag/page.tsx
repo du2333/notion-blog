@@ -12,7 +12,7 @@ export default async function TagPage() {
   const { tagOptions } = await getSiteData();
 
   return (
-    <div className="container mx-auto flex flex-col gap-4 px-4 py-8 justify-center min-h-screen">
+    <div className="container mx-auto flex flex-col gap-4 px-4 py-8 justify-center min-h-[70vh]">
       <motion.div
         className="text-4xl font-bold mb-8"
         initial={{ opacity: 0, y: 20 }}
