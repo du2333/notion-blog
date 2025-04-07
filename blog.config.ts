@@ -3,10 +3,10 @@ import { blogConfig } from "@/types/config";
 export default blogConfig({
   NOTION_PAGE_ID:
     process.env.NOTION_PAGE_ID || "1be1f833110780d98383fc637676cee8",
-  NEXT_REVALIDATE_SECONDS: 10,
+  NEXT_REVALIDATE_SECONDS: 10, // 缓存时间
 
   AUTHOR: "Kuangda",
-  SITE_URL: "https://blog.dukda.com",
+  SITE_URL: "https://www.dukda.com",
   BLOG_TITLE: "DKD Blog",
   BLOG_DESCRIPTION: "Record some technical sharing.",
   BLOG_KEYWORDS: [
@@ -24,7 +24,7 @@ export default blogConfig({
   EMAIL: "kuangdadu@gmail.com",
   GITHUB: "https://github.com/du2333",
 
-  POSTS_PER_PAGE: 10,
+  POSTS_PER_PAGE: 12,
 
   IMAGE_COMPRESS_WIDTH: 800,
 });
