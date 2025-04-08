@@ -20,6 +20,7 @@
 - ​**​ 框架 ​**​: Next.js 15 (App Router)
 - ​**​ 数据层 ​**​: Notion API
 - ​**​ 样式 ​**​: Tailwind CSS
+- ​**​ 图标 ​**​: Lucide
 - ​**​ 组件库 ​**​: Shadcn UI
 - ​**​ 动画 ​**​: Motion
 
