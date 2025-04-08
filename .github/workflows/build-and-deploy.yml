@@ -25,36 +25,44 @@ jobs:
     timeout-minutes: 30
 
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
+      # - name: Checkout
+      #   uses: actions/checkout@v4
 
-      - name: Create .env file
-        run: |
-          echo "NOTION_PAGE_ID=${{ vars.NOTION_PAGE_ID }}" >> .env
-          echo "SITE_URL=${{ vars.SITE_URL }}" >> .env
-          cat .env
+      # - name: Create .env file
+      #   run: |
+      #     echo "NOTION_PAGE_ID=${{ vars.NOTION_PAGE_ID }}" >> .env
+      #     echo "SITE_URL=${{ vars.SITE_URL }}" >> .env
+      #     cat .env
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
+      # - name: Login to Docker Hub
+      #   uses: docker/login-action@v3
+      #   with:
+      #     username: ${{ vars.DOCKER_USERNAME }}
+      #     password: ${{ secrets.DOCKER_TOKEN }}
+
+      # - name: Set up QEMU
+      #   uses: docker/setup-qemu-action@v3
+
+      # - name: Set up Docker Buildx
+      #   uses: docker/setup-buildx-action@v3
+
+      # - name: Build Docker image and push to Docker Hub
+      #   uses: docker/build-push-action@v6
+      #   with:
+      #     context: .
+      #     push: true
+      #     tags: |
+      #       ${{ vars.DOCKER_IMAGE_NAME }}:latest
+      #       ${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }}
+      #     platforms: linux/amd64, linux/arm64
+      #     # set up cache for all layers
+      #     cache-from: type=registry,ref=${{ vars.DOCKER_IMAGE_NAME }}:buildcache
+      #     cache-to: type=registry,ref=${{ vars.DOCKER_IMAGE_NAME }}:buildcache,mode=max
+
+      - name: Update docker container on the server
+        uses: appleboy/ssh-action@v1
         with:
-          username: ${{ vars.DOCKER_USERNAME }}
-          password: ${{ secrets.DOCKER_TOKEN }}
-
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v3
-
-      - name: Set up Docker Buildx
-        uses: docker/setup-buildx-action@v3
-
-      - name: Build Docker image and push to Docker Hub
-        uses: docker/build-push-action@v6
-        with:
-          context: .
-          push: true
-          tags: |
-            ${{ vars.DOCKER_IMAGE_NAME }}:latest
-            ${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }}
-          platforms: linux/amd64, linux/arm64
-          # set up cache for all layers
-          cache-from: type=registry,ref=${{ vars.DOCKER_IMAGE_NAME }}:buildcache
-          cache-to: type=registry,ref=${{ vars.DOCKER_IMAGE_NAME }}:buildcache,mode=max
+          host: ${{ secrets.SERVER_HOST }}
+          username: ${{ secrets.SERVER_USERNAME }}
+          key: ${{ secrets.SERVER_KEY }}
+          script_path: ${{ secrets.SERVER_SCRIPT_PATH }}
