@@ -10,13 +10,21 @@ export default function TableOfContent({
   toc: TableOfContentsEntry[];
 }) {
   const [activeId, setActiveId] = useState("");
+  const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  useEffect(() => {
+    if (!mounted) return;
+
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveId(removeHyphens(entry.target.id));
+            console.log(entry);
           }
         });
       },
@@ -32,7 +40,8 @@ export default function TableOfContent({
     });
 
     return () => observer.disconnect();
-  }, [toc]);
+    // 在组件加载完毕的时候进行observe
+  }, [toc, mounted]);
 
   return (
     <nav className="text-sm">

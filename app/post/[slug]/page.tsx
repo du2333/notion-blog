@@ -63,8 +63,7 @@ export default async function PostPage({
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
 
-  const siteData = await getSiteData();
-  const { allPages } = siteData;
+  const { allPages } = await getSiteData();
 
   let post = allPages.find((page) => page.slug === decodedSlug);
 
@@ -106,12 +105,14 @@ export default async function PostPage({
           <div className="max-w-none">
             <NotionPage post={post} />
           </div>
-          <div className="hidden md:block">
-            <div className="sticky top-20">
-              <h3 className="text-lg font-medium mb-4">Table of Contents</h3>
-              <TableOfContent toc={post.toc} />
+          {post.toc.length > 0 && (
+            <div className="hidden md:block">
+              <div className="sticky top-20">
+                <h3 className="text-lg font-medium mb-4">Table of Contents</h3>
+                <TableOfContent toc={post.toc} />
+              </div>
             </div>
-          </div>
+          )}
         </div>
       </motion.div>
     </article>
