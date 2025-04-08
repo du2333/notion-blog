@@ -52,8 +52,8 @@ jobs:
           context: .
           push: true
           tags: |
-            ${vars.DOCKER_IMAGE_NAME}:latest
-            ${vars.DOCKER_IMAGE_NAME}:${{ github.sha }}
+            ${{ vars.DOCKER_IMAGE_NAME }}:latest
+            ${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }}
           platforms: linux/amd64, linux/arm64
           # set up cache for all layers
           cache-from: type=registry,ref=${{ vars.DOCKER_IMAGE_NAME }}:buildcache
