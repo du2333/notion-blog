@@ -6,7 +6,7 @@ import Header from "@/components/header";
 import Footer from "@/components/footer";
 import BlogConfig from "@/blog.config";
 import MetaHead from "@/components/metahead";
-
+import GoToTop from "@/components/go-to-top";
 const inter = Inter({
   subsets: ["latin"],
 });
@@ -39,6 +39,7 @@ export default function RootLayout({
             <Header />
             <div className="flex-1">{children}</div>
             <Footer />
+            <GoToTop />
           </div>
         </ThemeProvider>
       </body>
