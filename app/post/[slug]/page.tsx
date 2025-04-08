@@ -80,8 +80,30 @@ export default async function PostPage({
   }
   post.toc = getPageTableOfContents(post, post.blockMap);
 
+  const article = {
+    "@context": "https://schema.org",
+    "@type": "Article",
+    "@id": `${BlogConfig.SITE_URL}/post/${encodeURIComponent(post.slug)}`,
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": `${BlogConfig.SITE_URL}/post/${encodeURIComponent(post.slug)}`,
+    },
+    headline: post.title,
+    image: post.pageCover,
+    datePublished: new Date(post.date).toISOString(),
+    dateModified: new Date(post.lastEditedTime).toISOString(),
+    author: {
+      "@type": "Person",
+      name: BlogConfig.AUTHOR,
+    },
+  };
+
   return (
     <article className="min-h-[calc(100vh-10rem)] pb-12 md:pb-16 lg:pb-24">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
+      />
       <motion.div
         initial={{ opacity: 0 }}
         animate={{ opacity: 1 }}
