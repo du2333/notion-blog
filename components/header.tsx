@@ -7,6 +7,7 @@ import { getSearchResults } from "@/lib/notion/getSearchResults";
 import { getSiteData } from "@/lib/notion/getSiteData";
 import { Navigation, MobileNavigation } from "@/components/ui/navigation";
 import ScrollProgressBar from "@/components/scroll-progress-bar";
+import HeaderBackground from "@/components/header-background";
 
 export default async function Header() {
   const siteData = await getSiteData();
@@ -15,7 +16,7 @@ export default async function Header() {
   const searchByKeyword = getSearchResults.bind(null, publishedPosts);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60">
+    <HeaderBackground>
       <ScrollProgressBar />
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-2">
@@ -36,6 +37,6 @@ export default async function Header() {
           <MobileNavigation />
         </div>
       </div>
-    </header>
+    </HeaderBackground>
   );
 }
