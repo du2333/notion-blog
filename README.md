@@ -44,3 +44,10 @@ NOTION_PAGE_ID=你的数据库ID
 ```bash
 pnpm i && pnpm dev
 ```
+
+## 感谢
+
+借鉴了以下的优秀项目：
+
+- [Shiro](https://github.com/Innei/Shiro)
+- [Notion Next](https://github.com/tangly1024/NotionNext)
