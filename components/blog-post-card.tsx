@@ -5,7 +5,7 @@ import Image from "next/image";
 import { motion } from "motion/react";
 import { Page } from "@/types/notion";
 import { useEffect, useState } from "react";
-import { Tag } from "lucide-react";
+import { Tag, Calendar } from "lucide-react";
 import useMount from "@/hooks/useMount";
 
 interface BlogPostCardProps {
@@ -49,6 +49,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
 
         <div className="space-y-2">
           <div className="flex items-center text-sm text-muted-foreground">
+            <Calendar className="mr-2 size-4" />
             <time dateTime={formattedDate}>{formattedDate}</time>
           </div>
 

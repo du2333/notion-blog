@@ -26,7 +26,7 @@ export default function PostPagination({
               hidden: currentPage === 1,
             })}
           >
-            <PaginationPrevious href={`/page/${currentPage - 1}`} />
+            <PaginationPrevious href={`/blog/${currentPage - 1}`} />
           </PaginationItem>
 
           {generatePagination(totalPages, currentPage).map((item, index) => {
@@ -40,7 +40,7 @@ export default function PostPagination({
             return (
               <PaginationItem key={index}>
                 <PaginationLink
-                  href={`/page/${item}`}
+                  href={`/blog/${item}`}
                   isActive={item === currentPage}
                 >
                   {item}
@@ -54,7 +54,7 @@ export default function PostPagination({
               hidden: currentPage === totalPages,
             })}
           >
-            <PaginationNext href={`/page/${currentPage + 1}`} />
+            <PaginationNext href={`/blog/${currentPage + 1}`} />
           </PaginationItem>
         </PaginationContent>
       </Pagination>

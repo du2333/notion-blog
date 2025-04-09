@@ -2,7 +2,6 @@ import { getSiteData } from "@/lib/notion/getSiteData";
 import BlogList from "@/components/blog-list";
 import { notFound } from "next/navigation";
 import PostPagination from "@/components/post-pagination";
-import { HeroSection } from "@/components/hero-section";
 
 export async function generateStaticParams() {
   const siteData = await getSiteData();
@@ -45,7 +44,6 @@ export default async function Page({
 
   return (
     <main>
-      <HeroSection />
       <div className="container mx-auto px-4 py-12 md:px-6 md:py-16">
         <BlogList posts={posts} />
         <PostPagination totalPages={totalPages} currentPage={pageNumber} />
