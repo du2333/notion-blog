@@ -22,7 +22,7 @@ export default function ArticleHero({
       {/* Full-width background image with overlay */}
       <div className="relative h-[50vh] min-h-[400px] max-h-[600px] w-full">
         <Image
-          src={coverImage || "/placeholder.svg"}
+          src={coverImage || "/images/placeholder.svg"}
           alt={title}
           fill
           priority

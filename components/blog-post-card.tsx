@@ -42,7 +42,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
         >
           <div className="relative aspect-video overflow-hidden rounded-lg">
             <Image
-              src={post.pageCover || "/placeholder.svg"}
+              src={post.pageCover || "/images/placeholder.svg"}
               alt={post.title}
               fill
               className="object-cover transition-transform duration-300 group-hover:scale-105"
