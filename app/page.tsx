@@ -20,7 +20,7 @@ export default async function Home() {
         <div className="flex justify-end mt-8">
           <Link href="/blog/1">
             <Button variant="ghost" className="cursor-pointer">
-            <CircleArrowRight className="size-4" />
+              <CircleArrowRight className="size-4" />
               Read More
             </Button>
           </Link>

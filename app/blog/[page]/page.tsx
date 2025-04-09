@@ -44,7 +44,7 @@ export default async function Page({
 
   return (
     <main>
-      <div className="container mx-auto px-4 py-12 md:px-6 md:py-16">
+      <div className="container mx-auto px-4 py-12 md:px-6 md:py-16 min-h-screen">
         <BlogList posts={posts} />
         <PostPagination totalPages={totalPages} currentPage={pageNumber} />
       </div>
