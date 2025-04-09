@@ -47,28 +47,11 @@ export default function SearchModal({
     }
   }, [isOpen]);
 
-  // 快捷键
-  useEffect(() => {
-    const handleKeyDown = (e: KeyboardEvent) => {
-      if ((e.ctrlKey || e.metaKey) && e.key === "k") {
-        e.preventDefault();
-        setIsOpen(true);
-      }
-    };
-
-    document.addEventListener("keydown", handleKeyDown);
-    return () => document.removeEventListener("keydown", handleKeyDown);
-  }, []);
-
   const handleOpenChange = (open: boolean) => {
     setIsOpen(open);
 
-    // 如果关闭，则清空输入框和搜索结果
-    if (!open) {
-      setTimeout(() => {
-        setKeyword("");
-      }, 300);
-    }
+    // 每次打开或关闭清空输入框和搜索结果
+    setKeyword("");
   };
 
   const highlightText = (text: string, keyword: string) => {
