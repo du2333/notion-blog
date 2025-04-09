@@ -49,7 +49,10 @@ export default async function TagPage({
   );
 
   return (
-    <div className="container mx-auto flex flex-col gap-4 px-4 py-8">
+    <div
+      className="container mx-auto flex flex-col gap-4 px-4 py-8 mt-16
+    "
+    >
       <motion.h1
         className="text-4xl font-bold mb-6"
         initial={{ opacity: 0, y: 20 }}
