@@ -13,7 +13,7 @@ export function HeroSection() {
   const delay3 = row2.split("").length * 0.1 + delay1 + delay2; // 第一行+第二行延迟
 
   return (
-    <div className="relative container mx-auto px-4 flex flex-col md:flex-row justify-evenly items-center min-h-[90vh]">
+    <div className="relative container mx-auto px-4 flex flex-col md:flex-row justify-evenly items-center min-h-screen">
       <div className="space-y-4">
         <div>
           {row1.split("").map((char, index) => (
@@ -85,7 +85,7 @@ export function HeroSection() {
           className="rounded-full md:w-[300px] md:h-[300px]"
         />
       </div>
-      <div className="absolute bottom-0 left-0 right-0 flex justify-center animate-bounce">
+      <div className="absolute bottom-2 left-0 right-0 flex justify-center animate-bounce">
         <ChevronDown className="size-6" />
       </div>
     </div>

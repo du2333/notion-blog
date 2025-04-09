@@ -8,6 +8,7 @@ import { getSiteData } from "@/lib/notion/getSiteData";
 import { Navigation, MobileNavigation } from "@/components/ui/navigation";
 import ScrollProgressBar from "@/components/scroll-progress-bar";
 import HeaderBackground from "@/components/header-background";
+import Image from "next/image";
 
 export default async function Header() {
   const siteData = await getSiteData();
@@ -20,7 +21,13 @@ export default async function Header() {
       <ScrollProgressBar />
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center space-x-2">
+          <Link href="/" className="flex items-center space-x-4">
+            <Image
+              src="/favicon.svg"
+              alt="Logo"
+              width={32}
+              height={32}
+            />
             <span className="text-xl font-bold">{BlogConfig.BLOG_TITLE}</span>
           </Link>
         </div>

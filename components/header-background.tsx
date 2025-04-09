@@ -21,8 +21,10 @@ export default function HeaderBackground({
   return (
     <header
       className={cn(
-        "sticky top-0 z-50 w-full transition-all duration-500",
-        isTop ? "bg-transparent" : "border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
+        "fixed top-0 z-50 w-full transition-colors duration-500",
+        isTop
+          ? "bg-transparent"
+          : "border-b bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
       )}
     >
       {children}
