@@ -83,7 +83,7 @@ export default function SearchModal({
           className="cursor-pointer"
           aria-label="Search"
         >
-          <Search className="size-4" />
+          <Search className="size-[1.2rem]" />
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[600px] p-0 gap-0 max-h-[80vh] overflow-hidden [&>button]:hidden">

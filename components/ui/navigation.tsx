@@ -14,6 +14,10 @@ const navigationItems = [
     href: "/",
   },
   {
+    label: "Blog",
+    href: "/blog/1",
+  },
+  {
     label: "Tags",
     href: "/tag",
   },
@@ -53,9 +57,9 @@ export function MobileNavigation() {
         onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
       >
         {mobileMenuOpen ? (
-          <X className="size-5" />
+          <X className="size-[1.2rem]" />
         ) : (
-          <Menu className="size-5" />
+          <Menu className="size-[1.2rem]" />
         )}
       </Button>
       {mobileMenuOpen && (
