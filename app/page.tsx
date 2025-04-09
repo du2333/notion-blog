@@ -15,7 +15,7 @@ export default async function Home() {
   return (
     <main>
       <HeroSection />
-      <div className="container mx-auto px-4 py-12 md:px-6 md:py-16">
+      <div className="container mx-auto px-6 py-12 md:px-8 md:py-16">
         <BlogList posts={posts} />
         <PostPagination totalPages={totalPages} currentPage={1} />
       </div>
