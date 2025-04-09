@@ -30,13 +30,13 @@ export default function GoToTop() {
         }}
         variant="outline"
         className={cn(
-          "fixed bottom-4 right-4",
+          "fixed bottom-4 right-4 text-primary rounded-full cursor-pointer",
           "transition-opacity duration-500 ease-in-out",
           "opacity-0",
           isVisible && "opacity-100"
         )}
       >
-        <ArrowUp className="size-4" />
+        <ArrowUp className="size-5" />
       </Button>
     </div>
   );
