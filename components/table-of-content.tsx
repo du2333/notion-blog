@@ -3,6 +3,7 @@
 import { cn } from "@/lib/utils";
 import { TableOfContentsEntry } from "@/types/notion";
 import { useEffect, useState } from "react";
+import useMount from "@/hooks/useMount";
 
 export default function TableOfContent({
   toc,
@@ -10,15 +11,10 @@ export default function TableOfContent({
   toc: TableOfContentsEntry[];
 }) {
   const [activeId, setActiveId] = useState("");
-  const [mounted, setMounted] = useState(false);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
+  const mounted = useMount();
 
   useEffect(() => {
     if (!mounted) return;
-
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {

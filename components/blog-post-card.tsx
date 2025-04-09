@@ -6,6 +6,7 @@ import { motion } from "motion/react";
 import { Page } from "@/types/notion";
 import { useEffect, useState } from "react";
 import { Tag } from "lucide-react";
+import useMount from "@/hooks/useMount";
 
 interface BlogPostCardProps {
   post: Page;
@@ -13,16 +14,12 @@ interface BlogPostCardProps {
 
 export default function BlogPostCard({ post }: BlogPostCardProps) {
   const [formattedDate, setFormattedDate] = useState("");
-  const [mounted, setMounted] = useState(false);
+  const mounted = useMount();
 
   // 防止hydration错误
   useEffect(() => {
     setFormattedDate(new Date(post.date).toLocaleDateString());
   }, [post.date]);
-
-  useEffect(() => {
-    setMounted(true);
-  }, []);
 
   // mount后才渲染Motion组件
   if (!mounted) return null;
@@ -69,7 +66,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
             {post.tags.map((tag) => (
               <Link
                 key={tag}
-                href={`/tag/${tag}`}
+                href={`/tag/${encodeURIComponent(tag)}`}
                 className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors hover:bg-secondary"
               >
                 <Tag className="mr-1 h-3 w-3" />
