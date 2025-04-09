@@ -53,7 +53,7 @@ export default function ArticleHero({
               {tags.map((tag) => (
                 <Link
                   key={tag}
-                  href={`/tag/${tag}`}
+                  href={`/tag/${encodeURIComponent(tag)}`}
                   className="inline-flex items-center rounded-md border px-2.5 py-0.5 text-xs font-semibold transition-colors hover:bg-secondary"
                 >
                   <Tag className="mr-1 h-3 w-3" />

@@ -1,20 +1,8 @@
-"use client";
-
-import { useState, useEffect } from "react";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { Tag } from "@/types/notion";
 
 export function TagCloud({ tags }: { tags: Tag[] }) {
-  const [mounted, setMounted] = useState(false);
-
-  // Prevent hydration mismatch
-  useEffect(() => {
-    setMounted(true);
-  }, []);
-
-  if (!mounted) return null;
-
   // Calculate font size based on count (min: 1, max: 3)
   const maxCount = Math.max(...tags.map((tag) => tag.count));
   const minCount = Math.min(...tags.map((tag) => tag.count));

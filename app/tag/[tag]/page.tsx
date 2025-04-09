@@ -36,7 +36,9 @@ export default async function TagPage({
   const { publishedPosts, config } = siteData;
 
   const sortedPosts = publishedPosts.sort((a, b) => b.date - a.date);
-  const filteredPosts = sortedPosts.filter((post) => post.tags.includes(tag));
+  const filteredPosts = sortedPosts.filter((post) =>
+    post.tags.includes(decodeURIComponent(tag))
+  );
   const totalPages = Math.ceil(filteredPosts.length / config.POSTS_PER_PAGE);
 
   if (pageNumber < 1 || pageNumber > totalPages) {
@@ -58,7 +60,7 @@ export default async function TagPage({
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
         transition={{ duration: 0.5, ease: "easeOut" }}
-      >{`#${tag}`}</motion.h1>
+      >{`#${decodeURIComponent(tag)}`}</motion.h1>
       <BlogList posts={posts} />
       <PostPagination totalPages={totalPages} currentPage={pageNumber} />
     </div>
