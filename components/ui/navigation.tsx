@@ -17,10 +17,6 @@ const navigationItems = [
     label: "Tags",
     href: "/tag",
   },
-  {
-    label: "About",
-    href: "/about",
-  },
 ];
 
 export function Navigation() {
