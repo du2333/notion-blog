@@ -44,7 +44,9 @@ export function Navigation() {
 }
 
 export function MobileNavigation() {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [mobileMenuState, setMobileMenuState] = useState<
+    "open" | "closed" | "default"
+  >("default");
   const pathname = usePathname();
 
   return (
@@ -53,17 +55,23 @@ export function MobileNavigation() {
         variant="ghost"
         size="icon"
         className="relative z-50"
-        onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+        onClick={() =>
+          setMobileMenuState(
+            mobileMenuState === "closed" || mobileMenuState === "default"
+              ? "open"
+              : "closed"
+          )
+        }
       >
-        {mobileMenuOpen ? (
-          <X className="size-[1.2rem]" />
+        {mobileMenuState === "open" ? (
+          <X className="size-[1.2rem] animate-in fade-in ease-out fill-mode-both duration-500" />
         ) : (
-          <Menu className="size-[1.2rem]" />
+          <Menu className="size-[1.2rem] animate-in fade-in ease-out fill-mode-both duration-500" />
         )}
       </Button>
       <div
-        data-state={mobileMenuOpen ? "open" : "closed"}
-        className="flex flex-col gap-4 p-4 top-16 container mx-auto absolute left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 data-[state=open]:animate-fade-in-down data-[state=closed]:animate-fade-out-up duration-500"
+        data-state={mobileMenuState}
+        className="flex flex-col gap-4 p-4 top-16 container mx-auto absolute left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 data-[state=default]:hidden data-[state=open]:animate-fade-in-down data-[state=closed]:animate-fade-out-up duration-500"
       >
         {navigationItems.map((item) => (
           <Link
@@ -73,7 +81,7 @@ export function MobileNavigation() {
               "text-sm font-medium transition-colors hover:text-foreground text-muted-foreground",
               pathname === item.href && "text-foreground"
             )}
-            onClick={() => setMobileMenuOpen(false)}
+            onClick={() => setMobileMenuState("closed")}
           >
             {item.label}
           </Link>
