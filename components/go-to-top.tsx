@@ -37,6 +37,7 @@ export default function GoToTop() {
         )}
       >
         <ArrowUp className="size-5" />
+        <span className="sr-only">Go to top</span>
       </Button>
     </div>
   );

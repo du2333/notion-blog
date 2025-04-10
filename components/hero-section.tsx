@@ -67,6 +67,7 @@ export function HeroSection() {
           width={200}
           height={200}
           className="rounded-full md:w-[300px] md:h-[300px]"
+          priority
         />
       </div>
       <div className="absolute bottom-2 left-0 right-0 flex justify-center animate-bounce">
