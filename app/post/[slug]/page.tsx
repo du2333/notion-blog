@@ -9,7 +9,6 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import BlogConfig from "@/blog.config";
 import ArticleHero from "@/components/article-hero";
-import * as motion from "motion/react-client";
 
 export async function generateMetadata({
   params,
@@ -104,11 +103,7 @@ export default async function PostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
       />
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.1 }}
-      >
+      <div className="animate-fade-in-down delay-100">
         <ArticleHero
           title={post.title}
           tags={post.tags}
@@ -116,27 +111,21 @@ export default async function PostPage({
           publishedAt={formatDate(new Date(post.date))}
           lastEditedTime={formatDate(new Date(post.lastEditedTime))}
         />
-      </motion.div>
+      </div>
 
-      <motion.div
-        initial={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-        transition={{ duration: 0.3, delay: 0.3 }}
-      >
-        <div className="container mx-auto mt-8 grid grid-cols-1 gap-8 md:grid-cols-[3fr_1fr]">
-          <div className="max-w-none">
-            <NotionPage post={post} />
-          </div>
-          {post.toc.length > 0 && (
-            <div className="hidden md:block">
-              <div className="sticky top-20">
-                <h3 className="text-lg font-medium mb-4">Table of Contents</h3>
-                <TableOfContent toc={post.toc} />
-              </div>
-            </div>
-          )}
+      <div className="container mx-auto mt-8 grid grid-cols-1 gap-8 md:grid-cols-[3fr_1fr] animate-fade-in-down delay-300">
+        <div className="max-w-none">
+          <NotionPage post={post} />
         </div>
-      </motion.div>
+        {post.toc.length > 0 && (
+          <div className="hidden md:block">
+            <div className="sticky top-20">
+              <h3 className="text-lg font-medium mb-4">Table of Contents</h3>
+              <TableOfContent toc={post.toc} />
+            </div>
+          </div>
+        )}
+      </div>
     </article>
   );
 }

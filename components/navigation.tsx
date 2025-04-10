@@ -6,7 +6,6 @@ import { cn } from "@/lib/utils";
 import { useState } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
-import { motion } from "motion/react";
 
 const navigationItems = [
   {
@@ -62,29 +61,24 @@ export function MobileNavigation() {
           <Menu className="size-[1.2rem]" />
         )}
       </Button>
-      {mobileMenuOpen && (
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          exit={{ opacity: 0 }}
-          transition={{ duration: 0.3 }}
-          className="flex flex-col gap-4 p-4 top-16 container mx-auto absolute left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60"
-        >
-          {navigationItems.map((item) => (
-            <Link
-              key={item.href}
-              href={item.href}
-              className={cn(
-                "text-sm font-medium transition-colors hover:text-foreground text-muted-foreground",
-                pathname === item.href && "text-foreground"
-              )}
-              onClick={() => setMobileMenuOpen(false)}
-            >
-              {item.label}
-            </Link>
-          ))}
-        </motion.div>
-      )}
+      <div
+        data-state={mobileMenuOpen ? "open" : "closed"}
+        className="flex flex-col gap-4 p-4 top-16 container mx-auto absolute left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 data-[state=open]:animate-fade-in-down data-[state=closed]:animate-fade-out-up duration-500"
+      >
+        {navigationItems.map((item) => (
+          <Link
+            key={item.href}
+            href={item.href}
+            className={cn(
+              "text-sm font-medium transition-colors hover:text-foreground text-muted-foreground",
+              pathname === item.href && "text-foreground"
+            )}
+            onClick={() => setMobileMenuOpen(false)}
+          >
+            {item.label}
+          </Link>
+        ))}
+      </div>
     </div>
   );
 }

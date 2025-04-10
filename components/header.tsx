@@ -5,7 +5,7 @@ import BlogConfig from "@/blog.config";
 import SearchModal from "@/components/search-modal";
 import { getSearchResults } from "@/lib/notion/getSearchResults";
 import { getSiteData } from "@/lib/notion/getSiteData";
-import { Navigation, MobileNavigation } from "@/components/ui/navigation";
+import { Navigation, MobileNavigation } from "@/components/navigation";
 import ScrollProgressBar from "@/components/scroll-progress-bar";
 import HeaderBackground from "@/components/header-background";
 import Image from "next/image";
