@@ -1,5 +1,4 @@
 import { notFound } from "next/navigation";
-import * as motion from "motion/react-client";
 import { getSiteData } from "@/lib/notion/getSiteData";
 import PostPagination from "@/components/post-pagination";
 import BlogList from "@/components/blog-list";
@@ -55,12 +54,9 @@ export default async function TagPage({
       className="container mx-auto flex flex-col gap-4 px-4 py-8 mt-16
     "
     >
-      <motion.h1
-        className="text-4xl font-bold mb-6"
-        initial={{ opacity: 0, y: 20 }}
-        animate={{ opacity: 1, y: 0 }}
-        transition={{ duration: 0.5, ease: "easeOut" }}
-      >{`#${decodeURIComponent(tag)}`}</motion.h1>
+      <h1 className="text-4xl font-bold mb-6 animate-fade-in-up duration-500">
+        {`#${decodeURIComponent(tag)}`}
+      </h1>
       <BlogList posts={posts} />
       <PostPagination totalPages={totalPages} currentPage={pageNumber} />
     </div>

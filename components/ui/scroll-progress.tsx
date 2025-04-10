@@ -1,31 +1,32 @@
 "use client";
 
 import { cn } from "@/lib/utils";
-import { motion, MotionProps, useScroll } from "motion/react";
-import React from "react";
-// eslint-disable-next-line @typescript-eslint/no-empty-object-type
-interface ScrollProgressProps
-  extends Omit<React.HTMLAttributes<HTMLElement>, keyof MotionProps> {}
+import { useEffect, useState } from "react";
 
-export const ScrollProgress = React.forwardRef<
-  HTMLDivElement,
-  ScrollProgressProps
->(({ className, ...props }, ref) => {
-  const { scrollYProgress } = useScroll();
+export function ScrollProgress({ className }: { className?: string }) {
+  const [progress, setProgress] = useState(0);
+
+  useEffect(() => {
+    const updateProgress = () => {
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setProgress(progress);
+    };
+
+    window.addEventListener("scroll", updateProgress);
+    return () => window.removeEventListener("scroll", updateProgress);
+  }, []);
 
   return (
-    <motion.div
-      ref={ref}
-      className={cn(
-        "fixed inset-x-0 top-0 z-50 h-px origin-left bg-gradient-to-r from-[#A97CF8] via-[#F38CB8] to-[#FDCC92]",
-        className
-      )}
-      style={{
-        scaleX: scrollYProgress,
-      }}
-      {...props}
-    />
+    <div className={cn("fixed top-0 left-0 right-0 h-1", className)}>
+      <div
+        className="h-full bg-primary origin-left"
+        style={{
+          width: `${progress}%`,
+          animation: `progress ${progress / 100}s ease-out forwards`,
+        }}
+      />
+    </div>
   );
-});
-
-ScrollProgress.displayName = "ScrollProgress";
+}

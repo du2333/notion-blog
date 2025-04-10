@@ -128,3 +128,18 @@
 @utility animate-fade-out-up {
   @apply animate-out fade-out ease-out fill-mode-both slide-out-to-top-4;
 }
+
+@utility animate-fade-in-up {
+  @apply animate-in fade-in ease-out fill-mode-both slide-in-from-bottom-4;
+}
+
+@theme {
+  @keyframes progress {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
+    }
+  }
+}
