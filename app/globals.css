@@ -124,13 +124,12 @@
 @utility animate-fade-in-down {
   @apply animate-in fade-in ease-out fill-mode-both slide-in-from-top-4;
 }
+@utility animate-fade-in-up {
+  @apply animate-in fade-in ease-out fill-mode-both slide-in-from-bottom-4;
+}
 
 @utility animate-fade-out-up {
   @apply animate-out fade-out ease-out fill-mode-both slide-out-to-top-4;
-}
-
-@utility animate-fade-in-up {
-  @apply animate-in fade-in ease-out fill-mode-both slide-in-from-bottom-4;
 }
 
 @theme {

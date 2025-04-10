@@ -1,7 +1,9 @@
-import * as motion from "motion/react-client";
 import BlogConfig from "@/blog.config";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
+
+import { LazyMotion, domAnimation } from "motion/react";
+import * as motion from "motion/react-m";
 
 export function HeroSection() {
   const row1 = `Hi, I'm `;
@@ -17,64 +19,69 @@ export function HeroSection() {
       <div className="space-y-4">
         <div>
           {row1.split("").map((char, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-              transition={{
-                duration: 0.3,
-                delay: index * 0.1,
-                ease: "easeInOut",
-              }}
-              className="text-4xl"
-            >
-              {char}
-            </motion.span>
+            <LazyMotion features={domAnimation} key={index}>
+              <motion.span
+                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  delay: index * 0.1,
+                  ease: "easeInOut",
+                }}
+                className="text-4xl"
+              >
+                {char}
+              </motion.span>
+            </LazyMotion>
           ))}
           {BlogConfig.AUTHOR.split("").map((char, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-              transition={{
-                duration: 0.3,
-                delay: index * 0.1 + delay1,
-                ease: "easeInOut",
-              }}
-              className="text-5xl font-semibold text-primary"
-            >
-              {char}
-            </motion.span>
+            <LazyMotion features={domAnimation} key={index}>
+              <motion.span
+                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  delay: index * 0.1 + delay1,
+                  ease: "easeInOut",
+                }}
+                className="text-5xl font-semibold text-primary"
+              >
+                {char}
+              </motion.span>
+            </LazyMotion>
           ))}
         </div>
         <div>
           {row2.split("").map((char, index) => (
-            <motion.span
-              key={index}
-              initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-              animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-              transition={{
-                duration: 0.3,
-                delay: index * 0.1 + delay1 + delay2,
-                ease: "easeInOut",
-              }}
-              className="text-4xl"
-            >
-              {char}
-            </motion.span>
+            <LazyMotion features={domAnimation} key={index}>
+              <motion.span
+                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
+                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
+                transition={{
+                  duration: 0.3,
+                  delay: index * 0.1 + delay1 + delay2,
+                  ease: "easeInOut",
+                }}
+                className="text-4xl"
+              >
+                {char}
+              </motion.span>
+            </LazyMotion>
           ))}
         </div>
-        <motion.div
-          initial={{ opacity: 0 }}
-          animate={{ opacity: 1 }}
-          transition={{
-            duration: 0.3,
-            delay: delay3,
-          }}
-          className="text-xl mt-4 text-muted-foreground"
-        >
-          {row3}
-        </motion.div>
+        <LazyMotion features={domAnimation}>
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            transition={{
+              duration: 0.3,
+              delay: delay3,
+            }}
+            className="text-xl mt-4 text-muted-foreground"
+          >
+            {row3}
+          </motion.div>
+        </LazyMotion>
       </div>
       <div className="rounded-full border-1 p-2">
         <Image
