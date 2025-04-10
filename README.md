@@ -22,7 +22,7 @@
 - ​**​ 样式 ​**​: Tailwind CSS
 - ​**​ 图标 ​**​: Lucide
 - ​**​ 组件库 ​**​: Shadcn UI
-- ​**​ 动画 ​**​: Motion
+- ​**​ 动画 ​**​: TailwindCSS-Animate
 
 ## Notion 配置
 
