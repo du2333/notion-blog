@@ -1,8 +1,9 @@
 "use client";
 
 import * as React from "react";
-import { Moon, Sun } from "lucide-react";
+import { Moon, Sun, LaptopMinimal } from "lucide-react";
 import { useTheme } from "next-themes";
+import { cn } from "@/lib/utils";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -13,7 +14,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 
 export default function ThemeController() {
-  const { setTheme } = useTheme();
+  const { setTheme, theme } = useTheme();
 
   return (
     <DropdownMenu>
@@ -25,14 +26,32 @@ export default function ThemeController() {
         </Button>
       </DropdownMenuTrigger>
       <DropdownMenuContent align="end">
-        <DropdownMenuItem onClick={() => setTheme("light")}>
-          Light
+        <DropdownMenuItem
+          onClick={() => setTheme("light")}
+          className={cn("flex items-center gap-2", {
+            "bg-muted text-foreground": theme === "light",
+          })}
+        >
+          <Sun className="size-[1.2rem]" />
+          <p>Light</p>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("dark")}>
-          Dark
+        <DropdownMenuItem
+          onClick={() => setTheme("dark")}
+          className={cn("flex items-center gap-2", {
+            "bg-muted text-foreground": theme === "dark",
+          })}
+        >
+          <Moon className="size-[1.2rem]" />
+          <p>Dark</p>
         </DropdownMenuItem>
-        <DropdownMenuItem onClick={() => setTheme("system")}>
-          System
+        <DropdownMenuItem
+          onClick={() => setTheme("system")}
+          className={cn("flex items-center gap-2", {
+            "bg-muted text-foreground": theme === "system",
+          })}
+        >
+          <LaptopMinimal className="size-[1.2rem]" />
+          <p>System</p>
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>
