@@ -10,8 +10,10 @@ on:
     branches:
       - main
     paths:
-      - "app/**"
+      - "**/*.ts"
+      - "**/*.tsx"
       - "public/**"
+      - "styles/**"
       - ".dockerignore"
       - "pnpm-lock.yaml"
       - "Dockerfile"
