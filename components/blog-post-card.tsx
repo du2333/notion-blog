@@ -38,7 +38,7 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
     <div
       id={`blog-post-card-${post.id}`}
       className={cn(
-        "flex flex-col space-y-4",
+        "flex flex-col space-y-4 group",
         isVisible ? "animate-fade-in-up delay-200 duration-500" : "opacity-0"
       )}
     >
