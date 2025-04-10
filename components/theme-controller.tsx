@@ -12,13 +12,8 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 
-import useMount from "@/hooks/useMount";
-
 export default function ThemeController() {
   const { setTheme } = useTheme();
-  const mounted = useMount();
-
-  if (!mounted) return null;
 
   return (
     <DropdownMenu>
