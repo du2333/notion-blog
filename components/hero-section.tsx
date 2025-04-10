@@ -2,9 +2,6 @@ import BlogConfig from "@/blog.config";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 
-import { LazyMotion, domAnimation } from "motion/react";
-import * as motion from "motion/react-m";
-
 export function HeroSection() {
   const row1 = `Hi, I'm `;
   const row2 = "A Web Developer";
@@ -19,69 +16,49 @@ export function HeroSection() {
       <div className="space-y-4">
         <div>
           {row1.split("").map((char, index) => (
-            <LazyMotion features={domAnimation} key={index}>
-              <motion.span
-                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: index * 0.1,
-                  ease: "easeInOut",
-                }}
-                className="text-4xl"
-              >
-                {char}
-              </motion.span>
-            </LazyMotion>
+            <span
+              key={index}
+              className="text-4xl animate-text-blur-in"
+              style={{
+                animationDelay: `${index * 0.1}s`,
+              }}
+            >
+              {char}
+            </span>
           ))}
           {BlogConfig.AUTHOR.split("").map((char, index) => (
-            <LazyMotion features={domAnimation} key={index}>
-              <motion.span
-                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: index * 0.1 + delay1,
-                  ease: "easeInOut",
-                }}
-                className="text-5xl font-semibold text-primary"
-              >
-                {char}
-              </motion.span>
-            </LazyMotion>
+            <span
+              key={index}
+              className="text-5xl font-semibold text-primary animate-text-blur-in"
+              style={{
+                animationDelay: `${index * 0.1 + delay1}s`,
+              }}
+            >
+              {char}
+            </span>
           ))}
         </div>
         <div>
           {row2.split("").map((char, index) => (
-            <LazyMotion features={domAnimation} key={index}>
-              <motion.span
-                initial={{ opacity: 0, filter: "blur(4px)", y: 10 }}
-                animate={{ opacity: 1, filter: "blur(0px)", y: 0 }}
-                transition={{
-                  duration: 0.3,
-                  delay: index * 0.1 + delay1 + delay2,
-                  ease: "easeInOut",
-                }}
-                className="text-4xl"
-              >
-                {char}
-              </motion.span>
-            </LazyMotion>
+            <span
+              key={index}
+              className="text-4xl animate-text-blur-in"
+              style={{
+                animationDelay: `${index * 0.1 + delay1 + delay2}s`,
+              }}
+            >
+              {char}
+            </span>
           ))}
         </div>
-        <LazyMotion features={domAnimation}>
-          <motion.div
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{
-              duration: 0.3,
-              delay: delay3,
-            }}
-            className="text-xl mt-4 text-muted-foreground"
-          >
-            {row3}
-          </motion.div>
-        </LazyMotion>
+        <div
+          className="text-xl mt-4 text-muted-foreground animate-text-blur-in"
+          style={{
+            animationDelay: `${delay3}s`,
+          }}
+        >
+          {row3}
+        </div>
       </div>
       <div className="rounded-full border-1 p-2">
         <Image
