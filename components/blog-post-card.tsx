@@ -3,7 +3,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { Page } from "@/types/notion";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import { Tag, Calendar } from "lucide-react";
 import { cn } from "@/lib/utils";
 
@@ -14,6 +14,7 @@ interface BlogPostCardProps {
 export default function BlogPostCard({ post }: BlogPostCardProps) {
   const [formattedDate, setFormattedDate] = useState("");
   const [isVisible, setIsVisible] = useState(false);
+  const cardRef = useRef<HTMLDivElement>(null);
 
   // 防止hydration错误，导致日期不一致
   useEffect(() => {
@@ -29,14 +30,14 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
       });
     });
 
-    observer.observe(document.querySelector(`#blog-post-card-${post.id}`)!);
+    observer.observe(cardRef.current!);
 
     return () => observer.disconnect();
   }, [post.id]);
 
   return (
     <div
-      id={`blog-post-card-${post.id}`}
+      ref={cardRef}
       className={cn(
         "flex flex-col space-y-4 group",
         isVisible ? "animate-fade-in-up delay-200 duration-500" : "opacity-0"
