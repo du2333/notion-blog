@@ -143,7 +143,7 @@
   line-height: 1.5;
   color: var(--fg-color);
   caret-color: var(--fg-color);
-  font-family: var(--notion-font);
+  font-family: var(--font-noto-sans-sc) var(--notion-font);
 }
 
 .notion > * {

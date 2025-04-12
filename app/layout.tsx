@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import { Inter, Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
@@ -7,8 +7,18 @@ import Footer from "@/components/footer";
 import BlogConfig from "@/blog.config";
 import MetaHead from "@/components/metahead";
 import GoToTop from "@/components/go-to-top";
+
 const inter = Inter({
   subsets: ["latin"],
+  display: "swap",
+  variable: "--font-inter",
+});
+
+const noto_sans_sc = Noto_Sans_SC({
+  subsets: ["latin"],
+  weight: ["400", "500", "700"],
+  display: "swap",
+  variable: "--font-noto-sans-sc",
 });
 
 export const metadata: Metadata = {
@@ -28,7 +38,9 @@ export default function RootLayout({
   return (
     <html lang="en" suppressHydrationWarning>
       <MetaHead />
-      <body className={`${inter.className} antialiased`}>
+      <body
+        className={`${noto_sans_sc.className} ${inter.className} antialiased`}
+      >
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

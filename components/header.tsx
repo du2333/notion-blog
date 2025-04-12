@@ -14,6 +14,8 @@ export default async function Header() {
   const siteData = await getSiteData();
   const { latestPosts, publishedPosts } = siteData;
 
+  latestPosts.sort((a, b) => b.date - a.date);
+
   const searchByKeyword = getSearchResults.bind(null, publishedPosts);
 
   return (
@@ -22,12 +24,7 @@ export default async function Header() {
       <div className="container mx-auto flex h-16 items-center justify-between px-4 md:px-6">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-4">
-            <Image
-              src="/favicon.svg"
-              alt="Logo"
-              width={32}
-              height={32}
-            />
+            <Image src="/favicon.svg" alt="Logo" width={32} height={32} />
             <span className="text-xl font-bold">{BlogConfig.BLOG_TITLE}</span>
           </Link>
         </div>
