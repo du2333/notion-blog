@@ -33,7 +33,6 @@ jobs:
       - name: Create .env file
         run: |
           echo "NOTION_PAGE_ID=${{ vars.NOTION_PAGE_ID }}" >> .env
-          echo "SITE_URL=${{ vars.SITE_URL }}" >> .env
           cat .env
 
       - name: Login to Docker Hub
