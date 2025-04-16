@@ -1,12 +1,11 @@
-import type { Metadata } from "next";
 import { Inter, Noto_Sans_SC } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/theme-provider";
 import Header from "@/components/header";
 import Footer from "@/components/footer";
-import BlogConfig from "@/blog.config";
 import MetaHead from "@/components/metahead";
 import GoToTop from "@/components/go-to-top";
+import { getSiteData } from "@/lib/notion/getSiteData";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -21,14 +20,17 @@ const noto_sans_sc = Noto_Sans_SC({
   variable: "--font-noto-sans-sc",
 });
 
-export const metadata: Metadata = {
-  title: {
-    default: BlogConfig.BLOG_TITLE,
-    template: "%s | " + BlogConfig.BLOG_TITLE,
-  },
-  description: BlogConfig.BLOG_DESCRIPTION,
-  keywords: BlogConfig.BLOG_KEYWORDS,
-};
+export async function generateMetadata() {
+  const { config: BlogConfig } = await getSiteData();
+  return {
+    title: {
+      default: BlogConfig.BLOG_TITLE,
+      template: "%s | " + BlogConfig.BLOG_TITLE,
+    },
+    description: BlogConfig.BLOG_DESCRIPTION,
+    keywords: BlogConfig.BLOG_KEYWORDS,
+  };
+}
 
 export default function RootLayout({
   children,

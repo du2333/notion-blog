@@ -1,7 +1,8 @@
 import type { MetadataRoute } from "next";
-import BlogConfig from "@/blog.config";
+import { getSiteData } from "@/lib/notion/getSiteData";
 
-export default function robots(): MetadataRoute.Robots {
+export default async function robots(): Promise<MetadataRoute.Robots> {
+  const { config: BlogConfig } = await getSiteData();
   return {
     rules: [
       {

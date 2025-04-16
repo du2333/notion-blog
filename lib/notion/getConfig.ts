@@ -89,6 +89,7 @@ export async function getConfig(configPageId: string | null) {
 
     switch (type) {
       case "String":
+        value = rawValue;
         break;
 
       case "Boolean":

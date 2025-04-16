@@ -6,7 +6,9 @@ export type BlogConfig = {
   SITE_URL: string;
   BLOG_TITLE: string;
   BLOG_DESCRIPTION: string;
-  BLOG_KEYWORDS: string[];
+  BLOG_KEYWORDS: string;
+  HERO_WORDS1: string;
+  HERO_WORDS2: string;
   EMAIL: string;
   GITHUB: string;
   POSTS_PER_PAGE: number;

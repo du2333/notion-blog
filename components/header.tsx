@@ -1,7 +1,6 @@
 import Link from "next/link";
 
 import ThemeController from "@/components/theme-controller";
-import BlogConfig from "@/blog.config";
 import SearchModal from "@/components/search-modal";
 import { getSearchResults } from "@/lib/notion/getSearchResults";
 import { getSiteData } from "@/lib/notion/getSiteData";
@@ -12,7 +11,7 @@ import Image from "next/image";
 
 export default async function Header() {
   const siteData = await getSiteData();
-  const { latestPosts, publishedPosts } = siteData;
+  const { latestPosts, publishedPosts, config: BlogConfig } = siteData;
 
   latestPosts.sort((a, b) => b.date - a.date);
 

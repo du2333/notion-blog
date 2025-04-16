@@ -7,7 +7,6 @@ import { NotionPage } from "@/components/notion/notion-page";
 import TableOfContent from "@/components/table-of-content";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import BlogConfig from "@/blog.config";
 import ArticleHero from "@/components/article-hero";
 
 export async function generateMetadata({
@@ -26,6 +25,8 @@ export async function generateMetadata({
       title: "Post Not Found",
     };
   }
+
+  const { config: BlogConfig } = await getSiteData();
 
   return {
     title: post.title,
@@ -62,7 +63,7 @@ export default async function PostPage({
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
 
-  const { allPages } = await getSiteData();
+  const { allPages, config: BlogConfig } = await getSiteData();
 
   let post = allPages.find((page) => page.slug === decodedSlug);
 

@@ -1,11 +1,12 @@
-import BlogConfig from "@/blog.config";
+import { getSiteData } from "@/lib/notion/getSiteData";
 import Image from "next/image";
 import { ChevronDown } from "lucide-react";
 
-export function HeroSection() {
+export async function HeroSection() {
+  const { config: BlogConfig } = await getSiteData();
   const row1 = `Hi, I'm `;
-  const row2 = "A Web Developer";
-  const row3 = "擅长使用 React, Next.js, Tailwind CSS";
+  const row2 = BlogConfig.HERO_WORDS1;
+  const row3 = BlogConfig.HERO_WORDS2;
 
   const delay1 = row1.split("").length * 0.1; // 第一行延迟(不包括作者名字)
   const delay2 = BlogConfig.AUTHOR.split("").length * 0.1; // 作者名字的延迟

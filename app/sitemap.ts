@@ -1,11 +1,10 @@
 import type { MetadataRoute } from "next";
-import BlogConfig from "@/blog.config";
 import { getSiteData } from "@/lib/notion/getSiteData";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const siteData = await getSiteData();
 
-  const { publishedPosts } = siteData;
+  const { publishedPosts, config: BlogConfig } = siteData;
 
   const blogPostsSitemap = publishedPosts.map((post) => ({
     url: `${BlogConfig.SITE_URL}/post/${encodeURIComponent(post.slug)}`,

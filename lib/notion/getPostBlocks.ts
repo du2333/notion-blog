@@ -1,7 +1,9 @@
 import { type ExtendedRecordMap } from "@/types/notion";
 import { wait } from "@/utils";
 import { notionAPI } from "@/lib/notion/notionAPI";
-import { dbCache, getIdTag } from "@/lib/cacheManagement";
+import { timedCache } from "@/lib/cacheManagement";
+import blogConfig from "@/blog.config";
+
 /**
  * 获取文章内容
  * get the content of line Block which type is 'Post'
@@ -11,8 +13,8 @@ import { dbCache, getIdTag } from "@/lib/cacheManagement";
  * @returns
  */
 export async function getPostBlocks(id: string, slice?: number) {
-  const pageData = await dbCache(getPageWithRetry, {
-    tags: [getIdTag("posts", id)],
+  const pageData = await timedCache(getPageWithRetry, {
+    cacheTime: blogConfig.NEXT_REVALIDATE_SECONDS,
   })(id);
   if (!pageData) {
     console.error("获取文章内容失败", `page_id: ${id}`);

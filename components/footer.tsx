@@ -1,8 +1,10 @@
 import Link from "next/link";
 import { Github, Mail } from "lucide-react";
-import BlogConfig from "@/blog.config";
+import { getSiteData } from "@/lib/notion/getSiteData";
 
-export default function Footer() {
+export default async function Footer() {
+  const { config: BlogConfig } = await getSiteData();
+
   return (
     <footer className="w-full border-t bg-background">
       <div className="container flex flex-col items-center justify-between gap-4 px-10 py-10 md:h-24 md:flex-row md:px-0 md:py-0">
