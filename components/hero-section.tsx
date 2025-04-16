@@ -63,7 +63,7 @@ export async function HeroSection() {
       </div>
       <div className="rounded-full border-1 p-2">
         <Image
-          src="/images/hero.png"
+          src="/images/avatar.png"
           alt="Hero"
           width={200}
           height={200}

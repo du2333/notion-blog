@@ -1,6 +1,9 @@
 import Head from "next/head";
+import { getSiteData } from "@/lib/notion/getSiteData";
 
-export default function MetaHead() {
+export default async function MetaHead() {
+  const { config } = await getSiteData();
+
   return (
     <Head>
       <link
@@ -16,7 +19,7 @@ export default function MetaHead() {
         sizes="180x180"
         href="/apple-touch-icon.png"
       />
-      <meta name="apple-mobile-web-app-title" content="DKD Blog" />
+      <meta name="apple-mobile-web-app-title" content={config.BLOG_TITLE} />
       <link rel="manifest" href="/site.webmanifest" />
     </Head>
   );
