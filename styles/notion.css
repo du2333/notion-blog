@@ -45,6 +45,7 @@
 }
 
 .notion-callout {
+  width: 100%;
   background-color: var(--color-muted);
   padding: 1rem;
   display: inline-flex;
