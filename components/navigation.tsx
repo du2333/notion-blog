@@ -71,7 +71,7 @@ export function MobileNavigation() {
       </Button>
       <div
         data-state={mobileMenuState}
-        className="flex flex-col gap-4 p-4 top-16 container mx-auto absolute left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 data-[state=default]:hidden data-[state=open]:animate-fade-in-down data-[state=closed]:animate-fade-out-up data-[state=closed]:invisible duration-500"
+        className="flex flex-col gap-4 p-4 top-16 container absolute left-0 right-0 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 data-[state=default]:hidden data-[state=open]:animate-fade-in-down data-[state=closed]:animate-fade-out-up data-[state=closed]:invisible duration-500"
       >
         {navigationItems.map((item) => (
           <Link

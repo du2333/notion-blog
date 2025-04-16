@@ -27,7 +27,7 @@ export default function Error({ error, reset }: ErrorProps) {
   }, [error]);
 
   return (
-    <div className="container mx-auto flex min-h-[70vh] flex-col items-center justify-center px-4 py-16">
+    <div className="container flex min-h-[70vh] flex-col items-center justify-center py-16">
       <Card className="max-w-md">
         <CardHeader className="flex flex-row items-center gap-2 space-y-0 pb-2">
           <AlertTriangle className="h-5 w-5 text-destructive" />

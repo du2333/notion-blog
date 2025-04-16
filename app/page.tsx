@@ -14,7 +14,7 @@ export default async function Home() {
   return (
     <main>
       <HeroSection />
-      <div className="container mx-auto px-6 py-12 md:px-8 md:py-16">
+      <div className="container px-6 py-12 md:px-8 md:py-16">
         <BlogList posts={latestPosts} />
         <div className="flex justify-end mt-8">
           <Link href="/blog/1">

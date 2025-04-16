@@ -51,7 +51,7 @@ export default async function TagPage({
 
   return (
     <div
-      className="container mx-auto flex flex-col gap-4 px-4 py-8 mt-16
+      className="container flex flex-col gap-4 py-8 mt-16
     "
     >
       <h1 className="text-4xl font-bold mb-6 animate-fade-in-up duration-500">

@@ -12,7 +12,7 @@ export function HeroSection() {
   const delay3 = row2.split("").length * 0.1 + delay1 + delay2; // 第一行+第二行延迟
 
   return (
-    <div className="relative container mx-auto px-4 flex flex-col md:flex-row justify-evenly items-center min-h-screen">
+    <div className="relative container flex flex-col md:flex-row justify-evenly items-center min-h-screen">
       <div className="space-y-4">
         <div>
           {row1.split("").map((char, index) => (

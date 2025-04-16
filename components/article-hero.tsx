@@ -33,7 +33,7 @@ export default function ArticleHero({
 
       {/* Content positioned over the image */}
       <div className="absolute inset-0 flex items-center">
-        <div className="container mx-auto px-4 md:px-6">
+        <div className="container md:px-6">
           <div className="max-w-3xl">
             <h1 className="mt-4 text-3xl sm:text-4xl md:text-5xl font-bold tracking-tight">
               {title}

@@ -11,7 +11,7 @@ export default async function TagPage() {
   const { tagOptions } = await getSiteData();
 
   return (
-    <div className="container mx-auto flex flex-col gap-4 px-4 py-8 justify-center min-h-[90vh]">
+    <div className="container flex flex-col gap-4 py-8 justify-center min-h-[90vh]">
       <div className="text-4xl font-bold mb-8 animate-fade-in-down delay-100 duration-500">
         <TagCloud tags={tagOptions} />
       </div>
