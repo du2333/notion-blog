@@ -24,8 +24,8 @@ export default function TableOfContent({
           }
         });
       },
-      // 标题元素只需进入视口顶部 ​​20% 的区域​​ 即被视为可见
-      { rootMargin: "0px 0px -80% 0px" }
+      // 考虑头部导航栏高度，调整标题元素被视为可见的区域
+      { rootMargin: "-64px 0px -80% 0px" }
     );
 
     toc.forEach((item) => {
@@ -57,11 +57,22 @@ export default function TableOfContent({
               )}
               onClick={(e) => {
                 e.preventDefault();
-                document
-                  .getElementById(`${removeHyphens(heading.id)}`)
-                  ?.scrollIntoView({
+                const targetElement = document.getElementById(
+                  `${removeHyphens(heading.id)}`
+                );
+                if (targetElement) {
+                  const headerHeight = 64; // 头部导航栏高度
+                  const targetPosition =
+                    targetElement.getBoundingClientRect().top +
+                    window.scrollY -
+                    headerHeight -
+                    16; // 额外添加一些间距
+
+                  window.scrollTo({
+                    top: targetPosition,
                     behavior: "smooth",
                   });
+                }
               }}
             >
               {heading.text}
