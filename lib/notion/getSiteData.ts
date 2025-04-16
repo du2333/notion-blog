@@ -21,7 +21,7 @@ import { compressImage, mapImgUrl } from "@/utils/imgProcessing";
 import { getPageProperties } from "@/lib/notion/getPagePropertie";
 import { getTags } from "@/lib/notion/getTags";
 import { isEmoji } from "@/utils";
-import { timedCache } from "@/lib/cacheManagement";
+import { timedCache } from "@/lib/cache";
 
 export async function getSiteData(): Promise<Site> {
   const sitePageId = idToUuid(blogConfig.NOTION_PAGE_ID);

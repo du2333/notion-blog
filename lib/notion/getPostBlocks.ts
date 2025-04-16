@@ -1,7 +1,7 @@
 import { type ExtendedRecordMap } from "@/types/notion";
 import { wait } from "@/utils";
 import { notionAPI } from "@/lib/notion/notionAPI";
-import { timedCache } from "@/lib/cacheManagement";
+import { timedCache } from "@/lib/cache";
 import blogConfig from "@/blog.config";
 
 /**
