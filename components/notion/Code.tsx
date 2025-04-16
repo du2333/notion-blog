@@ -1,31 +1,20 @@
 "use client";
 
-import "prismjs";
-import "prismjs/plugins/autoloader/prism-autoloader";
-import "prismjs/plugins/toolbar/prism-toolbar";
-import "prismjs/plugins/toolbar/prism-toolbar.min.css";
-import "prismjs/plugins/show-language/prism-show-language";
-import "prismjs/plugins/copy-to-clipboard/prism-copy-to-clipboard";
-import "prismjs/plugins/line-numbers/prism-line-numbers";
-import "prismjs/plugins/line-numbers/prism-line-numbers.css";
-import Prism from "prismjs";
-
 import { getBlockTitle } from "notion-utils";
 import { useNotionContext, Text } from "react-notion-x";
-import { useEffect, useMemo, useRef } from "react";
+import { useMemo, useState, useEffect, useCallback, useRef } from "react";
+import { Copy, Check } from "lucide-react";
 
 import { CodeBlock } from "@/types/notion";
-import Script from "next/script";
-
-const MERMAID_CDN =
-  "https://cdnjs.cloudflare.com/ajax/libs/mermaid/11.4.0/mermaid.min.js";
-const PRISM_JS_LANGUAGE_PATH =
-  "https://cdnjs.cloudflare.com/ajax/libs/prism/1.29.0/components/";
-
-Prism.plugins.autoloader.languages_path = PRISM_JS_LANGUAGE_PATH;
+import { codeToHtml } from "shiki";
+import { Button } from "@/components/ui/button";
 
 export function Code({ block }: { block: CodeBlock }) {
   const { recordMap } = useNotionContext();
+  const [html, setHtml] = useState<string>("");
+  const [isLoading, setIsLoading] = useState(true);
+  const [copied, setCopied] = useState(false);
+  const codeRef = useRef<HTMLDivElement>(null);
 
   const content = getBlockTitle(block, recordMap);
   const language = useMemo(() => {
@@ -45,43 +34,89 @@ export function Code({ block }: { block: CodeBlock }) {
 
   const caption = block.properties.caption;
 
-  const codeRef = useRef(null);
-  useEffect(() => {
-    if (codeRef.current) {
-      try {
-        Prism.highlightElement(codeRef.current);
-      } catch (err) {
-        console.warn("prismjs highlight error", err);
-      }
-    }
-  }, [codeRef]);
+  const handleCopy = useCallback(() => {
+    // 从 HTML 中获取纯文本内容
+    const codeElement = codeRef.current?.querySelector("code");
+    let textToCopy = content;
 
-  const handleMermaidOnReady = () => {
-    (window as any).mermaid?.contentLoaded();
-  };
+    // 如果能找到渲染后的代码元素，则从中提取文本
+    if (codeElement) {
+      textToCopy = codeElement.textContent || content;
+    }
+
+    navigator.clipboard.writeText(textToCopy);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  }, [content, codeRef]);
+
+  useEffect(() => {
+    const renderCode = async () => {
+      setIsLoading(true);
+      try {
+        const renderedHtml = await codeToHtml(content, {
+          lang: language,
+          themes: {
+            light: "material-theme-lighter",
+            dark: "material-theme-ocean",
+          },
+          defaultColor: "light",
+          cssVariablePrefix: "--shiki-",
+        });
+        setHtml(renderedHtml);
+      } catch (error) {
+        console.error("Error rendering code:", error);
+        setHtml(
+          `<pre class="p-4 bg-gray-100 dark:bg-gray-800 rounded overflow-auto"><code>${escapeHtml(
+            content
+          )}</code></pre>`
+        );
+      } finally {
+        setIsLoading(false);
+      }
+    };
+
+    renderCode();
+  }, [content, language]);
+
+  if (isLoading) {
+    return (
+      <div className="w-full p-4 bg-gray-100 dark:bg-gray-800 rounded animate-pulse">
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-3/4 mb-2"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/2 mb-2"></div>
+        <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6"></div>
+      </div>
+    );
+  }
 
   return (
-    <>
-      <div className="w-full">
-        <pre
-          className={`notion-code line-numbers language-${language}`}
-          style={{
-            whiteSpace: "pre-wrap",
-          }}
+    <div className="relative group" ref={codeRef}>
+      <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
+        <Button
+          onClick={handleCopy}
+          variant="ghost"
+          className="flex items-center justify-center size-12 rounded bg-muted focus:outline-none focus:ring-2 focus:ring-primary backdrop-blur-sm"
+          aria-label={copied ? "Copied!" : "Copy code"}
+          title={copied ? "Copied!" : "Copy code"}
         >
-          <code ref={codeRef as any}>{content}</code>
-          {language === "mermaid" && <div className="mermaid">{content}</div>}
-        </pre>
+          {copied ? <Check className="size-4" /> : <Copy className="size-4" />}
+        </Button>
       </div>
+      <div dangerouslySetInnerHTML={{ __html: html }} />
 
       {caption && (
         <figcaption className="notion-asset-caption">
           <Text value={caption} block={block} />
         </figcaption>
       )}
-      {language === "mermaid" && (
-        <Script src={MERMAID_CDN} onReady={handleMermaidOnReady} />
-      )}
-    </>
+    </div>
   );
+}
+
+function escapeHtml(str: string) {
+  return str
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#039;");
 }

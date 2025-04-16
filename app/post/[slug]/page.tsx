@@ -113,8 +113,8 @@ export default async function PostPage({
         />
       </div>
 
-      <div className="container mx-auto mt-8 grid grid-cols-1 gap-8 md:grid-cols-[3fr_1fr] animate-fade-in-down delay-300">
-        <div className="max-w-none">
+      <div className="container mt-8 grid grid-cols-1 gap-8 md:grid-cols-[3fr_1fr] animate-fade-in-down delay-300">
+        <div className="max-w-none prose dark:prose-invert lg:prose-xl">
           <NotionPage post={post} />
         </div>
         {post.toc.length > 0 && (
