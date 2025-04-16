@@ -20,7 +20,6 @@ export default function TableOfContent({
         entries.forEach((entry) => {
           if (entry.isIntersecting) {
             setActiveId(removeHyphens(entry.target.id));
-            console.log(entry);
           }
         });
       },

@@ -113,16 +113,16 @@ export default async function PostPage({
         />
       </div>
 
-      <div className="container mt-8 grid grid-cols-1 gap-8 md:grid-cols-[3fr_1fr] animate-fade-in-down delay-300">
+      <div className="container mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[3fr_1fr] animate-fade-in-down delay-300">
         <div className="max-w-none prose dark:prose-invert lg:prose-xl">
           <NotionPage post={post} />
         </div>
         {post.toc.length > 0 && (
-          <div className="hidden md:block">
-            <div className="sticky top-20">
+          <div className="hidden xl:block">
+            <aside className="sticky top-20">
               <h3 className="text-lg font-medium mb-4">Table of Contents</h3>
               <TableOfContent toc={post.toc} />
-            </div>
+            </aside>
           </div>
         )}
       </div>
