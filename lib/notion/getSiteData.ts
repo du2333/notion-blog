@@ -2,28 +2,18 @@ import { idToUuid } from "notion-utils";
 
 import blogConfig from "@/blog.config";
 import { BlogConfig } from "@/types/config";
-import {
-  ExtendedCollection,
-  PageStatus,
-  PageType,
-  Page,
-  Nav,
-  Site,
-  SiteInfo,
-} from "@/types/notion";
+import { PageStatus, PageType, Page } from "@/types/notion";
 import { getPostBlocks } from "@/lib/notion/getPostBlocks";
 import {
   getConfigPageId,
   getPageIdsInCollection,
 } from "@/lib/notion/getPageIds";
 import { getConfig } from "@/lib/notion/getConfig";
-import { compressImage, mapImgUrl } from "@/utils/imgProcessing";
 import { getPageProperties } from "@/lib/notion/getPagePropertie";
 import { getTags } from "@/lib/notion/getTags";
-import { isEmoji } from "@/utils";
 import { timedCache } from "@/lib/cache";
 
-export async function getSiteData(): Promise<Site> {
+export async function getSiteData() {
   const sitePageId = idToUuid(blogConfig.NOTION_PAGE_ID);
 
   const start = performance.now();
@@ -35,7 +25,7 @@ export async function getSiteData(): Promise<Site> {
   return data;
 }
 
-export async function getWholeSiteData(pageId: string): Promise<Site> {
+export async function getWholeSiteData(pageId: string) {
   const pageRecordMap = await getPostBlocks(pageId);
 
   if (!pageRecordMap) {
@@ -62,7 +52,6 @@ export async function getWholeSiteData(pageId: string): Promise<Site> {
   }
 
   const collection = Object.values(pageRecordMap.collection)[0].value;
-  const siteInfo = getSiteInfo(collection as ExtendedCollection);
   // 数据库的定义了哪些属性
   const schemaMap = collection.schema;
 
@@ -131,12 +120,7 @@ export async function getWholeSiteData(pageId: string): Promise<Site> {
   );
 
   return {
-    id: pageId,
-    siteInfo,
-    allPages,
-    block,
     tagOptions: getTags(publishedPosts, schemaMap),
-    navList: getNavList(navPageList),
     publishedPosts,
     latestPosts: getLatestPosts(publishedPosts),
     config,
@@ -147,65 +131,4 @@ function getLatestPosts(publishedPosts: Page[], latestPostCount: number = 6) {
   return publishedPosts
     .sort((a, b) => (b.lastEditedTime || b.date) - (a.lastEditedTime || a.date))
     .slice(0, latestPostCount);
-}
-
-function getSiteInfo(collection: ExtendedCollection): SiteInfo {
-  const title = collection.name[0][0] || "";
-  const description = collection.description
-    ? Object.assign(collection).description[0][0]
-    : "";
-  const pageCover = collection.cover
-    ? mapImgUrl(collection.cover, collection, "collection")
-    : "";
-  let icon = collection?.icon
-    ? mapImgUrl(collection.icon, collection, "collection")
-    : "";
-
-  icon = compressImage(icon);
-
-  if (!icon || isEmoji(icon)) {
-    icon = "";
-  }
-
-  return { title, description, pageCover, icon };
-}
-
-/**
- * 根据用户自定义菜单构建导航列表
- * @param navPageList 所有关于导航的页面
- * @returns 导航列表
- */
-function getNavList(navPageList: Page[]) {
-  if (navPageList.length === 0) return [];
-  const pageMap: Record<string, Nav> = {};
-  let headerMenuId = "";
-
-  // 遍历navPageList，构建pageMap
-  navPageList.forEach((page) => {
-    if (page.type === PageType.HeadMenu) {
-      headerMenuId = page.id;
-    }
-    pageMap[page.id] = {
-      id: page.id,
-      show: page.status !== PageStatus.Invisible,
-      icon: page.icon,
-      title: page.title,
-      to: page.slug,
-      subMenus: [],
-      type: page.type as PageType,
-    };
-  });
-
-  // 遍历navPageList，构建subMenus
-  navPageList.forEach((page) => {
-    const navItem = pageMap[page.id];
-    if (page.childrenIds) {
-      navItem.subMenus = page.childrenIds
-        .map((childId) => pageMap[childId])
-        .filter(Boolean); // 过滤掉空值
-    }
-  });
-
-  const headerMenu = pageMap[headerMenuId];
-  return headerMenu.subMenus || [];
 }

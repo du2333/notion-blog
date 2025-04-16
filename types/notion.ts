@@ -1,7 +1,5 @@
-import { Block, Collection, ExtendedRecordMap, BlockType } from "notion-types";
+import { Collection, ExtendedRecordMap, BlockType } from "notion-types";
 export type * from "notion-types";
-
-import { BlogConfig } from "@/types/config";
 
 export interface ExtendedCollection extends Collection {
   description: [[string]];
@@ -17,16 +15,12 @@ export interface Page {
   type: PageType | null;
   status: PageStatus | null;
   slug: string;
-  icon: string; // 作为导航栏的icon
   pageCover: string;
   pageCoverThumbnail: string;
   tags: string[];
   blockMap?: ExtendedRecordMap; // 实际的页面内容
   toc?: TableOfContentsEntry[];
   searchResults?: string[]; // 用于搜索页面匹配keyword
-
-  parentId?: string | null;
-  childrenIds?: string[] | null;
 }
 
 export enum PageType {
@@ -59,7 +53,6 @@ export enum PagePropertyName {
   Tags = "tags",
   Slug = "slug",
   Date = "date",
-  Icon = "icon",
 }
 
 export interface Tag {
@@ -67,35 +60,6 @@ export interface Tag {
   name: string;
   color: string;
   count: number;
-}
-
-export interface Nav {
-  id: string;
-  icon: string;
-  to: string;
-  show: boolean;
-  title: string;
-  subMenus?: Nav[];
-  type: PageType;
-}
-
-export interface Site {
-  id: string;
-  siteInfo: SiteInfo;
-  allPages: Page[];
-  block: Block;
-  tagOptions: Tag[];
-  navList: Nav[];
-  publishedPosts: Page[];
-  latestPosts: Page[];
-  config: BlogConfig;
-}
-
-export interface SiteInfo {
-  title: string;
-  description: string;
-  pageCover: string;
-  icon: string;
 }
 
 export interface TableOfContentsEntry {

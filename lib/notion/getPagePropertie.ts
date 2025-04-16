@@ -6,7 +6,6 @@ import {
   PageType,
 } from "@/types/notion";
 import { getDateValue, getTextContent } from "notion-utils";
-import { getParentId, getChildrenIds } from "@/lib/notion/getTree";
 import { mapImgUrl } from "@/utils/imgProcessing";
 
 export async function getPageProperties(
@@ -51,17 +50,8 @@ export async function getPageProperties(
         return;
       }
       const { name, type } = schemaMap[key];
-      // 处理自定义菜单
-      if (name === "Parent item") {
-        pageInfo["parentId"] = getParentId(value);
-      } else if (name === "Sub-item") {
-        pageInfo["childrenIds"] = getChildrenIds(value);
-      }
-      // 处理其他属性
-      else {
-        const action = schemaActions[type] || schemaActions.default;
-        action(value, name);
-      }
+      const action = schemaActions[type] || schemaActions.default;
+      action(value, name);
     }
   );
 

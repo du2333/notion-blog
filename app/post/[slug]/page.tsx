@@ -63,9 +63,9 @@ export default async function PostPage({
   const { slug } = await params;
   const decodedSlug = decodeURIComponent(slug);
 
-  const { allPages, config: BlogConfig } = await getSiteData();
+  const { publishedPosts, config: BlogConfig } = await getSiteData();
 
-  let post = allPages.find((page) => page.slug === decodedSlug);
+  let post = publishedPosts.find((page) => page.slug === decodedSlug);
 
   // 如果post没有自定义slug，默认为notion的pageId
   if (!post && isUUID(decodedSlug)) {
