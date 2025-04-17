@@ -70,6 +70,9 @@
 
 You can directly configure most of the settings in Notion, except for `NOTION_PAGE_ID` and `NEXT_REVALIDATE_SECONDS` which need to be manually configured
 
+- `NOTION_PAGE_ID` is your Notion database ID
+- `NEXT_REVALIDATE_SECONDS` is the cache time of ISR, default is 10 seconds, which means that every 10 seconds the static page will be regenerated
+
 ## Thanks
 
 Thanks to the following projects:
