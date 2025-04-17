@@ -7,6 +7,12 @@
 
 简体中文 | [English](./README_EN.md)
 
+示例图片
+
+![image](./sample/home.png)
+![image](./sample/blog.png)
+![image](./sample/post.png)
+![image](./sample/tag.png)
 ## 特性亮点
 
 - 基于 Notion 的零成本内容管理
