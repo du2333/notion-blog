@@ -6,8 +6,7 @@ import Footer from "@/components/footer";
 import MetaHead from "@/components/metahead";
 import GoToTop from "@/components/go-to-top";
 import { getSiteData } from "@/lib/notion/getSiteData";
-import { WebSite } from "schema-dts";
-import { WithContext } from "schema-dts";
+import { Blog, WithContext } from "schema-dts";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -40,20 +39,27 @@ export default async function RootLayout({
   children: React.ReactNode;
 }>) {
   const { config: BlogConfig } = await getSiteData();
-  const website: WithContext<WebSite> = {
+
+  const blog: WithContext<Blog> = {
     "@context": "https://schema.org",
-    "@type": "WebSite",
+    "@type": "Blog",
     url: BlogConfig.SITE_URL,
     name: BlogConfig.BLOG_TITLE,
     description: BlogConfig.BLOG_DESCRIPTION,
     author: {
       "@type": "Person",
       name: BlogConfig.AUTHOR,
+      url: BlogConfig.SITE_URL,
     },
     publisher: {
       "@type": "Organization",
       name: BlogConfig.AUTHOR,
       url: BlogConfig.SITE_URL,
+    },
+    mainEntityOfPage: {
+      "@type": "WebPage",
+      "@id": BlogConfig.SITE_URL,
+      keywords: BlogConfig.BLOG_KEYWORDS.split(","),
     },
   };
 
@@ -65,7 +71,7 @@ export default async function RootLayout({
       >
         <script
           type="application/ld+json"
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(blog) }}
         />
         <ThemeProvider
           attribute="class"

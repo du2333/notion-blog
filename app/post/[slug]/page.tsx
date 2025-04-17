@@ -8,7 +8,7 @@ import TableOfContent from "@/components/table-of-content";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import ArticleHero from "@/components/article-hero";
-import { WithContext, Article } from "schema-dts";
+import { WithContext, BlogPosting } from "schema-dts";
 
 export async function generateMetadata({
   params,
@@ -81,20 +81,16 @@ export default async function PostPage({
   }
   post.toc = getPageTableOfContents(post, post.blockMap);
 
-  const article: WithContext<Article> = {
+  const article: WithContext<BlogPosting> = {
     "@context": "https://schema.org",
     "@type": "BlogPosting",
     headline: post.title,
     image: post.pageCover,
+    url: `${BlogConfig.SITE_URL}/post/${encodeURIComponent(post.slug)}`,
     datePublished: new Date(post.date).toISOString(),
     dateModified: new Date(post.lastEditedTime).toISOString(),
     author: {
       "@type": "Person",
-      name: BlogConfig.AUTHOR,
-      url: BlogConfig.SITE_URL,
-    },
-    publisher: {
-      "@type": "Organization",
       name: BlogConfig.AUTHOR,
       url: BlogConfig.SITE_URL,
     },
