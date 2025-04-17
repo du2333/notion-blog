@@ -2,7 +2,7 @@ import Head from "next/head";
 import { getSiteData } from "@/lib/notion/getSiteData";
 
 export default async function MetaHead() {
-  const { config } = await getSiteData();
+  const { config: BlogConfig } = await getSiteData();
 
   return (
     <Head>
@@ -19,7 +19,7 @@ export default async function MetaHead() {
         sizes="180x180"
         href="/apple-touch-icon.png"
       />
-      <meta name="apple-mobile-web-app-title" content={config.BLOG_TITLE} />
+      <meta name="apple-mobile-web-app-title" content={BlogConfig.BLOG_TITLE} />
       <link rel="manifest" href="/site.webmanifest" />
     </Head>
   );

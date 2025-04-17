@@ -3,7 +3,7 @@ import { Metadata } from "next";
 import { TagCloud } from "@/components/tag-cloud";
 
 export const metadata: Metadata = {
-  title: "Blog Tags",
+  title: "Tags",
   description: "Browse all blog post tags",
 };
 

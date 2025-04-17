@@ -6,6 +6,8 @@ import Footer from "@/components/footer";
 import MetaHead from "@/components/metahead";
 import GoToTop from "@/components/go-to-top";
 import { getSiteData } from "@/lib/notion/getSiteData";
+import { WebSite } from "schema-dts";
+import { WithContext } from "schema-dts";
 
 const inter = Inter({
   subsets: ["latin"],
@@ -32,17 +34,39 @@ export async function generateMetadata() {
   };
 }
 
-export default function RootLayout({
+export default async function RootLayout({
   children,
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const { config: BlogConfig } = await getSiteData();
+  const website: WithContext<WebSite> = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    url: BlogConfig.SITE_URL,
+    name: BlogConfig.BLOG_TITLE,
+    description: BlogConfig.BLOG_DESCRIPTION,
+    author: {
+      "@type": "Person",
+      name: BlogConfig.AUTHOR,
+    },
+    publisher: {
+      "@type": "Organization",
+      name: BlogConfig.AUTHOR,
+      url: BlogConfig.SITE_URL,
+    },
+  };
+
   return (
     <html lang="en" suppressHydrationWarning>
       <MetaHead />
       <body
         className={`${noto_sans_sc.className} ${inter.className} antialiased`}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(website) }}
+        />
         <ThemeProvider
           attribute="class"
           defaultTheme="system"

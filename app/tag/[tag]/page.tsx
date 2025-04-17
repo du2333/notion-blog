@@ -16,6 +16,12 @@ export async function generateMetadata({
   };
 }
 
+export async function generateStaticParams() {
+  const siteData = await getSiteData();
+  const { tagOptions } = siteData;
+  return tagOptions.map((tag) => ({ tag: encodeURIComponent(tag.name) }));
+}
+
 export default async function TagPage({
   params,
   searchParams,
