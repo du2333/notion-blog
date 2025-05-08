@@ -55,16 +55,7 @@ jobs:
           tags: |
             ${{ vars.DOCKER_IMAGE_NAME }}:latest
             ${{ vars.DOCKER_IMAGE_NAME }}:${{ github.sha }}
-          platforms: linux/arm64, linux/amd64
+          platforms: linux/amd64
           # set up cache for all layers
           cache-from: type=registry,ref=${{ vars.DOCKER_IMAGE_NAME }}:buildcache
           cache-to: type=registry,ref=${{ vars.DOCKER_IMAGE_NAME }}:buildcache,mode=max
-
-      - name: Update docker container on the server
-        uses: appleboy/ssh-action@v1
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USERNAME }}
-          key: ${{ secrets.SERVER_KEY }}
-          script: |
-            scripts/update-notion-blog.sh
