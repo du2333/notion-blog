@@ -20,10 +20,11 @@ export default async function Header() {
   return (
     <HeaderBackground>
       <ScrollProgressBar />
-      <div className="container flex h-16 items-center justify-between md:px-6">
-        <div className="flex items-center gap-2">
-          <Link href="/" className="flex items-center space-x-4">
-            <div className="rounded-full">
+      <div className="flex items-center justify-between w-full">
+        {/* Left: Logo */}
+        <div className="flex items-center flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2 group">
+            <div className="relative rounded-full overflow-hidden transition-transform duration-300 group-hover:scale-110">
               <Image
                 src={
                   BlogConfig.HEADER_ICON ||
@@ -33,24 +34,44 @@ export default async function Header() {
                 alt="Logo"
                 width={32}
                 height={32}
-                className="rounded-full"
+                className="object-cover"
                 priority
               />
             </div>
-            <span className="text-xl font-bold">{BlogConfig.BLOG_TITLE}</span>
+            <span className="text-lg font-bold tracking-tight transition-colors group-hover:text-primary/80">
+              {BlogConfig.BLOG_TITLE}
+            </span>
           </Link>
         </div>
 
-        <div className="flex items-center gap-2 md:gap-6">
+        {/* Center: Desktop Navigation */}
+        <div className="hidden md:flex absolute left-1/2 -translate-x-1/2">
           <Navigation />
-          <div className="flex items-center gap-2">
+        </div>
+
+        {/* Right: Actions */}
+        <div className="flex items-center gap-2">
+          <div className="hidden md:flex items-center gap-1">
             <SearchModal
               suggestedPosts={latestPosts}
               searchByKeywordAction={searchByKeyword}
             />
             <ThemeController />
           </div>
-          <MobileNavigation />
+          
+          {/* Mobile Menu Trigger */}
+          <MobileNavigation>
+             {/* Pass actions to mobile nav to render inside */}
+             <div className="flex items-center gap-4 mt-8 pt-8 border-t w-full justify-center">
+                <ThemeController />
+                <div className="w-full max-w-[200px]">
+                  <SearchModal
+                    suggestedPosts={latestPosts}
+                    searchByKeywordAction={searchByKeyword}
+                  />
+                </div>
+             </div>
+          </MobileNavigation>
         </div>
       </div>
     </HeaderBackground>
