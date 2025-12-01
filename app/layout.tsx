@@ -23,6 +23,15 @@ const noto_sans_sc = Noto_Sans_SC({
 
 export async function generateMetadata() {
   const { config: BlogConfig } = await getSiteData();
+
+  // 动态 favicon 配置
+  const icons = BlogConfig.FAVICON
+    ? {
+        icon: BlogConfig.FAVICON,
+        apple: BlogConfig.FAVICON,
+      }
+    : undefined;
+
   return {
     title: {
       default: BlogConfig.BLOG_TITLE,
@@ -30,6 +39,7 @@ export async function generateMetadata() {
     },
     description: BlogConfig.BLOG_DESCRIPTION,
     keywords: BlogConfig.BLOG_KEYWORDS,
+    icons,
   };
 }
 

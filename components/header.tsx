@@ -23,7 +23,20 @@ export default async function Header() {
       <div className="container flex h-16 items-center justify-between md:px-6">
         <div className="flex items-center gap-2">
           <Link href="/" className="flex items-center space-x-4">
-            <Image src="/favicon.svg" alt="Logo" width={32} height={32} />
+            <div className="rounded-full">
+              <Image
+                src={
+                  BlogConfig.HEADER_ICON ||
+                  BlogConfig.FAVICON ||
+                  "/favicon.svg"
+                }
+                alt="Logo"
+                width={32}
+                height={32}
+                className="rounded-full"
+                priority
+              />
+            </div>
             <span className="text-xl font-bold">{BlogConfig.BLOG_TITLE}</span>
           </Link>
         </div>
