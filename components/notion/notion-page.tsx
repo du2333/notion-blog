@@ -56,11 +56,12 @@ export function NotionPage({ post }: { post: Page }) {
       Pdf,
       Modal,
       // Custom Image Component to trigger modal
-      Image: (props) => {
+      Image: (props: any) => {
         return (
           // eslint-disable-next-line @next/next/no-img-element
           <img
             {...props}
+            alt={props.alt || "notion image"}
             onClick={() =>
               setModalImage({ src: props.src || "", alt: props.alt || "" })
             }

@@ -1,10 +1,10 @@
 "use client";
 
-import Link from "next/link";
-import Image from "next/image";
 import { Page } from "@/types/notion";
-import { Calendar, ArrowUpRight } from "lucide-react";
-import { useState, useEffect } from "react";
+import { ArrowUpRight } from "lucide-react";
+import Image from "next/image";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
 export default function CompactPostCard({ post }: { post: Page }) {
   const [formattedDate, setFormattedDate] = useState("");
