@@ -1,7 +1,7 @@
 "use client";
 
 import { NotionComponents, NotionRenderer } from "react-notion-x";
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Link from "next/link";
 import Image from "next/image";
 
@@ -10,6 +10,7 @@ import { mapImgUrl } from "@/utils/imgProcessing";
 import dynamic from "next/dynamic";
 import { useTheme } from "next-themes";
 import useMount from "@/hooks/useMount";
+import ImageModal from "@/components/image-modal";
 
 const Code = dynamic(() => import("./Code").then((m) => m.Code), {
   ssr: false,
@@ -40,6 +41,10 @@ export function NotionPage({ post }: { post: Page }) {
   const { resolvedTheme } = useTheme();
   const isDarkMode = resolvedTheme === "dark";
   const mounted = useMount();
+  const [modalImage, setModalImage] = useState<{
+    src: string;
+    alt: string;
+  } | null>(null);
 
   const components = useMemo<Partial<NotionComponents>>(
     () => ({
@@ -50,21 +55,41 @@ export function NotionPage({ post }: { post: Page }) {
       Equation,
       Pdf,
       Modal,
+      // Custom Image Component to trigger modal
+      Image: (props) => {
+        return (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            {...props}
+            onClick={() =>
+              setModalImage({ src: props.src || "", alt: props.alt || "" })
+            }
+            className="cursor-zoom-in"
+          />
+        );
+      },
     }),
     []
   );
 
   return (
-    mounted &&
-    post &&
-    post.blockMap && (
-      <NotionRenderer
-        recordMap={post.blockMap}
-        darkMode={isDarkMode}
-        mapImageUrl={mapImgUrl}
-        previewImages={!!post.blockMap.preview_images}
-        components={components}
+    <>
+      {mounted && post && post.blockMap && (
+        <NotionRenderer
+          recordMap={post.blockMap}
+          darkMode={isDarkMode}
+          mapImageUrl={mapImgUrl}
+          previewImages={!!post.blockMap.preview_images}
+          components={components}
+        />
+      )}
+
+      <ImageModal
+        isOpen={!!modalImage}
+        src={modalImage?.src || ""}
+        alt={modalImage?.alt || ""}
+        onClose={() => setModalImage(null)}
       />
-    )
+    </>
   );
 }

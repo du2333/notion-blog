@@ -23,8 +23,7 @@ export default function TableOfContent({
           }
         });
       },
-      // 考虑头部导航栏高度，调整标题元素被视为可见的区域
-      { rootMargin: "-64px 0px -80% 0px" }
+      { rootMargin: "-100px 0px -66% 0px" }
     );
 
     toc.forEach((item) => {
@@ -35,49 +34,72 @@ export default function TableOfContent({
     });
 
     return () => observer.disconnect();
-    // 在组件加载完毕的时候进行observe
   }, [toc, mounted]);
 
-  return (
-    <nav className="text-sm">
-      <ul className="space-y-2">
-        {toc.map((heading) => (
-          <li
-            key={heading.id}
-            style={{ paddingLeft: `${heading.indentLevel * 2}rem` }}
-          >
-            <a
-              href={`#${removeHyphens(heading.id)}`}
-              className={cn(
-                "inline-block transition-colors hover:text-foreground",
-                activeId === removeHyphens(heading.id)
-                  ? "font-medium text-foreground"
-                  : "text-muted-foreground"
-              )}
-              onClick={(e) => {
-                e.preventDefault();
-                const targetElement = document.getElementById(
-                  `${removeHyphens(heading.id)}`
-                );
-                if (targetElement) {
-                  const headerHeight = 64; // 头部导航栏高度
-                  const targetPosition =
-                    targetElement.getBoundingClientRect().top +
-                    window.scrollY -
-                    headerHeight -
-                    16; // 额外添加一些间距
+  // Calculate reading progress based on scroll position
+  const [readingProgress, setReadingProgress] = useState(0);
 
-                  window.scrollTo({
-                    top: targetPosition,
-                    behavior: "smooth",
-                  });
-                }
-              }}
+  useEffect(() => {
+    const handleScroll = () => {
+      const totalHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
+      const progress = (window.scrollY / totalHeight) * 100;
+      setReadingProgress(progress);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
+  return (
+    <nav className="text-sm relative pl-4 border-l border-border/50">
+      {/* Progress Indicator Bar */}
+      <div
+        className="absolute left-[-1px] top-0 w-[2px] bg-primary transition-all duration-100 ease-out"
+        style={{ height: `${readingProgress}%`, maxHeight: "100%" }}
+      />
+
+      <ul className="space-y-3">
+        {toc.map((heading) => {
+          const isActive = activeId === removeHyphens(heading.id);
+          return (
+            <li
+              key={heading.id}
+              style={{ paddingLeft: `${heading.indentLevel * 1}rem` }}
+              className="relative"
             >
-              {heading.text}
-            </a>
-          </li>
-        ))}
+              <a
+                href={`#${removeHyphens(heading.id)}`}
+                className={cn(
+                  "block transition-all duration-200 line-clamp-2",
+                  isActive
+                    ? "text-primary font-medium scale-[1.02] origin-left"
+                    : "text-muted-foreground hover:text-foreground hover:translate-x-1"
+                )}
+                onClick={(e) => {
+                  e.preventDefault();
+                  const targetElement = document.getElementById(
+                    `${removeHyphens(heading.id)}`
+                  );
+                  if (targetElement) {
+                    const headerHeight = 80;
+                    const targetPosition =
+                      targetElement.getBoundingClientRect().top +
+                      window.scrollY -
+                      headerHeight;
+
+                    window.scrollTo({
+                      top: targetPosition,
+                      behavior: "smooth",
+                    });
+                  }
+                }}
+              >
+                {heading.text}
+              </a>
+            </li>
+          );
+        })}
       </ul>
     </nav>
   );

@@ -5,7 +5,6 @@ import SearchModal from "@/components/search-modal";
 import { getSearchResults } from "@/lib/notion/getSearchResults";
 import { getSiteData } from "@/lib/notion/getSiteData";
 import { Navigation, MobileNavigation } from "@/components/navigation";
-import ScrollProgressBar from "@/components/scroll-progress-bar";
 import HeaderBackground from "@/components/header-background";
 import Image from "next/image";
 
@@ -19,7 +18,6 @@ export default async function Header() {
 
   return (
     <HeaderBackground>
-      <ScrollProgressBar />
       <div className="flex items-center justify-between w-full">
         {/* Left: Logo */}
         <div className="flex items-center flex-shrink-0">
@@ -27,9 +25,7 @@ export default async function Header() {
             <div className="relative rounded-full overflow-hidden transition-transform duration-300 group-hover:scale-110">
               <Image
                 src={
-                  BlogConfig.HEADER_ICON ||
-                  BlogConfig.FAVICON ||
-                  "/favicon.svg"
+                  BlogConfig.HEADER_ICON || BlogConfig.FAVICON || "/favicon.svg"
                 }
                 alt="Logo"
                 width={32}
@@ -58,23 +54,23 @@ export default async function Header() {
             />
             <ThemeController />
           </div>
-          
+
           {/* Mobile Menu Trigger */}
           <MobileNavigation>
-             {/* Pass actions to mobile nav to render inside */}
-             <div className="flex flex-col items-center gap-6 mt-8 pt-8 border-t w-full border-border/50">
-                <div className="flex items-center gap-6 justify-center w-full">
-                   <div className="scale-125">
-                      <ThemeController />
-                   </div>
-                   <div className="w-full max-w-[240px]">
-                      <SearchModal
-                        suggestedPosts={latestPosts}
-                        searchByKeywordAction={searchByKeyword}
-                      />
-                   </div>
+            {/* Pass actions to mobile nav to render inside */}
+            <div className="flex flex-col items-center gap-6 mt-8 pt-8 border-t w-full border-border/50">
+              <div className="flex items-center gap-6 justify-center w-full">
+                <div className="scale-125">
+                  <ThemeController />
                 </div>
-             </div>
+                <div className="w-full max-w-[240px]">
+                  <SearchModal
+                    suggestedPosts={latestPosts}
+                    searchByKeywordAction={searchByKeyword}
+                  />
+                </div>
+              </div>
+            </div>
           </MobileNavigation>
         </div>
       </div>

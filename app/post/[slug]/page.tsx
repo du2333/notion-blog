@@ -102,7 +102,7 @@ export default async function PostPage({
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
       />
-      
+
       <div className="w-full max-w-5xl mx-auto px-4">
         <ArticleHero
           title={post.title}
@@ -112,15 +112,17 @@ export default async function PostPage({
           lastEditedTime={formatDate(new Date(post.lastEditedTime))}
         />
 
-        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_240px] mt-8">
-          <div className="min-w-0 max-w-none prose dark:prose-invert lg:prose-lg prose-headings:scroll-mt-24 prose-img:rounded-xl animate-fade-in-up delay-300">
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_200px] mt-12">
+          <div className="min-w-0 max-w-none prose dark:prose-invert prose-lg prose-headings:scroll-mt-24 prose-img:rounded-xl animate-fade-in-up delay-300">
             <NotionPage post={post} />
           </div>
-          
+
           {post.toc.length > 0 && (
             <div className="hidden lg:block">
-              <aside className="sticky top-24 animate-fade-in-up delay-500">
-                <h3 className="text-sm font-semibold text-muted-foreground mb-4 tracking-wider uppercase">目录</h3>
+              <aside className="sticky top-32 animate-fade-in-up delay-500">
+                <h3 className="text-sm font-semibold text-muted-foreground mb-4 tracking-wider uppercase">
+                  目录
+                </h3>
                 <TableOfContent toc={post.toc} />
               </aside>
             </div>
