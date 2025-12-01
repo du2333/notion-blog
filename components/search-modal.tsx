@@ -1,19 +1,18 @@
 "use client";
 
-import { Button } from "@/components/ui/button";
-import {
-  Dialog,
-  DialogContent,
-  DialogTrigger,
-  DialogTitle,
-} from "@/components/ui/dialog";
-import { Input } from "@/components/ui/input";
-import { Skeleton } from "@/components/ui/skeleton";
 import { Page } from "@/types/notion";
-import { Search } from "lucide-react";
-import { useState, useRef, useEffect } from "react";
-import Link from "next/link";
+import {
+  ArrowRight,
+  Calendar,
+  FileText,
+  Loader2,
+  Search,
+  X,
+} from "lucide-react";
 import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import useSWR from "swr";
 
 export default function SearchModal({
@@ -25,47 +24,156 @@ export default function SearchModal({
 }) {
   const [isOpen, setIsOpen] = useState(false);
   const [keyword, setKeyword] = useState("");
+  const [selectedIndex, setSelectedIndex] = useState(-1);
   const inputRef = useRef<HTMLInputElement>(null);
+  const listRef = useRef<HTMLDivElement>(null);
+  const modalRef = useRef<HTMLDivElement>(null);
+  const router = useRouter();
 
   const fetcher = (keyword: string) =>
     searchByKeywordAction(keyword).then((result) => result);
 
   const { data: results, isLoading } = useSWR(keyword, fetcher, {
     fallbackData: [],
+    keepPreviousData: true,
   });
+
+  // Displayed items logic
+  const displayedItems = useMemo(() => {
+    return keyword ? results || [] : suggestedPosts.slice(0, 5);
+  }, [keyword, results, suggestedPosts]);
+
+  // Reset selection when items change
+  useEffect(() => {
+    setSelectedIndex(-1);
+  }, [displayedItems.length, keyword]);
 
   // 防抖
   const handleOnChange = debounce((e: React.ChangeEvent<HTMLInputElement>) => {
     setKeyword(e.target.value);
-  }, 500);
+  }, 300);
 
+  const closeModal = useCallback(() => {
+    setIsOpen(false);
+    setKeyword("");
+    setSelectedIndex(-1);
+  }, []);
+
+  const openModal = useCallback(() => {
+    setIsOpen(true);
+  }, []);
+
+  const navigateToPost = useCallback(
+    (post: Page) => {
+      router.push(`/post/${encodeURIComponent(post.slug)}`);
+      closeModal();
+    },
+    [router, closeModal]
+  );
+
+  // Keyboard shortcuts
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      // Toggle modal
+      if (e.key === "k" && (e.metaKey || e.ctrlKey)) {
+        e.preventDefault();
+        if (isOpen) closeModal();
+        else openModal();
+        return;
+      }
+
+      if (!isOpen) return;
+
+      switch (e.key) {
+        case "Escape":
+          e.preventDefault();
+          closeModal();
+          break;
+        case "ArrowDown":
+          e.preventDefault();
+          setSelectedIndex((prev) =>
+            prev < displayedItems.length - 1 ? prev + 1 : 0
+          );
+          break;
+        case "ArrowUp":
+          e.preventDefault();
+          setSelectedIndex((prev) =>
+            prev > 0 ? prev - 1 : displayedItems.length - 1
+          );
+          break;
+        case "Enter":
+          e.preventDefault();
+          if (selectedIndex >= 0 && selectedIndex < displayedItems.length) {
+            navigateToPost(displayedItems[selectedIndex]);
+          }
+          break;
+      }
+    };
+
+    document.addEventListener("keydown", handleKeyDown);
+    return () => document.removeEventListener("keydown", handleKeyDown);
+  }, [
+    isOpen,
+    closeModal,
+    openModal,
+    selectedIndex,
+    displayedItems,
+    navigateToPost,
+  ]);
+
+  // Scroll selected item into view
+  useEffect(() => {
+    if (selectedIndex >= 0 && listRef.current) {
+      // +1 to account for the sticky header div inside listRef
+      const selectedElement = listRef.current.children[
+        selectedIndex + 1
+      ] as HTMLElement;
+      if (selectedElement) {
+        selectedElement.scrollIntoView({
+          block: "nearest",
+          behavior: "smooth",
+        });
+      }
+    }
+  }, [selectedIndex]);
+
+  // Focus input on open
   useEffect(() => {
     if (isOpen && inputRef.current) {
       setTimeout(() => {
         inputRef.current?.focus();
-      }, 100);
+      }, 50);
     }
   }, [isOpen]);
 
-  const handleOpenChange = (open: boolean) => {
-    setIsOpen(open);
+  // Lock body scroll
+  useEffect(() => {
+    if (isOpen) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+    return () => {
+      document.body.style.overflow = "unset";
+    };
+  }, [isOpen]);
 
-    // 每次打开或关闭清空输入框和搜索结果
-    setKeyword("");
+  // Click outside to close
+  const handleBackdropClick = (e: React.MouseEvent) => {
+    if (e.target === e.currentTarget) {
+      closeModal();
+    }
   };
 
   const highlightText = (text: string, keyword: string) => {
     if (!keyword) return text;
-
-    // gi 表示全局搜索，不区分大小写
     const regex = new RegExp(`(${keyword})`, "gi");
     const parts = text.split(regex);
-
     return parts.map((part, index) =>
       regex.test(part) ? (
         <span
           key={index}
-          className="bg-yellow-200 dark:bg-yellow-800 rounded px-0.5"
+          className="bg-yellow-500/30 text-yellow-600 dark:text-yellow-400 rounded px-0.5 font-medium"
         >
           {part}
         </span>
@@ -74,164 +182,178 @@ export default function SearchModal({
       )
     );
   };
-  return (
-    <Dialog open={isOpen} onOpenChange={handleOpenChange}>
-      <DialogTrigger asChild>
-        <Button
-          variant="ghost"
-          size="icon"
-          className="cursor-pointer"
-          aria-label="Search"
-        >
-          <Search className="size-[1.2rem]" />
-        </Button>
-      </DialogTrigger>
-      <DialogContent className="sm:max-w-[600px] p-0 gap-0 max-h-[80vh] overflow-hidden [&>button]:hidden">
-        <DialogTitle className="sr-only">Search</DialogTitle>
-        <div className="flex items-center border-b p-4 w-full">
-          <Search className="size-5 mr-2 flex-shrink-0 text-muted-foreground" />
-          <Input
-            ref={inputRef}
-            onChange={handleOnChange}
-            placeholder="Search blog posts..."
-            className="border-0 focus-visible:ring-0 text-base font-medium"
-          />
-        </div>
 
-        <div className="overflow-y-auto p-4 max-h-[calc(80vh-70px)]">
-          {/* 搜索结果为空时 */}
-          {!keyword && (
-            <div className="space-y-4">
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">
-                Suggested Posts
-              </h3>
-              <div className="grid gap-4 sm:grid-cols-2">
-                {suggestedPosts.length > 0 ? (
-                  suggestedPosts.map((post) => (
-                    <Link
-                      key={post.id}
-                      href={`/post/${encodeURIComponent(post.slug)}`}
-                      className="group flex gap-3 rounded-lg border p-3 hover:bg-muted/50 transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <Image
-                        src={post.pageCover}
-                        alt={post.title}
-                        width={80}
-                        height={60}
-                        className="rounded object-cover aspect-[4/3] flex-shrink-0"
-                      />
-                      <div className="flex flex-col justify-center overflow-hidden">
-                        <h4 className="text-sm font-semibold group-hover:underline line-clamp-2">
-                          {post.title}
-                        </h4>
-                        <p className="text-xs text-muted-foreground">
-                          {new Date(post.date).toLocaleDateString()}
-                        </p>
-                      </div>
-                    </Link>
-                  ))
-                ) : (
-                  <div className="text-sm text-muted-foreground">
-                    No posts found
-                  </div>
-                )}
+  return (
+    <>
+      {/* Trigger Button */}
+      <button
+        onClick={openModal}
+        className="relative flex items-center justify-center w-10 h-10 rounded-full text-muted-foreground hover:bg-secondary/80 hover:text-foreground transition-colors"
+        aria-label="Search"
+      >
+        <Search className="size-5" />
+      </button>
+
+      {/* Modal Overlay */}
+      {isOpen && (
+        <div
+          className="fixed inset-0 z-[100] flex items-start justify-center px-4 pt-[15vh] sm:pt-[20vh]"
+          onClick={handleBackdropClick}
+        >
+          {/* Backdrop */}
+          <div className="fixed inset-0 bg-background/80 backdrop-blur-sm animate-in fade-in duration-200" />
+
+          {/* Modal Content */}
+          <div
+            ref={modalRef}
+            className="relative w-full max-w-2xl bg-background/95 backdrop-blur-xl rounded-2xl shadow-2xl border border-border/50 overflow-hidden animate-in zoom-in-95 slide-in-from-top-2 duration-200 flex flex-col max-h-[70vh]"
+          >
+            {/* Header */}
+            <div className="flex items-center border-b border-border/50 px-4 py-3 gap-3 shrink-0">
+              <Search className="size-5 text-muted-foreground/50" />
+              <input
+                ref={inputRef}
+                onChange={handleOnChange}
+                placeholder="搜索文章..."
+                className="flex-1 bg-transparent border-none outline-none text-lg placeholder:text-muted-foreground/50 h-10"
+              />
+              <div className="flex items-center gap-2">
+                <kbd className="hidden sm:inline-flex items-center gap-1 h-5 px-1.5 rounded border bg-muted/50 text-[10px] font-medium text-muted-foreground">
+                  <span className="text-xs">⌘</span>K
+                </kbd>
+                <button
+                  onClick={closeModal}
+                  className="p-1 hover:bg-muted rounded-md transition-colors"
+                >
+                  <X className="size-4 text-muted-foreground" />
+                </button>
               </div>
             </div>
-          )}
 
-          {/* 搜索结果不为空时 */}
-          {keyword && (
-            <div className="space-y-4">
-              <h3 className="text-sm font-medium text-muted-foreground mb-3">
-                {isLoading
-                  ? "Searching..."
-                  : results.length > 0
-                  ? `Found ${results.length} result${
-                      results.length === 1 ? "" : "s"
-                    }`
-                  : "No results found"}
-              </h3>
-
-              {isLoading ? (
-                <LoadingSkeleton />
-              ) : results.length > 0 ? (
-                <div className="space-y-3">
-                  {results.map((post) => (
-                    <Link
-                      key={post.id}
-                      href={`/post/${encodeURIComponent(post.slug)}`}
-                      className="group flex gap-3 rounded-lg border p-3 hover:bg-muted/50 transition-colors"
-                      onClick={() => setIsOpen(false)}
-                    >
-                      <Image
-                        src={post.pageCover}
-                        alt={post.title}
-                        width={80}
-                        height={60}
-                        className="rounded object-cover aspect-[4/3] flex-shrink-0"
-                      />
-                      <div className="flex flex-col justify-center">
-                        <h4 className="text-sm font-semibold group-hover:underline line-clamp-1">
-                          {highlightText(post.title, keyword)}
-                        </h4>
-                        <p className="text-xs text-muted-foreground line-clamp-3">
-                          {post.searchResults?.map((result) => (
-                            <span key={result}>
-                              {highlightText(result, keyword)}
-                            </span>
-                          ))}
-                        </p>
-                        <p className="text-xs text-muted-foreground space-x-2 mt-2">
-                          {post.tags?.map((tag) => (
-                            <span
-                              key={tag}
-                              className="text-xs text-muted-foreground"
-                            >
-                              {highlightText(`#${tag}`, keyword)}
-                            </span>
-                          ))}
-                        </p>
-                      </div>
-                    </Link>
-                  ))}
-                </div>
-              ) : (
-                <div className="flex flex-col items-center justify-center py-12 text-center">
-                  <div className="text-muted-foreground mb-2">
-                    No results found for &quot;{keyword}&quot;
-                  </div>
-                  <div className="text-sm text-muted-foreground">
-                    Try searching with different keywords
-                  </div>
+            {/* Content Area */}
+            <div
+              className="overflow-y-auto custom-scrollbar p-2 scroll-smooth"
+              ref={listRef}
+            >
+              {/* Loading */}
+              {isLoading && keyword && (
+                <div className="py-8 flex justify-center items-center text-muted-foreground">
+                  <Loader2 className="size-6 animate-spin mr-2" />
+                  <span>搜索中...</span>
                 </div>
               )}
-            </div>
-          )}
-        </div>
-      </DialogContent>
-    </Dialog>
-  );
-}
 
-function LoadingSkeleton() {
-  return (
-    <div className="space-y-3 p-3">
-      <div className="flex space-x-3">
-        <Skeleton className="w-[80px] h-[60px] rounded-lg" />
-        <div className="flex-1 space-y-2">
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-1/2" />
+              {/* Empty State */}
+              {!isLoading && keyword && results && results.length === 0 && (
+                <div className="py-12 text-center">
+                  <div className="inline-flex h-12 w-12 items-center justify-center rounded-full bg-muted/50 mb-4">
+                    <Search className="h-6 w-6 text-muted-foreground" />
+                  </div>
+                  <p className="text-sm text-foreground font-medium">
+                    未找到 &quot;{keyword}&quot;
+                  </p>
+                  <p className="text-xs text-muted-foreground mt-1">
+                    换个关键词试试看？
+                  </p>
+                </div>
+              )}
+
+              {/* Results */}
+              {!isLoading && displayedItems.length > 0 ? (
+                <>
+                  <div className="px-2 py-1.5 text-xs font-semibold text-muted-foreground/50 uppercase tracking-wider sticky top-0 bg-background/95 backdrop-blur-sm z-10">
+                    {keyword ? "搜索结果" : "最新推荐"}
+                  </div>
+
+                  {displayedItems.map((post, index) => {
+                    const isSelected = index === selectedIndex;
+                    return (
+                      <Link
+                        key={post.id}
+                        href={`/post/${encodeURIComponent(post.slug)}`}
+                        onClick={closeModal}
+                        onMouseEnter={() => setSelectedIndex(index)}
+                        className={`group flex items-start gap-3 rounded-xl p-3 transition-all border border-transparent ${
+                          isSelected
+                            ? "bg-secondary/50 border-border/50"
+                            : "hover:bg-secondary/50 hover:border-border/50"
+                        }`}
+                      >
+                        <div className="relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-muted border border-border/50">
+                          {post.pageCover ? (
+                            <Image
+                              src={post.pageCover}
+                              alt={post.title}
+                              fill
+                              className="object-cover transition-transform duration-300 group-hover:scale-110"
+                            />
+                          ) : (
+                            <div className="flex h-full w-full items-center justify-center bg-secondary">
+                              <FileText className="h-6 w-6 text-muted-foreground/20" />
+                            </div>
+                          )}
+                        </div>
+
+                        <div className="flex flex-1 flex-col justify-center gap-1.5 overflow-hidden min-h-[3.5rem]">
+                          <h4 className="line-clamp-1 text-sm font-medium text-foreground">
+                            {highlightText(post.title, keyword)}
+                          </h4>
+                          <div className="flex items-center gap-2 text-xs text-muted-foreground">
+                            <span className="flex items-center gap-1 bg-muted/50 px-1.5 py-0.5 rounded text-[10px]">
+                              <Calendar className="size-3" />
+                              {new Date(post.date).toLocaleDateString()}
+                            </span>
+                            {post.tags?.[0] && (
+                              <span className="bg-primary/10 text-primary px-1.5 py-0.5 rounded text-[10px]">
+                                #{post.tags[0]}
+                              </span>
+                            )}
+                          </div>
+                        </div>
+
+                        <div
+                          className={`flex items-center self-center transition-all ${
+                            isSelected
+                              ? "opacity-100 translate-x-0"
+                              : "opacity-0 -translate-x-2 group-hover:opacity-100 group-hover:translate-x-0"
+                          }`}
+                        >
+                          <ArrowRight className="h-4 w-4 text-muted-foreground" />
+                        </div>
+                      </Link>
+                    );
+                  })}
+                </>
+              ) : null}
+            </div>
+
+            {/* Footer */}
+            <div className="bg-muted/30 border-t border-border/50 px-4 py-2 hidden sm:flex items-center justify-between text-[10px] text-muted-foreground shrink-0">
+              <span>
+                {keyword
+                  ? `找到 ${results?.length || 0} 个结果`
+                  : "输入关键词开始搜索"}
+              </span>
+              <div className="flex items-center gap-3">
+                <span className="flex items-center gap-1">
+                  <kbd className="bg-background border rounded px-1 min-w-[1.2em] text-center">
+                    ↑
+                  </kbd>
+                  <kbd className="bg-background border rounded px-1 min-w-[1.2em] text-center">
+                    ↓
+                  </kbd>
+                  <span>选择</span>
+                </span>
+                <span className="flex items-center gap-1">
+                  <kbd className="bg-background border rounded px-1">↵</kbd>
+                  <span>打开</span>
+                </span>
+              </div>
+            </div>
+          </div>
         </div>
-      </div>
-      <div className="flex space-x-3">
-        <Skeleton className="w-[80px] h-[60px] rounded-lg" />
-        <div className="flex-1 space-y-2">
-          <Skeleton className="h-4 w-3/4" />
-          <Skeleton className="h-4 w-1/2" />
-        </div>
-      </div>
-    </div>
+      )}
+    </>
   );
 }
 

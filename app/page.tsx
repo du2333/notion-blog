@@ -56,7 +56,7 @@ export default async function Home() {
             </p>
           </div>
           <Link href="/blog/1">
-            <Button variant="outline" className="rounded-full group">
+            <Button variant="outline" className="rounded-full group cursor-pointer">
               查看所有文章
               <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
             </Button>
