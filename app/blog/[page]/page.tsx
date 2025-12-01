@@ -27,7 +27,7 @@ export default async function Page({
 
   const pageNumber = parseInt(page, 10);
 
-  const { publishedPosts, config } = await getSiteData();
+  const { publishedPosts, config, tagOptions } = await getSiteData();
   const totalPages = Math.ceil(publishedPosts.length / config.POSTS_PER_PAGE);
 
   if (pageNumber > totalPages || pageNumber < 1) {
@@ -52,7 +52,8 @@ export default async function Page({
           </p>
         </div>
         
-        <BlogList posts={posts} />
+        {/* Pass tags to enable the filter UI */}
+        <BlogList posts={posts} tags={tagOptions} />
         
         <div className="pt-8 border-t">
            <PostPagination totalPages={totalPages} currentPage={pageNumber} />
