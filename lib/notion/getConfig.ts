@@ -3,8 +3,33 @@ import { getTextContent } from "notion-utils";
 import defaultConfig from "@/blog.config";
 import { getPostBlocks } from "@/lib/notion/getPostBlocks";
 import { getPageIdsInCollection } from "@/lib/notion/getPageIds";
+import { mapImgUrl } from "@/utils/imgProcessing";
 import { Decoration } from "@/types/notion";
 import { BlogConfig } from "@/types/config";
+
+/**
+ * 从 Notion 属性中提取文件/图片 URL
+ */
+function getFileValue(property: unknown): string {
+  if (!property || !Array.isArray(property)) {
+    return "";
+  }
+  // 文件属性格式可能是: [[url]] 或 [[filename, [[a, url]]]]
+  const firstItem = property[0];
+  if (Array.isArray(firstItem)) {
+    // 检查是否有嵌套的链接
+    if (firstItem[1] && Array.isArray(firstItem[1])) {
+      const link = firstItem[1].find(
+        (item: unknown) => Array.isArray(item) && item[0] === "a"
+      );
+      if (link && link[1]) {
+        return link[1];
+      }
+    }
+    return firstItem[0] || "";
+  }
+  return "";
+}
 
 export async function getConfig(configPageId: string | null) {
   if (!configPageId) return defaultConfig;
@@ -49,13 +74,29 @@ export async function getConfig(configPageId: string | null) {
 
   const config: Partial<BlogConfig> = {};
 
+  // 找到 file 类型列的 schema key
+  let fileColumnKey: string | null = null;
+  for (const [key, schemaItem] of Object.entries(schema)) {
+    if ((schemaItem as { type?: string }).type === "file") {
+      fileColumnKey = key;
+      break;
+    }
+  }
+
   // 遍历所有配置项，获取配置项的值
   configIds.forEach((id) => {
-    const { properties } = configBlockMap[id].value;
-    const tempConfigItem = {
+    const block = configBlockMap[id].value;
+    const { properties } = block;
+    const tempConfigItem: {
+      name: string;
+      value: string;
+      type: string;
+      fileValue: string;
+    } = {
       name: "",
       value: "",
       type: "",
+      fileValue: "",
     };
 
     /**
@@ -81,9 +122,14 @@ export async function getConfig(configPageId: string | null) {
       if (name === "name" || name === "value" || name === "type") {
         tempConfigItem[name] = content;
       }
+
+      // 如果是 file 类型列，提取文件 URL
+      if (key === fileColumnKey) {
+        tempConfigItem.fileValue = getFileValue(value);
+      }
     });
 
-    const { name, value: rawValue, type } = tempConfigItem;
+    const { name, value: rawValue, type, fileValue } = tempConfigItem;
 
     let value;
 
@@ -108,6 +154,13 @@ export async function getConfig(configPageId: string | null) {
           value = JSON.parse(rawValue);
         } catch (error) {
           console.error(`配置项${name}的值${rawValue}JSON解析失败, ${error}`);
+        }
+        break;
+
+      case "File":
+        // 从 file 类型列获取图片 URL，使用 mapImgUrl 转换
+        if (fileValue) {
+          value = mapImgUrl(fileValue, block, "block", false);
         }
         break;
 

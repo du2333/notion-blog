@@ -14,8 +14,9 @@ export type BlogConfig = {
   POSTS_PER_PAGE: number;
 
   IMAGE_COMPRESS_WIDTH: number;
+  HERO_IMAGE?: string; // 可选，Hero 区域图片 URL
 };
 
 export function blogConfig(config: BlogConfig): BlogConfig {
-    return config;
+  return config;
 }
