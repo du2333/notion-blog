@@ -69,3 +69,29 @@
   opacity: 1;
 }
 
+/* Limit image width in notion content */
+.notion-asset-wrapper-image {
+  max-width: 920px !important;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.notion-asset-wrapper-image img {
+  max-width: 100% !important;
+  height: auto !important;
+  object-fit: contain !important; /* Prefer contain to prevent cropping if strictly limited */
+}
+
+/* Limit code block width */
+.notion-code-block {
+  max-width: 920px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Ensure pre tag handles overflow */
+.notion-code-block pre {
+  overflow-x: auto;
+  border-radius: 0.5rem;
+  padding: 1rem;
+}

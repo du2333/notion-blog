@@ -89,7 +89,7 @@ export function Code({ block }: { block: CodeBlock }) {
   }
 
   return (
-    <div className="relative group" ref={codeRef}>
+    <div className="relative group notion-code-block" ref={codeRef}>
       <div className="absolute top-2 right-2 z-10 opacity-0 group-hover:opacity-100 transition-opacity duration-200">
         <Button
           onClick={handleCopy}
