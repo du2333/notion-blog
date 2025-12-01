@@ -9,15 +9,15 @@ import { Menu, X } from "lucide-react";
 
 const navigationItems = [
   {
-    label: "Home",
+    label: "主页",
     href: "/",
   },
   {
-    label: "Blog",
+    label: "博客",
     href: "/blog/1",
   },
   {
-    label: "Tags",
+    label: "标签",
     href: "/tag",
   },
 ];

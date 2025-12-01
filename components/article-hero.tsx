@@ -45,7 +45,7 @@ export default function ArticleHero({
                 <time dateTime={publishedAt}>{publishedAt}</time>
               </div>
               <time dateTime={lastEditedTime}>
-                Last updated on {lastEditedTime}
+                最后更新于 {lastEditedTime}
               </time>
             </div>
 
