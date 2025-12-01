@@ -97,12 +97,13 @@ export default async function PostPage({
   };
 
   return (
-    <article className="min-h-[calc(100vh-10rem)] pb-12 md:pb-16 lg:pb-24">
+    <article className="min-h-[calc(100vh-10rem)] pt-24 pb-12 md:pt-32 md:pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}
       />
-      <div className="animate-fade-in-down delay-100">
+      
+      <div className="w-full max-w-5xl mx-auto px-4">
         <ArticleHero
           title={post.title}
           tags={post.tags}
@@ -110,20 +111,21 @@ export default async function PostPage({
           publishedAt={formatDate(new Date(post.date))}
           lastEditedTime={formatDate(new Date(post.lastEditedTime))}
         />
-      </div>
 
-      <div className="container mt-8 grid grid-cols-1 gap-8 xl:grid-cols-[3fr_1fr] animate-fade-in-down delay-300">
-        <div className="max-w-none prose dark:prose-invert lg:prose-xl">
-          <NotionPage post={post} />
-        </div>
-        {post.toc.length > 0 && (
-          <div className="hidden xl:block">
-            <aside className="sticky top-20">
-              <h3 className="text-lg font-medium mb-4">Table of Contents</h3>
-              <TableOfContent toc={post.toc} />
-            </aside>
+        <div className="grid grid-cols-1 gap-12 lg:grid-cols-[1fr_240px] mt-8">
+          <div className="min-w-0 max-w-none prose dark:prose-invert lg:prose-lg prose-headings:scroll-mt-24 prose-img:rounded-xl animate-fade-in-up delay-300">
+            <NotionPage post={post} />
           </div>
-        )}
+          
+          {post.toc.length > 0 && (
+            <div className="hidden lg:block">
+              <aside className="sticky top-24 animate-fade-in-up delay-500">
+                <h3 className="text-sm font-semibold text-muted-foreground mb-4 tracking-wider uppercase">目录</h3>
+                <TableOfContent toc={post.toc} />
+              </aside>
+            </div>
+          )}
+        </div>
       </div>
     </article>
   );

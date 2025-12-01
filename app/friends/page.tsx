@@ -6,6 +6,7 @@ import { notFound } from "next/navigation";
 import { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { ArrowUpRight } from "lucide-react";
 
 export async function generateMetadata(): Promise<Metadata> {
   const { pages, config } = await getSiteData();
@@ -70,57 +71,64 @@ export default async function FriendsPage() {
   };
 
   return (
-    <article className="min-h-[calc(100vh-10rem)] pb-12 md:pb-16 lg:pb-24">
-      <div className="container pt-12 md:pt-16 lg:pt-24">
-        <h1 className="text-4xl md:text-5xl font-bold mb-8 animate-fade-in-down">
+    <article className="min-h-[calc(100vh-10rem)] w-full max-w-5xl mx-auto px-4 pt-32 pb-12 md:pt-40 md:pb-24">
+      <header className="mb-12 md:mb-16 space-y-4 text-center animate-fade-in-down">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
           {friendsPage.title}
         </h1>
+        <p className="text-xl text-muted-foreground">
+           {friendsPage.summary || "与我志同道合的朋友们"}
+        </p>
+      </header>
 
-        {/* 友链卡片区域 */}
-        {friendLinks.length > 0 && (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-12 animate-fade-in-down delay-100">
-            {friendLinks.map((friend) => (
-              <Link
-                key={friend.id}
-                href={friend.url}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="group flex items-center gap-4 p-4 rounded-xl border border-border bg-card hover:bg-accent/50 transition-all duration-300 hover:shadow-lg hover:-translate-y-0.5"
-              >
-                {friend.avatar ? (
-                  <Image
-                    src={friend.avatar}
-                    alt={friend.name}
-                    width={48}
-                    height={48}
-                    className="rounded-full object-cover flex-shrink-0"
-                  />
-                ) : (
-                  <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0">
-                    <span className="text-lg font-semibold text-primary">
-                      {friend.name.charAt(0).toUpperCase()}
-                    </span>
-                  </div>
-                )}
-                <div className="flex-1 min-w-0">
-                  <h3 className="font-semibold text-foreground group-hover:text-primary transition-colors truncate">
-                    {friend.name}
-                  </h3>
-                  {friend.description && (
-                    <p className="text-sm text-muted-foreground line-clamp-2">
-                      {friend.description}
-                    </p>
-                  )}
+      {/* 友链卡片区域 */}
+      {friendLinks.length > 0 && (
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 mb-16 animate-fade-in-up delay-100">
+          {friendLinks.map((friend) => (
+            <Link
+              key={friend.id}
+              href={friend.url}
+              target="_blank"
+              rel="noopener noreferrer"
+              className="group relative flex items-start gap-4 p-6 rounded-2xl border bg-card/50 hover:bg-card hover:shadow-lg transition-all duration-300"
+            >
+               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                  <ArrowUpRight className="size-4 text-muted-foreground" />
+               </div>
+               
+              {friend.avatar ? (
+                <Image
+                  src={friend.avatar}
+                  alt={friend.name}
+                  width={56}
+                  height={56}
+                  className="rounded-full object-cover flex-shrink-0 ring-2 ring-border group-hover:ring-primary/20 transition-all"
+                />
+              ) : (
+                <div className="w-14 h-14 rounded-full bg-primary/10 flex items-center justify-center flex-shrink-0 ring-2 ring-border">
+                  <span className="text-xl font-bold text-primary">
+                    {friend.name.charAt(0).toUpperCase()}
+                  </span>
                 </div>
-              </Link>
-            ))}
-          </div>
-        )}
-
-        {/* Notion 页面内容（如果有其他内容） */}
-        <div className="max-w-none prose dark:prose-invert lg:prose-xl animate-fade-in-down delay-200">
-          <NotionPage post={filteredPost} />
+              )}
+              <div className="flex-1 min-w-0 space-y-1 pt-1">
+                <h3 className="font-semibold text-lg text-foreground group-hover:text-primary transition-colors truncate">
+                  {friend.name}
+                </h3>
+                {friend.description && (
+                  <p className="text-sm text-muted-foreground line-clamp-2 leading-relaxed">
+                    {friend.description}
+                  </p>
+                )}
+              </div>
+            </Link>
+          ))}
         </div>
+      )}
+
+      {/* Notion 页面内容（如果有其他内容） */}
+      <div className="max-w-3xl mx-auto prose dark:prose-invert lg:prose-xl animate-fade-in-up delay-200">
+        <NotionPage post={filteredPost} />
       </div>
     </article>
   );

@@ -57,14 +57,24 @@ export default async function TagPage({
 
   return (
     <div
-      className="container flex flex-col gap-4 py-8 mt-16
-    "
+      className="w-full max-w-5xl mx-auto px-4 pt-32 pb-12 md:pt-40 md:pb-24 min-h-screen flex flex-col gap-8"
     >
-      <h1 className="text-4xl font-bold mb-6 animate-fade-in-up duration-500">
-        {`#${decodeURIComponent(tag)}`}
-      </h1>
+      <div className="space-y-2">
+        <h1 className="text-4xl font-bold animate-fade-in-up duration-500">
+          {`#${decodeURIComponent(tag)}`}
+        </h1>
+        <p className="text-muted-foreground animate-fade-in-up delay-100">
+           {filteredPosts.length} 篇文章
+        </p>
+      </div>
+      
       <BlogList posts={posts} />
-      <PostPagination totalPages={totalPages} currentPage={pageNumber} />
+      
+      {totalPages > 1 && (
+         <div className="pt-8 border-t">
+            <PostPagination totalPages={totalPages} currentPage={pageNumber} />
+         </div>
+      )}
     </div>
   );
 }

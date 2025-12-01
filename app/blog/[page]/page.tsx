@@ -44,7 +44,7 @@ export default async function Page({
 
   return (
     <main>
-      <div className="w-full max-w-5xl mx-auto px-4 py-12 md:py-24 min-h-screen space-y-12">
+      <div className="w-full max-w-5xl mx-auto px-4 pt-32 pb-12 md:pt-40 md:pb-24 min-h-screen space-y-12">
         <div className="space-y-4 text-center md:text-left">
           <h1 className="text-3xl md:text-4xl font-bold tracking-tight">文章列表</h1>
           <p className="text-muted-foreground">

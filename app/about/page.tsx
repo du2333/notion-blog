@@ -38,14 +38,20 @@ export default async function AboutPage() {
   }
 
   return (
-    <article className="min-h-[calc(100vh-10rem)] pb-12 md:pb-16 lg:pb-24">
-      <div className="container pt-12 md:pt-16 lg:pt-24">
-        <h1 className="text-4xl md:text-5xl font-bold mb-8 animate-fade-in-down">
+    <article className="min-h-[calc(100vh-10rem)] w-full max-w-5xl mx-auto px-4 pt-32 pb-12 md:pt-40 md:pb-24">
+      <header className="mb-12 md:mb-16 space-y-4 text-center animate-fade-in-down">
+        <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
           {aboutPage.title}
         </h1>
-        <div className="max-w-none prose dark:prose-invert lg:prose-xl animate-fade-in-down delay-100">
-          <NotionPage post={aboutPage} />
-        </div>
+        {aboutPage.summary && (
+           <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
+             {aboutPage.summary}
+           </p>
+        )}
+      </header>
+      
+      <div className="max-w-3xl mx-auto prose dark:prose-invert lg:prose-xl animate-fade-in-up delay-200">
+        <NotionPage post={aboutPage} />
       </div>
     </article>
   );
