@@ -62,13 +62,17 @@ export default async function Header() {
           {/* Mobile Menu Trigger */}
           <MobileNavigation>
              {/* Pass actions to mobile nav to render inside */}
-             <div className="flex items-center gap-4 mt-8 pt-8 border-t w-full justify-center">
-                <ThemeController />
-                <div className="w-full max-w-[200px]">
-                  <SearchModal
-                    suggestedPosts={latestPosts}
-                    searchByKeywordAction={searchByKeyword}
-                  />
+             <div className="flex flex-col items-center gap-6 mt-8 pt-8 border-t w-full border-border/50">
+                <div className="flex items-center gap-6 justify-center w-full">
+                   <div className="scale-125">
+                      <ThemeController />
+                   </div>
+                   <div className="w-full max-w-[240px]">
+                      <SearchModal
+                        suggestedPosts={latestPosts}
+                        searchByKeywordAction={searchByKeyword}
+                      />
+                   </div>
                 </div>
              </div>
           </MobileNavigation>
