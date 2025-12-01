@@ -44,9 +44,19 @@ export default async function Page({
 
   return (
     <main>
-      <div className="container py-12 md:px-6 md:py-16 min-h-screen">
+      <div className="w-full max-w-5xl mx-auto px-4 py-12 md:py-24 min-h-screen space-y-12">
+        <div className="space-y-4 text-center md:text-left">
+          <h1 className="text-3xl md:text-4xl font-bold tracking-tight">文章列表</h1>
+          <p className="text-muted-foreground">
+            第 {pageNumber} 页，共 {totalPages} 页
+          </p>
+        </div>
+        
         <BlogList posts={posts} />
-        <PostPagination totalPages={totalPages} currentPage={pageNumber} />
+        
+        <div className="pt-8 border-t">
+           <PostPagination totalPages={totalPages} currentPage={pageNumber} />
+        </div>
       </div>
     </main>
   );

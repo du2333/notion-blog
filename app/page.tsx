@@ -1,9 +1,9 @@
 import { getSiteData } from "@/lib/notion/getSiteData";
-import BlogList from "@/components/blog-list";
+import FeaturePostList from "@/components/feature-post-list";
 import { HeroSection } from "@/components/hero-section";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
-import { CircleArrowRight } from "lucide-react";
+import { ArrowRight } from "lucide-react";
 import { WithContext, ItemList } from "schema-dts";
 
 export default async function Home() {
@@ -11,6 +11,9 @@ export default async function Home() {
 
   // sort by date
   latestPosts.sort((a, b) => b.date - a.date);
+
+  // Only show top 3 posts as features on homepage
+  const featurePosts = latestPosts.slice(0, 3);
 
   const blog: WithContext<ItemList> = {
     "@context": "https://schema.org",
@@ -41,17 +44,27 @@ export default async function Home() {
         dangerouslySetInnerHTML={{ __html: JSON.stringify(blog) }}
       />
       <HeroSection />
-      <div className="container px-6 py-12 md:px-8 md:py-16">
-        <BlogList posts={latestPosts} />
-        <div className="flex justify-end mt-8">
+
+      <section className="w-full max-w-5xl mx-auto px-4 py-16 md:py-24 space-y-16">
+        <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
+          <div className="space-y-2">
+            <h2 className="text-3xl md:text-4xl font-bold tracking-tight">
+              最新文章
+            </h2>
+            <p className="text-muted-foreground">
+              分享关于技术、生活和思考的见解
+            </p>
+          </div>
           <Link href="/blog/1">
-            <Button variant="ghost" className="cursor-pointer">
-              <CircleArrowRight className="size-4" />
-              Read More
+            <Button variant="outline" className="rounded-full group">
+              查看所有文章
+              <ArrowRight className="ml-2 size-4 transition-transform group-hover:translate-x-1" />
             </Button>
           </Link>
         </div>
-      </div>
+
+        <FeaturePostList posts={featurePosts} />
+      </section>
     </main>
   );
 }

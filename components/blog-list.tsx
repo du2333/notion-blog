@@ -1,11 +1,17 @@
-import BlogPostCard from "@/components/blog-post-card";
 import { Page } from "@/types/notion";
+import CompactPostCard from "@/components/compact-post-card";
+import { cn } from "@/lib/utils";
 
-export default function BlogList({ posts }: { posts: Page[] }) {
+interface BlogListProps {
+  posts: Page[];
+  className?: string;
+}
+
+export default function BlogList({ posts, className }: BlogListProps) {
   return (
-    <div className="w-full my-6 grid grid-cols-1 md:grid-cols-2 gap-12">
+    <div className={cn("flex flex-col gap-4", className)}>
       {posts.map((post) => (
-        <BlogPostCard key={post.id} post={post} />
+        <CompactPostCard key={post.id} post={post} />
       ))}
     </div>
   );
