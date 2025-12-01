@@ -68,3 +68,11 @@ export interface TableOfContentsEntry {
   text: string;
   indentLevel: number;
 }
+
+export interface FriendLink {
+  id: string;
+  name: string;
+  url: string;
+  description?: string;
+  avatar?: string;
+}

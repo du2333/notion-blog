@@ -20,6 +20,14 @@ const navigationItems = [
     label: "标签",
     href: "/tag",
   },
+  {
+    label: "关于",
+    href: "/about",
+  },
+  {
+    label: "友链",
+    href: "/friends",
+  },
 ];
 
 export function Navigation() {

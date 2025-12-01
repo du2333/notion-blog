@@ -8,12 +8,13 @@
   --color-muted: oklch(0.274 0.006 286.033);
 }
 
-.notion-collection-column-title-icon {
-  display: none;
-}
-
+/* 隐藏页面属性区域 */
+.notion-page-properties,
+.notion-collection-row-body,
+.notion-collection-row-property,
+.notion-collection-column-title-icon,
 .notion-collection-column-title-body {
-  display: none;
+  display: none !important;
 }
 
 .notion-h:hover .notion-hash-link {

@@ -124,6 +124,7 @@ export async function getWholeSiteData(pageId: string) {
     publishedPosts,
     latestPosts: getLatestPosts(publishedPosts),
     config,
+    pages: navPageList.filter((p) => p.type === PageType.Page),
   };
 }
 
