@@ -82,7 +82,7 @@
 可以直接在 Notion 里进行大部分配置，除了 `NOTION_PAGE_ID` 和 `NEXT_REVALIDATE_SECONDS` 需要手动配置
 
 - `NOTION_PAGE_ID` 是你的 Notion 数据库 ID
-- `NEXT_REVALIDATE_SECONDS` 是 ISR 的缓存时间，默认是 10 秒，通俗的讲就是每隔 10 秒会重新生成一次静态页面
+- `NEXT_REVALIDATE_SECONDS` 是 ISR 的缓存时间，默认是 60 秒，通俗的讲就是每隔 60 秒会重新生成一次静态页面
 
 其余 Notion 上的配置项都挺好理解的，这里就不赘述了
 

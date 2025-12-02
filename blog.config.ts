@@ -3,7 +3,7 @@ import { blogConfig } from "@/types/config";
 export default blogConfig({
   NOTION_PAGE_ID:
     process.env.NOTION_PAGE_ID || "1be1f833110780d98383fc637676cee8",
-  NEXT_REVALIDATE_SECONDS: 10, // 缓存时间
+  NEXT_REVALIDATE_SECONDS: 60, // 缓存时间（秒）
 
   AUTHOR: "Zephyrrr",
   SITE_URL: "https://www.example.com",
