@@ -6,7 +6,6 @@ import { getSearchResults } from "@/lib/notion/getSearchResults";
 import { getSiteData } from "@/lib/notion/getSiteData";
 import { Navigation, MobileNavigation } from "@/components/navigation";
 import HeaderBackground from "@/components/header-background";
-import Image from "next/image";
 
 export default async function Header() {
   const siteData = await getSiteData();
@@ -23,7 +22,7 @@ export default async function Header() {
         <div className="flex items-center flex-shrink-0">
           <Link href="/" className="flex items-center gap-2 group">
             <div className="relative rounded-full overflow-hidden transition-transform duration-300 group-hover:scale-110">
-              <Image
+              <img
                 src={
                   BlogConfig.HEADER_ICON || BlogConfig.FAVICON || "/favicon.svg"
                 }
@@ -31,7 +30,6 @@ export default async function Header() {
                 width={32}
                 height={32}
                 className="object-cover"
-                priority
               />
             </div>
             <span className="text-lg font-bold tracking-tight transition-colors group-hover:text-primary/80">

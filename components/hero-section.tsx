@@ -1,5 +1,4 @@
 import { getSiteData } from "@/lib/notion/getSiteData";
-import Image from "next/image";
 import { ChevronDown, ArrowRight } from "lucide-react";
 import Link from "next/link";
 
@@ -73,13 +72,10 @@ export async function HeroSection() {
               <div className="absolute inset-0 rounded-full border-2 border-dashed border-primary/10 scale-125 animate-[spin_15s_linear_infinite_reverse]" />
 
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-background shadow-2xl">
-                <Image
+                <img
                   src={BlogConfig.HERO_IMAGE || "/images/avatar.png"}
                   alt={BlogConfig.AUTHOR}
-                  fill
-                  className="object-cover hover:scale-105 transition-transform duration-700 ease-in-out"
-                  priority
-                  sizes="(max-width: 768px) 100vw, 50vw"
+                  className="absolute inset-0 w-full h-full object-cover hover:scale-105 transition-transform duration-700 ease-in-out"
                 />
               </div>
             </div>

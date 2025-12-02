@@ -1,13 +1,18 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Page } from "@/types/notion";
 import { Calendar, ArrowRight } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 
-export default function FeaturePost({ post, index }: { post: Page; index: number }) {
+export default function FeaturePost({
+  post,
+  index,
+}: {
+  post: Page;
+  index: number;
+}) {
   const [formattedDate, setFormattedDate] = useState("");
 
   useEffect(() => {
@@ -17,21 +22,22 @@ export default function FeaturePost({ post, index }: { post: Page; index: number
   const isEven = index % 2 === 0;
 
   return (
-    <div className={cn(
-      "flex flex-col gap-8 md:gap-12 items-center group",
-      isEven ? "md:flex-row" : "md:flex-row-reverse"
-    )}>
+    <div
+      className={cn(
+        "flex flex-col gap-8 md:gap-12 items-center group",
+        isEven ? "md:flex-row" : "md:flex-row-reverse"
+      )}
+    >
       {/* Image Side */}
-      <Link 
+      <Link
         href={`/post/${encodeURIComponent(post.slug)}`}
         className="w-full md:w-3/5 overflow-hidden rounded-2xl shadow-lg transition-transform duration-500 hover:shadow-2xl"
       >
         <div className="relative aspect-[16/10] overflow-hidden">
-          <Image
+          <img
             src={post.pageCover || "/images/placeholder.svg"}
             alt={post.title}
-            fill
-            className="object-cover transition-transform duration-700 group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-105"
           />
           <div className="absolute inset-0 bg-black/10 group-hover:bg-transparent transition-colors duration-300" />
         </div>
@@ -45,14 +51,17 @@ export default function FeaturePost({ post, index }: { post: Page; index: number
             <time dateTime={formattedDate}>{formattedDate}</time>
           </div>
           {post.tags.length > 0 && (
-             <>
+            <>
               <span className="w-1 h-1 rounded-full bg-muted-foreground/50" />
               <span className="text-primary font-medium">{post.tags[0]}</span>
-             </>
+            </>
           )}
         </div>
 
-        <Link href={`/post/${encodeURIComponent(post.slug)}`} className="group/title">
+        <Link
+          href={`/post/${encodeURIComponent(post.slug)}`}
+          className="group/title"
+        >
           <h2 className="text-3xl md:text-4xl font-bold tracking-tight leading-tight transition-colors group-hover/title:text-primary">
             {post.title}
           </h2>
@@ -75,4 +84,3 @@ export default function FeaturePost({ post, index }: { post: Page; index: number
     </div>
   );
 }
-

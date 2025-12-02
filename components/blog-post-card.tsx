@@ -1,7 +1,6 @@
 "use client";
 
 import Link from "next/link";
-import Image from "next/image";
 import { Page } from "@/types/notion";
 import { useEffect, useState, useRef } from "react";
 import { Tag, Calendar } from "lucide-react";
@@ -48,11 +47,10 @@ export default function BlogPostCard({ post }: BlogPostCardProps) {
         className="overflow-hidden rounded-lg"
       >
         <div className="relative aspect-video overflow-hidden rounded-lg">
-          <Image
+          <img
             src={post.pageCover || "/images/placeholder.svg"}
             alt={post.title}
-            fill
-            className="object-cover transition-transform duration-300 group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
           />
         </div>
       </Link>

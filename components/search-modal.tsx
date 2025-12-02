@@ -9,7 +9,6 @@ import {
   Search,
   X,
 } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
@@ -281,11 +280,10 @@ export default function SearchModal({
                       >
                         <div className="relative h-14 w-20 flex-shrink-0 overflow-hidden rounded-lg bg-muted border border-border/50">
                           {post.pageCover ? (
-                            <Image
+                            <img
                               src={post.pageCover}
                               alt={post.title}
-                              fill
-                              className="object-cover transition-transform duration-300 group-hover:scale-110"
+                              className="absolute inset-0 w-full h-full object-cover transition-transform duration-300 group-hover:scale-110"
                             />
                           ) : (
                             <div className="flex h-full w-full items-center justify-center bg-secondary">

@@ -2,7 +2,6 @@
 
 import { Page } from "@/types/notion";
 import { ArrowUpRight } from "lucide-react";
-import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
@@ -14,42 +13,40 @@ export default function CompactPostCard({ post }: { post: Page }) {
   }, [post.date]);
 
   return (
-    <Link 
+    <Link
       href={`/post/${encodeURIComponent(post.slug)}`}
       className="group flex items-start gap-4 p-4 -mx-4 rounded-2xl transition-colors hover:bg-secondary/50"
     >
       <div className="flex-1 space-y-3">
         <div className="flex items-center gap-3 text-xs text-muted-foreground">
-           <time dateTime={formattedDate} className="font-medium">
-              {formattedDate}
-           </time>
-           {post.tags.length > 0 && (
+          <time dateTime={formattedDate} className="font-medium">
+            {formattedDate}
+          </time>
+          {post.tags.length > 0 && (
             <>
               <span className="w-0.5 h-0.5 rounded-full bg-muted-foreground" />
               <span className="text-primary">{post.tags[0]}</span>
             </>
-           )}
+          )}
         </div>
-        
+
         <h3 className="text-xl font-bold tracking-tight group-hover:text-primary transition-colors flex items-center gap-2">
           {post.title}
           <ArrowUpRight className="size-4 opacity-0 -translate-y-1 translate-x-1 transition-all group-hover:opacity-100 group-hover:translate-y-0 group-hover:translate-x-0 text-muted-foreground" />
         </h3>
-        
+
         <p className="text-muted-foreground text-sm line-clamp-2 leading-relaxed">
           {post.summary}
         </p>
       </div>
 
       <div className="relative w-24 h-24 sm:w-32 sm:h-24 flex-shrink-0 overflow-hidden rounded-xl bg-muted">
-        <Image
+        <img
           src={post.pageCover || "/images/placeholder.svg"}
           alt={post.title}
-          fill
-          className="object-cover transition-transform duration-500 group-hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
         />
       </div>
     </Link>
   );
 }
-

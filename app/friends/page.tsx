@@ -4,7 +4,6 @@ import { getFriendLinks } from "@/lib/notion/getFriendLinks";
 import { NotionPage } from "@/components/notion/notion-page";
 import { notFound } from "next/navigation";
 import { Metadata } from "next";
-import Image from "next/image";
 import Link from "next/link";
 import { ArrowUpRight } from "lucide-react";
 
@@ -77,7 +76,7 @@ export default async function FriendsPage() {
           {friendsPage.title}
         </h1>
         <p className="text-xl text-muted-foreground">
-           {friendsPage.summary || "与我志同道合的朋友们"}
+          {friendsPage.summary || "与我志同道合的朋友们"}
         </p>
       </header>
 
@@ -92,12 +91,12 @@ export default async function FriendsPage() {
               rel="noopener noreferrer"
               className="group relative flex items-start gap-4 p-6 rounded-2xl border bg-card/50 hover:bg-card hover:shadow-lg transition-all duration-300"
             >
-               <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
-                  <ArrowUpRight className="size-4 text-muted-foreground" />
-               </div>
-               
+              <div className="absolute top-4 right-4 opacity-0 group-hover:opacity-100 transition-opacity">
+                <ArrowUpRight className="size-4 text-muted-foreground" />
+              </div>
+
               {friend.avatar ? (
-                <Image
+                <img
                   src={friend.avatar}
                   alt={friend.name}
                   width={56}

@@ -3,7 +3,6 @@
 import { NotionComponents, NotionRenderer } from "react-notion-x";
 import { useMemo, useState } from "react";
 import Link from "next/link";
-import Image from "next/image";
 
 import { Page } from "@/types/notion";
 import { mapImgUrl } from "@/utils/imgProcessing";
@@ -48,7 +47,6 @@ export function NotionPage({ post }: { post: Page }) {
 
   const components = useMemo<Partial<NotionComponents>>(
     () => ({
-      nextLegacyImage: Image,
       nextLink: Link,
       Code,
       Collection,

@@ -1,4 +1,3 @@
-import Image from "next/image";
 import { Calendar, Clock, Tag as TagIcon } from "lucide-react";
 import Link from "next/link";
 
@@ -28,7 +27,7 @@ export default function ArticleHero({
           <span className="text-border">|</span>
           <div className="flex items-center gap-1.5">
             <Clock className="size-4" />
-             <span>更新于 {lastEditedTime}</span>
+            <span>更新于 {lastEditedTime}</span>
           </div>
         </div>
 
@@ -51,12 +50,10 @@ export default function ArticleHero({
       </div>
 
       <div className="relative w-full aspect-video md:aspect-[21/9] overflow-hidden rounded-2xl shadow-lg animate-fade-in-up delay-200">
-        <Image
+        <img
           src={coverImage || "/images/placeholder.svg"}
           alt={title}
-          fill
-          priority
-          className="object-cover transition-transform duration-700 hover:scale-105"
+          className="absolute inset-0 w-full h-full object-cover transition-transform duration-700 hover:scale-105"
         />
       </div>
     </div>
