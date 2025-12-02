@@ -97,7 +97,7 @@ export default async function PostPage({
   };
 
   return (
-    <article className="min-h-[calc(100vh-10rem)] pt-24 pb-12 md:pt-32 md:pb-24">
+    <article className="min-h-[calc(100vh-10rem)] pt-32 pb-12 md:pt-40 md:pb-24">
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(article) }}

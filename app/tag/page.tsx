@@ -11,7 +11,7 @@ export default async function TagPage() {
   const { tagOptions } = await getSiteData();
 
   return (
-    <div className="w-full max-w-5xl mx-auto px-4 py-12 md:py-24 min-h-screen flex flex-col justify-center items-center gap-12">
+    <div className="w-full max-w-5xl mx-auto px-4 pt-32 pb-12 md:pt-40 md:pb-24 min-h-screen flex flex-col justify-center items-center gap-12">
       <div className="text-center space-y-4 animate-fade-in-down">
         <h1 className="text-4xl md:text-5xl font-bold tracking-tight">
           标签云
@@ -20,8 +20,11 @@ export default async function TagPage() {
           探索 {tagOptions.length} 个不同的话题
         </p>
       </div>
-      
-      <div className="w-full animate-fade-in-up" style={{ animationDelay: '200ms' }}>
+
+      <div
+        className="w-full animate-fade-in-up"
+        style={{ animationDelay: "200ms" }}
+      >
         <TagCloud tags={tagOptions} />
       </div>
     </div>
