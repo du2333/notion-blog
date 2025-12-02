@@ -61,7 +61,6 @@ export function Navigation() {
 }
 
 export function MobileNavigation({
-  children,
   search,
 }: {
   children?: React.ReactNode;
