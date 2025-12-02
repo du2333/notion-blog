@@ -133,6 +133,6 @@ export async function getWholeSiteData(pageId: string) {
 
 function getLatestPosts(publishedPosts: Page[], latestPostCount: number = 6) {
   return publishedPosts
-    .sort((a, b) => (b.lastEditedTime || b.date) - (a.lastEditedTime || a.date))
+    .sort((a, b) => b.date - a.date)
     .slice(0, latestPostCount);
 }
