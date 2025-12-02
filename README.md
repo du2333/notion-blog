@@ -5,14 +5,7 @@
 
 基于 Next.js App Router 和 Notion API 构建的高性能静态博客，Notion 作为内容管理系统，支持增量静态再生（ISR）和丰富的交互体验。
 
-简体中文 | [English](./README_EN.md)
-
-示例图片
-
-![image](./sample/home.png)
-![image](./sample/blog.png)
-![image](./sample/post.png)
-![image](./sample/tag.png)
+[示例网站](https://www.dukda.com)
 
 ## 特性亮点
 
@@ -61,7 +54,31 @@
    - 选择你的项目，然后点击 `Deploy` 按钮
    - 等待部署完成
 
-6. 也可以使用 Docker 部署，已经提供了`Dockerfile`
+6. 也推荐使用 Cloudflare Workers 部署（免费额度更慷慨），但是想要自定义域名的话，需要把域名，托管在 Cloudflare 上
+
+   - 注册 Cloudflare 账号
+   - 前往 `Workers & Pages` 页面，点击`Create Application
+   - 选择 `Continue with Github` 并授权
+   - 选择 `Import from GitHub` 并选择你的仓库
+   - 填写相应字段
+     - `Project name`: 随便去一个
+     - `Build command`: 删除掉，留空
+     - `Deploy command`：`pnpm run deploy`
+   - 点击 `Deploy`
+   - 前往部署好的仪表盘页面的`Settings` -> `Variables and Secrets`, 新增环境变量 `NOTION_PAGE_ID`，再次部署
+   - 关于自定义域名有两种设置方式
+     - 方式一：在`Settings` -> `Domains & Routes` 中添加域名，然后点击 `Add` 按钮
+     - 方式二：在`wrangler.json`配置文件里的修改`routes`配置项，注意要把所有的注释`//`去掉
+     ```json
+     "routes": [
+       {
+         "pattern": "www.yourdomain.com",
+         "custom_domain": true
+       }
+     ]
+     ```
+
+7. 也可以使用 Docker 部署，已经提供了`Dockerfile`
 
    - 注意如果使用环境变量，建议创建一个`.env`文件后，再进行镜像 build, 不然无法在 build 时获取到环境变量
    - 示例 docker-compose.yml 文件如下：

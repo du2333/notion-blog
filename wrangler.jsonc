@@ -13,6 +13,7 @@
     "observability": {
         "enabled": true
     },
+    "keep_vars": true,
     // "routes": [
     //     {
     //         "pattern": "www.yourdomain.com",
