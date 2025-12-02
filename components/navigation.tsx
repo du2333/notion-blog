@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Menu, X } from "lucide-react";
+import { createPortal } from "react-dom";
 
 const navigationItems = [
   {
@@ -81,6 +82,60 @@ export function MobileNavigation({ children }: { children?: React.ReactNode }) {
 
   if (!isMounted) return null;
 
+  const menu = (
+    <div
+      className={cn(
+        "fixed inset-0 z-[49] bg-background/95 backdrop-blur-xl pt-24 px-6 transition-all duration-500 ease-in-out origin-top md:hidden",
+        isOpen
+          ? "opacity-100 visible translate-y-0"
+          : "opacity-0 invisible -translate-y-4"
+      )}
+    >
+      <nav className="flex flex-col gap-2 items-center text-center">
+        {navigationItems.map((item, index) => {
+          const isActive =
+            pathname === item.href ||
+            (item.href !== "/" && pathname.startsWith(item.href));
+
+          return (
+            <div
+              key={item.href}
+              className={cn(
+                "transform transition-all duration-500 ease-out w-full",
+                isOpen ? "translate-y-0 opacity-100" : "translate-y-4 opacity-0"
+              )}
+              style={{ transitionDelay: `${index * 50}ms` }}
+            >
+              <Link
+                href={item.href}
+                className={cn(
+                  "text-xl font-medium transition-all duration-300 block py-3 rounded-xl",
+                  isActive
+                    ? "text-foreground bg-secondary/50"
+                    : "text-muted-foreground hover:text-foreground hover:bg-secondary/30"
+                )}
+                onClick={() => setIsOpen(false)}
+              >
+                {item.label}
+              </Link>
+            </div>
+          );
+        })}
+      </nav>
+
+      {/* Inject children (Search/Theme) into the menu with delay */}
+      <div
+        className={cn(
+          "transform transition-all duration-700 ease-out",
+          isOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
+        )}
+        style={{ transitionDelay: "300ms" }}
+      >
+        {children}
+      </div>
+    </div>
+  );
+
   return (
     <div className="md:hidden">
       <Button
@@ -90,74 +145,25 @@ export function MobileNavigation({ children }: { children?: React.ReactNode }) {
         onClick={() => setIsOpen(!isOpen)}
       >
         <div className="relative size-6">
-          <X 
+          <X
             className={cn(
               "absolute inset-0 transition-all duration-300 ease-in-out",
-              isOpen ? "rotate-0 opacity-100 scale-100" : "-rotate-90 opacity-0 scale-0"
-            )} 
+              isOpen
+                ? "rotate-0 opacity-100 scale-100"
+                : "-rotate-90 opacity-0 scale-0"
+            )}
           />
-          <Menu 
+          <Menu
             className={cn(
               "absolute inset-0 transition-all duration-300 ease-in-out",
-              isOpen ? "rotate-90 opacity-0 scale-0" : "rotate-0 opacity-100 scale-100"
-            )} 
+              isOpen
+                ? "rotate-90 opacity-0 scale-0"
+                : "rotate-0 opacity-100 scale-100"
+            )}
           />
         </div>
       </Button>
-
-      <div
-        className={cn(
-          "fixed inset-0 z-40 bg-background/95 backdrop-blur-xl pt-24 px-6 transition-all duration-500 ease-in-out origin-top",
-          isOpen 
-            ? "opacity-100 visible translate-y-0" 
-            : "opacity-0 invisible -translate-y-4"
-        )}
-      >
-        <nav className="flex flex-col gap-2 items-center text-center">
-          {navigationItems.map((item, index) => {
-            const isActive =
-              pathname === item.href ||
-              (item.href !== "/" && pathname.startsWith(item.href));
-
-            return (
-              <div
-                key={item.href}
-                className={cn(
-                  "transform transition-all duration-500 ease-out w-full",
-                  isOpen 
-                    ? "translate-y-0 opacity-100" 
-                    : "translate-y-4 opacity-0"
-                )}
-                style={{ transitionDelay: `${index * 50}ms` }}
-              >
-                <Link
-                  href={item.href}
-                  className={cn(
-                    "text-xl font-medium transition-all duration-300 block py-3 rounded-xl",
-                    isActive 
-                      ? "text-foreground bg-secondary/50" 
-                      : "text-muted-foreground hover:text-foreground hover:bg-secondary/30"
-                  )}
-                  onClick={() => setIsOpen(false)}
-                >
-                  {item.label}
-                </Link>
-              </div>
-            );
-          })}
-        </nav>
-        
-        {/* Inject children (Search/Theme) into the menu with delay */}
-        <div 
-           className={cn(
-             "transform transition-all duration-700 ease-out",
-             isOpen ? "translate-y-0 opacity-100" : "translate-y-8 opacity-0"
-           )}
-           style={{ transitionDelay: '300ms' }}
-        >
-            {children}
-        </div>
-      </div>
+      {createPortal(menu, document.body)}
     </div>
   );
 }
