@@ -58,13 +58,15 @@
 
    - [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/du2333/notion-blog)
    - 注册 Cloudflare 账号
-   - 前往 `Workers & Pages` 页面，点击`Create Application`
-   - 选择 `Continue with Github` 并授权
-   - 选择 `Import from GitHub` 并选择你的仓库
    - 填写相应字段
      - `Project name`: 随便取一个
+     - `Select KV namespace`: `Create new`
+     - `Name your KV namespace`: 默认即可
      - `Build command`: 删除掉，留空
      - `Deploy command`：`pnpm run deploy`
+     - 展开`Advanced`选项，配置构建时环境变量
+       - `Variable name`: `NOTION_PAGE_ID`
+       - `Variable value`: 你的 Notion 数据库 ID
    - 点击 `Deploy`
    - 前往部署好的仪表盘页面的`Settings` -> `Variables and Secrets`, 新增环境变量 `NOTION_PAGE_ID`，再次部署
    - 关于自定义域名有两种设置方式
