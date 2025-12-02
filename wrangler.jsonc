@@ -9,5 +9,14 @@
     "assets": {
         "directory": ".open-next/assets",
         "binding": "ASSETS"
-    }
+    },
+    "observability": {
+        "enabled": true
+    },
+    // "routes": [
+    //     {
+    //         "pattern": "www.yourdomain.com",
+    //         "custom_domain": true
+    //     }
+    // ]
 }
