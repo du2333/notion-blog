@@ -56,7 +56,7 @@
 
 6. 也推荐使用 Cloudflare Workers 部署（免费额度更慷慨），但是想要自定义域名的话，需要把域名，托管在 Cloudflare 上，点击按钮即可部署：
 
-   - [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/Zephyrrr/notion-blog)
+   - [![Deploy to Cloudflare](https://deploy.workers.cloudflare.com/button)](https://deploy.workers.cloudflare.com/?url=https://github.com/du2333/notion-blog)
    - 注册 Cloudflare 账号
    - 前往 `Workers & Pages` 页面，点击`Create Application`
    - 选择 `Continue with Github` 并授权
