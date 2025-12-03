@@ -55,8 +55,13 @@ export async function generateMetadata({
 }
 
 export async function generateStaticParams() {
-  // Build 时仍需要获取所有文章来生成静态路径
+  // Build 时获取所有文章来生成静态路径
   const { posts } = await getPostList();
+
+  // 预热搜索索引，确保部署后首次搜索也很快
+  const { prewarmSearchIndex } = await import("@/lib/notion/searchIndex");
+  await prewarmSearchIndex(posts);
+
   return posts.map((post) => ({
     slug: encodeURIComponent(post.slug),
   }));
