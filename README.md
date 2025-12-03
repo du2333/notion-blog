@@ -56,32 +56,32 @@
 
 6. 也推荐使用 Cloudflare Workers 部署（免费额度更慷慨），但是想要自定义域名的话，需要把域名，托管在 Cloudflare 上：
 
-- Fork 本项目
-- 注册 Cloudflare 账号
-- 前往 `Workers & Pages` 页面，点击`Create Application`
-- 选择 `Continue with Github` 并授权
-- 选择 `Import from GitHub` 并选择你的仓库
-- 填写相应字段
-  - `Project name`: notion-blog (必须和 wrangler.json 中的 name 一致)
-  - `Build command`: 删除掉，留空
-  - `Deploy command`：`pnpm run deploy`
-  - 展开`Advanced`选项，配置构建时环境变量
-    - `Variable name`: `NOTION_PAGE_ID`
-    - `Variable value`: 你的 Notion 数据库 ID
-  - 注意：在 Cloudflare 中我们使用了 KV 作为缓存，所以它会在每次部署时自动创建一个 KV 空间，所以你不需要手动创建 KV 空间。
-- 点击 `Deploy`
-- 前往部署好的仪表盘页面的`Settings` -> `Variables and Secrets`, 新增环境变量 `NOTION_PAGE_ID`，再次部署
-- 关于自定义域名有两种设置方式
-  - 方式一：在`Settings` -> `Domains & Routes` 中添加域名，然后点击 `Add` 按钮
-  - 方式二：在`wrangler.json`配置文件里的修改`routes`配置项，注意要把所有的注释`//`去掉
-  ```json
-  "routes": [
-    {
-      "pattern": "www.yourdomain.com",
-      "custom_domain": true
-    }
-  ]
-  ```
+   - Fork 本项目
+   - 注册 Cloudflare 账号
+   - 前往 `Workers & Pages` 页面，点击`Create Application`
+   - 选择 `Continue with Github` 并授权
+   - 选择 `Import from GitHub` 并选择你的仓库
+   - 填写相应字段
+     - `Project name`: notion-blog (必须和 wrangler.json 中的 name 一致)
+     - `Build command`: 删除掉，留空
+     - `Deploy command`：`pnpm run deploy`
+     - 展开`Advanced`选项，配置构建时环境变量
+       - `Variable name`: `NOTION_PAGE_ID`
+       - `Variable value`: 你的 Notion 数据库 ID
+     - 注意：在 Cloudflare 中我们使用了 KV 作为缓存，所以它会在每次部署时自动创建一个 KV 空间，所以你不需要手动创建 KV 空间。
+   - 点击 `Deploy`
+   - 前往部署好的仪表盘页面的`Settings` -> `Variables and Secrets`, 新增环境变量 `NOTION_PAGE_ID`，再次部署
+   - 关于自定义域名有两种设置方式
+     - 方式一：在`Settings` -> `Domains & Routes` 中添加域名，然后点击 `Add` 按钮
+     - 方式二：在`wrangler.json`配置文件里的修改`routes`配置项，注意要把所有的注释`//`去掉
+     ```json
+     "routes": [
+       {
+         "pattern": "www.yourdomain.com",
+         "custom_domain": true
+       }
+     ]
+     ```
 
 7. 也可以使用 Docker 部署，已经提供了`Dockerfile`
 
