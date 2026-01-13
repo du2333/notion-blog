@@ -1,0 +1,34 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": ["config:best-practices"],
+  "dependencyDashboard": true,
+  "timezone": "America/Los_Angeles",
+  "schedule": ["before 5am on Monday"],
+  "packageRules": [
+    {
+      "matchPackageNames": ["react", "react-dom"],
+      "groupName": "react"
+    },
+    {
+      "matchPackageNames": ["next", "eslint-config-next"],
+      "groupName": "next.js"
+    },
+    {
+      "matchPackageNames": ["/^@radix-ui//"],
+      "groupName": "radix-ui"
+    },
+    {
+      "matchPackageNames": ["/^tailwindcss/", "/^@tailwindcss//"],
+      "groupName": "tailwindcss"
+    },
+    {
+      "matchPackageNames": [
+        "notion-client",
+        "notion-utils",
+        "react-notion-x",
+        "notion-types"
+      ],
+      "groupName": "notion"
+    }
+  ]
+}
