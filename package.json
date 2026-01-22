@@ -19,7 +19,7 @@
     "@radix-ui/react-slot": "^1.2.4",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
-    "katex": "^0.16.21",
+    "katex": "^0.16.27",
     "lucide-react": "^0.562.0",
     "mini-svg-data-uri": "^1.4.4",
     "next": "16.1.3",
