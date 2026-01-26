@@ -30,8 +30,8 @@ importers:
         specifier: ^2.1.1
         version: 2.1.1
       katex:
-        specifier: ^0.16.21
-        version: 0.16.21
+        specifier: ^0.16.28
+        version: 0.16.28
       lucide-react:
         specifier: ^0.562.0
         version: 0.562.0(react@19.2.3)
@@ -3337,8 +3337,8 @@ packages:
     resolution: {integrity: sha512-ZZow9HBI5O6EPgSJLUb8n2NKgmVWTwCvHGwFuJlMjvLFqlGG6pjirPhtdsseaLZjSibD8eegzmYpUZwoIlj2cQ==}
     engines: {node: '>=4.0'}
 
-  katex@0.16.21:
-    resolution: {integrity: sha512-XvqR7FgOHtWupfMiigNzmh+MgUVmDGU2kXZm899ZkPfcuoPuFxyHmXsgATDpFZDAXCI8tvinaVcDo8PIIJSo4A==}
+  katex@0.16.28:
+    resolution: {integrity: sha512-YHzO7721WbmAL6Ov1uzN/l5mY5WWWhJBSW+jq4tkfZfsxmo1hu6frS0EOswvjBUnWE6NtjEs48SFn5CQESRLZg==}
     hasBin: true
 
   keyv@4.5.4:
@@ -6183,9 +6183,9 @@ snapshots:
       '@jridgewell/resolve-uri': 3.1.2
       '@jridgewell/sourcemap-codec': 1.5.5
 
-  '@matejmazur/react-katex@3.1.3(katex@0.16.21)(react@19.2.3)':
+  '@matejmazur/react-katex@3.1.3(katex@0.16.28)(react@19.2.3)':
     dependencies:
-      katex: 0.16.21
+      katex: 0.16.28
       react: 19.2.3
 
   '@napi-rs/wasm-runtime@0.2.12':
@@ -8784,7 +8784,7 @@ snapshots:
       object.assign: 4.1.7
       object.values: 1.2.1
 
-  katex@0.16.21:
+  katex@0.16.28:
     dependencies:
       commander: 8.3.0
 
@@ -9369,8 +9369,8 @@ snapshots:
   react-notion-x@7.7.3(@babel/runtime@7.26.10)(@types/react@19.2.8)(react-dom@19.2.3(react@19.2.3))(react@19.2.3):
     dependencies:
       '@fisch0920/medium-zoom': 1.0.7
-      '@matejmazur/react-katex': 3.1.3(katex@0.16.21)(react@19.2.3)
-      katex: 0.16.21
+      '@matejmazur/react-katex': 3.1.3(katex@0.16.28)(react@19.2.3)
+      katex: 0.16.28
       notion-types: 7.7.3
       notion-utils: 7.7.3
       prismjs: 1.30.0
